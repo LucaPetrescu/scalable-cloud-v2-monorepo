@@ -7,6 +7,7 @@ import { UserModule } from './api/user/user.module';
 import { AuthModule } from './api/auth/auth.module';
 import { MetricsModule } from './api/metrics/metrics.module';
 import { PassportModule } from '@nestjs/passport';
+import { HttpMetricsService } from './api/metrics/http-metrics.service';
 
 @Module({
   imports: [

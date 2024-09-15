@@ -71,15 +71,30 @@ export class MetricsService implements OnModuleInit {
 
   private async sendSystemMetricsToCollector() {
     setInterval(async () => {
-      const metrics = await this.getMetrics();
+      const cpuMetrics = await this.getCpuMetrics();
+
+      const ramMetrics = await this.getRamMetrics();
 
       try {
-        // await axios.post('http://localhost:8080/metrics', metrics, {
-        //   headers: {
-        //     'Content-Type': 'text/plain',
-        //   },
-        // });
-        console.log('Metrics ', metrics);
+        await axios.post(
+          'http://localhost:8080/auth/system-metrics/cpu-metrics',
+          cpuMetrics,
+          {
+            headers: {
+              'Content-Type': 'text/plain',
+            },
+          },
+        );
+
+        await axios.post(
+          'http://localhost:8080/auth/system-metrics/ram-metrics',
+          ramMetrics,
+          {
+            headers: {
+              'Content-Type': 'text/plain',
+            },
+          },
+        );
       } catch (error) {
         console.error('Error sending metrics', error);
       }
@@ -110,5 +125,13 @@ export class MetricsService implements OnModuleInit {
   /********************************************************************************** */
   private async getMetrics(): Promise<string> {
     return await this.registry.metrics();
+  }
+
+  private async getCpuMetrics(): Promise<string> {
+    return await this.registry.getSingleMetricAsString('cpu_usage_percent');
+  }
+
+  private async getRamMetrics(): Promise<string> {
+    return await this.registry.getSingleMetricAsString('memory_usage_percent');
   }
 }

@@ -1,21 +1,21 @@
 package com.masterthesis.metricscollector.metrics.SystemMetrics;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth/system-metrics")
 public class SystemMetricsController {
 
-    @GetMapping("/cpu-metrics")
-    public void getCpuMetrics(){
-
+    @PostMapping("/cpu-metrics")
+    public String getCpuMetrics(@RequestBody String cpuMetrics){
+        System.out.println("CPU Metrics: " + cpuMetrics);
+        return cpuMetrics;
     }
 
-    @GetMapping("/ram-metrics")
-    public void getRamMetrics(){
-
+    @PostMapping("/ram-metrics")
+    public String getRamMetrics(@RequestBody String ramMetrics){
+        System.out.println("RAM Metrics: " + ramMetrics);
+        return ramMetrics;
     }
 
 }
