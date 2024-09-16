@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
+import axios from 'axios';
 import * as client from 'prom-client';
-import { observe } from 'systeminformation';
 
 @Injectable()
 export class HttpMetricsService {
@@ -25,7 +25,7 @@ export class HttpMetricsService {
     });
 
     setInterval(() => {
-      this.getHttpMetrics();
+      this.sendHttpMetricsToCollector();
     }, 10000);
   }
 
@@ -41,11 +41,43 @@ export class HttpMetricsService {
       .observe(duration);
   }
 
-  async getHttpMetrics(): Promise<string> {
-    console.log(
-      'Requests: ',
-      await this.registry.getSingleMetricAsString('http_requests_total'),
-    );
+  async getHttpRequestCount(): Promise<string> {
     return await this.registry.getSingleMetricAsString('http_requests_total');
+  }
+
+  async getHttpRequestDuration(): Promise<string> {
+    return await this.registry.getSingleMetricAsString(
+      'http_request_duration_seconds',
+    );
+  }
+
+  async sendHttpMetricsToCollector() {
+    const httpMetricsCount = await this.getHttpRequestCount();
+
+    const httpMetricsDuration = await this.getHttpRequestDuration();
+
+    try {
+      await axios.post(
+        'http://localhost:8080/auth/network-metrics/http-request-count',
+        httpMetricsCount,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+
+      await axios.post(
+        'http://localhost:8080/auth/network-metrics/http-request-duration',
+        httpMetricsDuration,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+    } catch (error) {
+      console.error('Error sending metrics', error);
+    }
   }
 }

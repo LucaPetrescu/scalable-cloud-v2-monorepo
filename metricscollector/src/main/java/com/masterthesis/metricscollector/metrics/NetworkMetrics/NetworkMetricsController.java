@@ -1,21 +1,21 @@
 package com.masterthesis.metricscollector.metrics.NetworkMetrics;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth/network-metrics")
 public class NetworkMetricsController {
 
-    @GetMapping("/http-request-count")
-    public void getHttpRequestCount(){
-
+    @PostMapping("/http-request-count")
+    public String getHttpRequestCount(@RequestBody String httpRequestCountMetrics){
+        System.out.println("HTTP Request Count: " + httpRequestCountMetrics);
+        return httpRequestCountMetrics;
     }
 
-    @GetMapping("/http-request-duration")
-    public void getHttpRequest(){
-
+    @PostMapping("/http-request-duration")
+    public String getHttpRequest(@RequestBody String httpRequestDurationMetrics){
+        System.out.println("HTTP Request Duration: " + httpRequestDurationMetrics);
+        return httpRequestDurationMetrics;
     }
 
 }

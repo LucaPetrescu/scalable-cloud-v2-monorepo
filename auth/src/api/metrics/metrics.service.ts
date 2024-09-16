@@ -1,13 +1,7 @@
-import {
-  Injectable,
-  Inject,
-  OnModuleInit,
-  NestMiddleware,
-} from '@nestjs/common';
+import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import * as client from 'prom-client';
 import axios from 'axios';
 import * as os from 'os';
-import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
 export class MetricsService implements OnModuleInit {

@@ -7,6 +7,7 @@ import {
   Logger,
   ConflictException,
 } from '@nestjs/common';
+import { HttpMetricsService } from '../metrics/http-metrics.service';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -21,7 +22,10 @@ export class UserController {
   //Constructor
   //----------------------------------------------------------------------
 
-  constructor(private readonly userService: UserService) {
+  constructor(
+    private readonly userService: UserService,
+    private readonly httpMetricsService: HttpMetricsService,
+  ) {
     this.logger = new Logger('UserController');
   }
 
@@ -32,8 +36,17 @@ export class UserController {
   @Post('create')
   async create(@Request() req): Promise<any> {
     const newUser = req.body;
+    const startTime = Date.now();
+    const durationInSeconds = (Date.now() - startTime) / 1000;
+    const { method, path: route } = req;
 
     try {
+      this.httpMetricsService.incrementRequestCounter(
+        method,
+        route,
+        200,
+        durationInSeconds,
+      );
       const query = { email: newUser.email };
       const isUser = await this.userService.findOne(query);
       if (isUser) {
