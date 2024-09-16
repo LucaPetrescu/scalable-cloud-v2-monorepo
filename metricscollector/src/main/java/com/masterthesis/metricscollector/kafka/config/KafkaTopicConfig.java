@@ -11,4 +11,8 @@ public class KafkaTopicConfig {
         return TopicBuilder.name("auth-service-topic").build();
     }
 
+    public NewTopic inventoryServiceTopic(){
+        return TopicBuilder.name("inventory-service-topic").build();
+    }
+
 }
