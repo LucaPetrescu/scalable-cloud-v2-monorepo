@@ -10,22 +10,22 @@ public class NetworkMetricsController {
     @PostMapping("/http-request-count")
     public String getHttpRequestCount(@RequestBody String httpRequestCountMetrics) {
 
-        if (httpRequestCountMetrics.equals("") || httpRequestCountMetrics == null) {
+        if (httpRequestCountMetrics.isEmpty()) {
             throw new MetricReceivingException("[getHttpRequestCount] Metric not received");
         }
 
-        System.out.println("HTTP Request Count: " + httpRequestCountMetrics);
+//        System.out.println("HTTP Request Count: " + httpRequestCountMetrics);
         return httpRequestCountMetrics;
     }
 
     @PostMapping("/http-request-duration")
     public String getHttpRequest(@RequestBody String httpRequestDurationMetrics) {
 
-        if (httpRequestDurationMetrics.equals("") || httpRequestDurationMetrics == null) {
+        if (httpRequestDurationMetrics.isEmpty()) {
             throw new MetricReceivingException("[getHttpRequest] Metric not received");
         }
 
-        System.out.println("HTTP Request Duration: " + httpRequestDurationMetrics);
+//        System.out.println("HTTP Request Duration: " + httpRequestDurationMetrics);
 
 
         return httpRequestDurationMetrics;
