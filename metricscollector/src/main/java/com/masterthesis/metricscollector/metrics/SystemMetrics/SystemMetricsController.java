@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth/system-metrics")
 public class SystemMetricsController {
 
-    @Autowired
+
     private KafkaTemplate<String, String> kafkaTemplate;
+
+    public SystemMetricsController(KafkaTemplate<String, String> kafkaTemplate){
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     private String topicName = "auth-service-topic";
 
