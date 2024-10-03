@@ -22,9 +22,9 @@ public class KafkaSystemMetricsListener {
         System.out.println("Message for CPU Usage " + record);
     }
 
-//    @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"1"}))
-//    public void listenRamMetrics(ConsumerRecord<String, String> record){
-//        System.out.println("Message for RAM Usage " + record.value());
-//    }
+    @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"1"}))
+    public void listenRamMetrics(ConsumerRecord<String, String> record){
+        System.out.println("Message for RAM Usage " + record.value());
+    }
 
 }
