@@ -8,7 +8,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopicConfig {
 
     public NewTopic authServiceTopic() {
-        return TopicBuilder.name("auth-service-topic").partitions(4).replicas(1).build();
+        return TopicBuilder.name("auth-service-topic").partitions(0).replicas(1).build();
     }
 
     public NewTopic inventoryServiceTopic(){

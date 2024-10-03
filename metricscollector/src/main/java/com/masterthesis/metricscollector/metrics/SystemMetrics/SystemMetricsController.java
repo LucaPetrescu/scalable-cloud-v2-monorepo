@@ -41,7 +41,7 @@ public class SystemMetricsController {
 
 //        System.out.println("RAM Metrics: " + ramMetrics);
 
-        kafkaTemplate.send(topicName, 1, "ram-usage", ramMetrics);
+//        kafkaTemplate.send(topicName, 1, "ram-usage", ramMetrics);
 
         return ramMetrics;
     }
