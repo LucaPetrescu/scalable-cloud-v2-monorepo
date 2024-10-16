@@ -4,7 +4,9 @@ import {
   Logger,
   Request,
   UseGuards,
+  HttpStatus,
   Get,
+  Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { HttpMetricsService } from '../metrics/http-metrics.service';
@@ -24,7 +26,7 @@ export class AuthController {
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  async login(@Request() req): Promise<any> {
+  async login(@Request() req, @Res() res): Promise<any> {
     const startTime = Date.now();
     const durationInSeconds = (Date.now() - startTime) / 1000;
     const { method, path: route } = req;
@@ -35,7 +37,14 @@ export class AuthController {
         200,
         durationInSeconds,
       );
-      return await this.authService.generateJwtToken(req.user);
+
+      const token = await this.authService.generateJwtToken(req.user);
+
+      res
+        .status(HttpStatus.ACCEPTED)
+        .send({ message: 'User authenticated', accessToken: token });
+
+      return token;
     } catch (error) {
       throw error;
     }

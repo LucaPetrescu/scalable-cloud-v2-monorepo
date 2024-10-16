@@ -30,6 +30,7 @@ export class UserService {
     user.password = hashedPassword;
 
     const newUser = new this.userModel(user);
+    this.logger.log('User created');
     return newUser.save();
   }
 

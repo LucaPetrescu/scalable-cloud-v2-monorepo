@@ -1,4 +1,4 @@
-import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import * as client from 'prom-client';
 import axios from 'axios';
 import * as os from 'os';
@@ -20,15 +20,14 @@ export class MetricsService implements OnModuleInit {
     });
 
     this.memoryUsageGauge = new client.Gauge({
-      name: 'memory_usage_percent',
-      help: 'Memory usage in bytes',
+      name: 'ram_usage_percent',
+      help: 'RAM usage percentage',
       registers: [this.registry],
     });
   }
 
   onModuleInit() {
     this.startMonitoring();
-    this.sendSystemMetricsToCollector();
   }
 
   private startMonitoring() {
@@ -39,38 +38,6 @@ export class MetricsService implements OnModuleInit {
       this.cpuUsageGauge.set(cpuUsage.cpuUsage);
       this.memoryUsageGauge.set(memoryUsage.memoryUsage);
     }, 5000);
-  }
-
-  private async sendSystemMetricsToCollector() {
-    setInterval(async () => {
-      const cpuMetrics = await this.getCpuMetrics();
-
-      const ramMetrics = await this.getRamMetrics();
-
-      try {
-        await axios.post(
-          'http://localhost:8080/auth/system-metrics/cpu-metrics',
-          cpuMetrics,
-          {
-            headers: {
-              'Content-Type': 'text/plain',
-            },
-          },
-        );
-
-        await axios.post(
-          'http://localhost:8080/auth/system-metrics/ram-metrics',
-          ramMetrics,
-          {
-            headers: {
-              'Content-Type': 'text/plain',
-            },
-          },
-        );
-      } catch (error) {
-        console.error('Error sending metrics', error);
-      }
-    }, 10000);
   }
 
   private getCpuUsage(): any {
@@ -84,15 +51,8 @@ export class MetricsService implements OnModuleInit {
   private getMemoryUsage(): any {
     const usage = process.memoryUsage();
     const memoryUsage = usage.heapUsed / usage.heapTotal;
+
     console.log(`memoryUsage: ${memoryUsage}`);
     return { memoryUsage: memoryUsage };
-  }
-
-  private async getCpuMetrics(): Promise<string> {
-    return await this.registry.getSingleMetricAsString('cpu_usage_percent');
-  }
-
-  private async getRamMetrics(): Promise<string> {
-    return await this.registry.getSingleMetricAsString('memory_usage_percent');
   }
 }

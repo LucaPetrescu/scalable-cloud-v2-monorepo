@@ -6,6 +6,9 @@ import {
   Request,
   Logger,
   ConflictException,
+  HttpException,
+  HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { HttpMetricsService } from '../metrics/http-metrics.service';
 import { UserService } from './user.service';
@@ -22,7 +25,7 @@ export class UserController {
   }
 
   @Post('create')
-  async create(@Request() req): Promise<any> {
+  async create(@Request() req, @Res() res): Promise<any> {
     const newUser = req.body;
     const startTime = Date.now();
     const durationInSeconds = (Date.now() - startTime) / 1000;
@@ -38,13 +41,16 @@ export class UserController {
       const query = { email: newUser.email };
       const isUser = await this.userService.findOne(query);
       if (isUser) {
-        throw new ConflictException('Email already exists');
+        throw new HttpException('Email already exists', HttpStatus.CONFLICT);
       }
       const user = await this.userService.create(newUser);
+      console.log(user);
+      res.status(HttpStatus.CREATED).send('User Created');
+
       return user;
     } catch (err) {
       this.logger.error('Something went wrong. Please try again later:', err);
-      throw err;
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
     }
   }
 }
