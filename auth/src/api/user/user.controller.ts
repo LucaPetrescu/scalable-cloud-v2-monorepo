@@ -12,15 +12,7 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  //----------------------------------------------------------------------
-  //Service Fields
-  //----------------------------------------------------------------------
-
   logger: Logger;
-
-  //----------------------------------------------------------------------
-  //Constructor
-  //----------------------------------------------------------------------
 
   constructor(
     private readonly userService: UserService,
@@ -28,10 +20,6 @@ export class UserController {
   ) {
     this.logger = new Logger('UserController');
   }
-
-  //----------------------------------------------------------------------
-  //User Controller Methods
-  //----------------------------------------------------------------------
 
   @Post('create')
   async create(@Request() req): Promise<any> {
@@ -55,7 +43,7 @@ export class UserController {
       const user = await this.userService.create(newUser);
       return user;
     } catch (err) {
-      this.logger.error('Something wnet wrong. PLease try again later:', err);
+      this.logger.error('Something went wrong. Please try again later:', err);
       throw err;
     }
   }

@@ -2,10 +2,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class Product {
-  @Prop()
+  @Prop({ unique: true })
+  productId: string;
+
+  @Prop({ unique: true })
   productName: string;
 
-  @Prop()
+  @Prop({ unique: true })
   barCode: string;
 
   @Prop()

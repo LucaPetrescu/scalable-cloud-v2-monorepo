@@ -5,15 +5,7 @@ import { UserService } from 'src/api/user/user.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  //----------------------------------------------------------------------
-  //Service Fields
-  //----------------------------------------------------------------------
-
   logger: Logger;
-
-  //----------------------------------------------------------------------
-  //Constructor
-  //----------------------------------------------------------------------
 
   constructor(
     @Inject(forwardRef(() => UserService))
@@ -26,10 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
     this.logger = new Logger(JwtStrategy.name);
   }
-
-  //----------------------------------------------------------------------
-  //Methods
-  //----------------------------------------------------------------------
 
   async validate(payload: any) {
     return await this.UserService.findOne({ email: payload.email });

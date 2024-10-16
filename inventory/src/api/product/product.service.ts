@@ -14,11 +14,13 @@ export class ProductService {
   }
 
   async findOne(query: any): Promise<any> {
-    return await this.productModel.findOne(query);
+    return await this.productModel.findOne(query).exec();
   }
 
   async create(product: any): Promise<any> {
-    this.logger.log('Creating Product.');
-    console.log('Here');
+    this.logger.log('Creating product.');
+
+    const newProduct = new this.productModel(product);
+    return newProduct.save();
   }
 }

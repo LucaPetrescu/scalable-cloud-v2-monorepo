@@ -13,15 +13,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  //----------------------------------------------------------------------
-  //Service Fields
-  //----------------------------------------------------------------------
-
   logger: Logger;
-
-  //----------------------------------------------------------------------
-  //Constructor
-  //----------------------------------------------------------------------
 
   constructor(
     private readonly authService: AuthService,
@@ -29,10 +21,6 @@ export class AuthController {
   ) {
     this.logger = new Logger(AuthController.name);
   }
-
-  //----------------------------------------------------------------------
-  //Guard methods
-  //----------------------------------------------------------------------
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
@@ -52,8 +40,6 @@ export class AuthController {
       throw error;
     }
   }
-
-  /********************************************************************************** */
 
   @UseGuards(JwtAuthGuard)
   @Get('viewProfile')

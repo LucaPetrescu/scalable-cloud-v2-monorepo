@@ -8,15 +8,7 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UserService {
-  //----------------------------------------------------------------------
-  //Service Fields
-  //----------------------------------------------------------------------
-
   logger: Logger;
-
-  //----------------------------------------------------------------------
-  //Constructor
-  //----------------------------------------------------------------------
 
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
@@ -25,15 +17,9 @@ export class UserService {
     this.logger = new Logger(UserService.name);
   }
 
-  //----------------------------------------------------------------------
-  //Service Methods
-  //----------------------------------------------------------------------
-
   async findOne(query: any): Promise<any> {
     return await this.userModel.findOne(query);
   }
-
-  /********************************************************************************** */
 
   async create(user: any): Promise<any> {
     this.logger.log('Creating user.');
@@ -47,8 +33,6 @@ export class UserService {
     return newUser.save();
   }
 
-  /********************************************************************************** */
-
   async findOneAndUpdate(query: any, payload: any): Promise<User> {
     this.logger.log('Updating User');
 
@@ -57,8 +41,6 @@ export class UserService {
       upsert: true,
     });
   }
-
-  /********************************************************************************** */
 
   async findOneAndRemove(query: any): Promise<User> {
     return this.userModel.findOneAndDelete(query);

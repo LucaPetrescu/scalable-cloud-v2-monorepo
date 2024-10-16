@@ -9,25 +9,12 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 export class AuthService {
-  //----------------------------------------------------------------------
-  //Service Fields
-  //----------------------------------------------------------------------
-
   logger: Logger;
-
-  //----------------------------------------------------------------------
-  //Constructor
-  //----------------------------------------------------------------------
-
   constructor(
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
-
-  //----------------------------------------------------------------------
-  //Validating methods
-  //----------------------------------------------------------------------
 
   async validateUser(email: string, pass: string): Promise<any> {
     const query = { email: email };
@@ -46,8 +33,6 @@ export class AuthService {
     return user;
   }
 
-  /********************************************************************************** */
-
   async generateJwtToken(user: any): Promise<String> {
     const payload = {
       email: user.email,
@@ -57,14 +42,10 @@ export class AuthService {
     return accessToken;
   }
 
-  /********************************************************************************** */
-
   async getHashedPassword(plainTextPassword: any): Promise<String> {
     const hashedPassword = await bcrypt.hash(plainTextPassword, 10);
     return hashedPassword;
   }
-
-  /********************************************************************************** */
 
   async comparePasswords(
     plainTextPassword: string,
