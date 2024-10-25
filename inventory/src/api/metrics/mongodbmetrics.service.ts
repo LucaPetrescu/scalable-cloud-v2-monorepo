@@ -3,6 +3,7 @@ import * as client from 'prom-client';
 import * as mongoose from 'mongoose';
 import axios from 'axios';
 
+@Injectable()
 export class MongoDBMetricsService {
   private readonly connectionPoolSizeGauge: client.Gauge<string>;
   private readonly activeConnectionsGauge: client.Gauge<string>;
@@ -49,7 +50,74 @@ export class MongoDBMetricsService {
     if (connection.readyState === 1) {
       try {
         const stats = await connection.db.admin().serverStatus();
-      } catch (error) {}
+        const poolStats = stats.connections;
+
+        this.connectionPoolSizeGauge.set(poolStats.current);
+        this.activeConnectionsGauge.set(
+          poolStats.current - poolStats.available,
+        );
+        this.availableConnectionsGauge.set(poolStats.available);
+      } catch (error) {
+        console.error('Error reconnecting to MongoDB:', error);
+      }
     }
+  }
+
+  private iniMiddleware() {
+    mongoose.plugin((schema) => {
+      schema.pre('find', () => {
+        this['start'] = process.hrtime();
+      });
+
+      schema.post('find', () => {
+        const [seconds, nanoseconds] = process.hrtime(this['start']);
+        const executionTime = (seconds * nanoseconds) / 1e9;
+
+        this.queryTimeGauge.set(executionTime);
+      });
+    });
+  }
+
+  private async collectMemoryUsage() {
+    const connection = mongoose.connection;
+    if (connection.readyState === 1) {
+      try {
+        const stats = await connection.db.admin().serverStatus();
+        const memoryUsage = stats.mem.resident;
+        this.memoryUsageGauge.set(memoryUsage);
+      } catch (error) {
+        console.error('Error reconnecting to MongoDB:', error);
+      }
+    }
+  }
+
+  private async getConnectionPoolSize(): Promise<string> {
+    return await this.registry.getSingleMetricAsString(
+      'mongo_connection_pool_size',
+    );
+  }
+
+  private async getActiveConnections(): Promise<string> {
+    return await this.registry.getSingleMetricAsString(
+      'mongo_active_connections',
+    );
+  }
+
+  private async getAvailableConnections(): Promise<string> {
+    return await this.registry.getSingleMetricAsString(
+      'mongo_available_connections',
+    );
+  }
+
+  private async getQueryTime(): Promise<string> {
+    return await this.registry.getSingleMetricAsString(
+      'mongo_query_time_seconds',
+    );
+  }
+
+  private async getMemoryUsage(): Promise<string> {
+    return await this.registry.getSingleMetricAsString(
+      'mongo_memory_usage_bytes',
+    );
   }
 }

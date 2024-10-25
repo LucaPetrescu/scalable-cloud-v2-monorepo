@@ -1,4 +1,4 @@
-package com.masterthesis.metricscollector.metrics.SystemMetrics;
+package com.masterthesis.metricscollector.metrics.auth.SystemMetrics;
 
 import com.masterthesis.metricscollector.exceptions.MetricReceivingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,6 @@ public class SystemMetricsController {
             throw new MetricReceivingException("[getCpuMetrics] Metric not received");
         }
 
-//        System.out.println("CPU Metrics: " + cpuMetrics);
-
         kafkaTemplate.send(topicName, 0, "cpu-usage", cpuMetrics);
 
         return cpuMetrics;
@@ -38,8 +36,6 @@ public class SystemMetricsController {
         if (ramMetrics.isEmpty()) {
             throw new MetricReceivingException("[getRamMetrics] Metric not received");
         }
-
-//        System.out.println("RAM Metrics: " + ramMetrics);
 
         kafkaTemplate.send(topicName, 1, "ram-usage", ramMetrics);
 

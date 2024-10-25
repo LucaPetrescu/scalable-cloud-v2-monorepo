@@ -10,12 +10,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic authServiceTopic() {
-        return TopicBuilder.name("auth-service-topic").partitions(4).replicas(1).build();
-    }
-
-    @Bean
-    public NewTopic inventoryServiceTopic(){
-        return TopicBuilder.name("inventory-service-topic").partitions(2).replicas(1).build();
+        return TopicBuilder.name("auth-service-topic").partitions(2).replicas(1).build();
     }
 
 }

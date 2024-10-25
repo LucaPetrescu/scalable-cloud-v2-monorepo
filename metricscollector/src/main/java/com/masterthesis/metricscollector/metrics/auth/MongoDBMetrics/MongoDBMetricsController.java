@@ -1,4 +1,4 @@
-package com.masterthesis.metricscollector.metrics.MongoDBMetrics;
+package com.masterthesis.metricscollector.metrics.auth.MongoDBMetrics;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

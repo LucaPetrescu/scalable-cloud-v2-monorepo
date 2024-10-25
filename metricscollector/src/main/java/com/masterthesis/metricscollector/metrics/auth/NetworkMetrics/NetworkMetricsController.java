@@ -1,4 +1,4 @@
-package com.masterthesis.metricscollector.metrics.NetworkMetrics;
+package com.masterthesis.metricscollector.metrics.auth.NetworkMetrics;
 
 import com.masterthesis.metricscollector.exceptions.MetricReceivingException;
 import org.springframework.web.bind.annotation.*;

@@ -10,12 +10,16 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
+import { HttpMetricsService } from '../metrics/http-metrics.service';
 
 @Controller('product')
 export class ProductController {
   logger: Logger;
 
-  constructor(private readonly productService: ProductService) {
+  constructor(
+    private readonly productService: ProductService,
+    private readonly httpMetricsService: HttpMetricsService,
+  ) {
     this.logger = new Logger('ProductController');
   }
 
@@ -23,7 +27,18 @@ export class ProductController {
   async create(@Request() req, @Res() res): Promise<any> {
     const newProduct = req.body;
 
+    const starTime = Date.now();
+    const durationInSeconds = (Date.now() - starTime) / 1000;
+    const { method, path: route } = req;
+
     try {
+      this.httpMetricsService.incrementRequestCounter(
+        method,
+        route,
+        200,
+        durationInSeconds,
+      );
+
       const query = {
         name: newProduct.productName,
         barCode: newProduct.barCode,
@@ -49,10 +64,22 @@ export class ProductController {
 
   @Get('getProduct')
   async getProduct(
+    @Request() req,
     @Query('productId') productId: string,
     @Res() res,
   ): Promise<any> {
+    const startTime = Date.now();
+    const durationInSeconds = (Date.now() - startTime) / 1000;
+    const { method, path: route } = req;
+
     try {
+      this.httpMetricsService.incrementRequestCounter(
+        method,
+        route,
+        200,
+        durationInSeconds,
+      );
+
       const query = { productId: productId };
       const product = await this.productService.findOne(query);
 
@@ -70,10 +97,22 @@ export class ProductController {
 
   @Get('getProductInventory')
   async getProductInventory(
+    @Request() req,
     @Query('productId') productId: string,
     @Res() res,
   ): Promise<any> {
+    const startTime = Date.now();
+    const durationInSeconds = (Date.now() - startTime) / 1000;
+    const { method, path: route } = req;
+
     try {
+      this.httpMetricsService.incrementRequestCounter(
+        method,
+        route,
+        200,
+        durationInSeconds,
+      );
+
       const query = { productId: productId };
       const product = await this.productService.findOne(query);
 
