@@ -14,7 +14,6 @@ public class NetworkMetricsController {
             throw new MetricReceivingException("[getHttpRequestCount] Metric not received");
         }
 
-//        System.out.println("HTTP Request Count: " + httpRequestCountMetrics);
         return httpRequestCountMetrics;
     }
 
@@ -24,9 +23,6 @@ public class NetworkMetricsController {
         if (httpRequestDurationMetrics.isEmpty()) {
             throw new MetricReceivingException("[getHttpRequest] Metric not received");
         }
-
-//        System.out.println("HTTP Request Duration: " + httpRequestDurationMetrics);
-
 
         return httpRequestDurationMetrics;
     }

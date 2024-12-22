@@ -1,7 +1,6 @@
 package com.masterthesis.metricscollector.metrics.auth.SystemMetrics;
 
 import com.masterthesis.metricscollector.exceptions.MetricReceivingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
