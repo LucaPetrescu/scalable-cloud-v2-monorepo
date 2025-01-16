@@ -8,7 +8,7 @@ import { MetricsModule } from './api/metrics/metrics.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27018/products'),
+    MongooseModule.forRoot('mongodb://localhost:27017/products'),
     ProductModule,
     MetricsModule,
   ],
