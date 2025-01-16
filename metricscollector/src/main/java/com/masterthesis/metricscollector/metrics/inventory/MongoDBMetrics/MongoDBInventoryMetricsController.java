@@ -1,4 +1,4 @@
-package com.masterthesis.metricscollector.metrics.auth.MongoDBMetrics;
+package com.masterthesis.metricscollector.metrics.inventory.MongoDBMetrics;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth/mongodb-metrics")
-public class MongoDBMetricsController {
+@RequestMapping("/inventory/mongodb-metrics")
+public class MongoDBInventoryMetricsController {
 
     @PostMapping("/connection-pool-size")
     public String getConnectionPoolSize(@RequestBody String connectionPoolSize){

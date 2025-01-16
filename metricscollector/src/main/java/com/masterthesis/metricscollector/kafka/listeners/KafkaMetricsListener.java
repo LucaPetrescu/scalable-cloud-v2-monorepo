@@ -7,7 +7,7 @@ import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaSystemMetricsListener {
+public class KafkaMetricsListener {
 
     private static final Gauge cpuMetrics = Gauge.build()
             .name("cpu_usage_percent")
