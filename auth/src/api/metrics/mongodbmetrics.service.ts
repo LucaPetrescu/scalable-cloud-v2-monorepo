@@ -128,25 +128,46 @@ export class MongoDBMetricsService {
   private async sendMongoDBMetricsToCollector(){
     
       const connectionPoolSize = await this.getConnectionPoolSize();
-      // const activeConnections = await this.getActiveConnections();
-      // const availableConnections = await this.getAvailableConnections();
-      // const queryTime = await this.getQueryTime();
+      const activeConnections = await this.getActiveConnections();
+      const availableConnections = await this.getAvailableConnections();
+      const queryTime = await this.getQueryTime();
       const memoryUsage = await this.getMemoryUsage();
 
-      try{
+      try {
+
         axios.post('http://localhost:8080/auth/mongodb-metrics/connection-pool-size', connectionPoolSize,
           {
           headers: {
             'Content-Type': 'text/plain',
           },
         });
+
+        axios.post('http://localhost:8080/auth/mongodb-metrics/active-connections', activeConnections, 
+          {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        })
+
+        axios.post('http://localhost:8080/auth/mongodb-metrics/available-connections', availableConnections, {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        })
+
+        axios.post('http://localhost:8080/auth/mongodb-metrics/query-time', queryTime, {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        })
+
         axios.post('http://localhost:8080/auth/mongodb-metrics/memory-usage', memoryUsage,
           {
           headers: {
             'Content-Type': 'text/plain',
           },
         });
-      }catch(e){
+      } catch(e) {
         console.error(e);
       }
   }

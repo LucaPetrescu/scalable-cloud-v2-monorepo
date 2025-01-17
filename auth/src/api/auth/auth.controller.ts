@@ -27,41 +27,30 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   async login(@Request() req, @Res() res): Promise<any> {
-    const startTime = Date.now();
-    const durationInSeconds = (Date.now() - startTime) / 1000;
-    const { method, path: route } = req;
     try {
-      this.httpMetricsService.incrementRequestCounter(
-        method,
-        route,
-        200,
-        durationInSeconds,
-      );
-
       const token = await this.authService.generateJwtToken(req.user);
 
       res
         .status(HttpStatus.ACCEPTED)
         .send({ message: 'User authenticated', accessToken: token });
-
-      return token;
     } catch (error) {
-      throw error;
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send({ message: 'Something went wrong' });
     }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('viewProfile')
-  async getUser(@Request() req): Promise<any> {
-    const startTime = Date.now();
-    const durationInSeconds = (Date.now() - startTime) / 1000;
-    const { method, path: route } = req;
-    this.httpMetricsService.incrementRequestCounter(
-      method,
-      route,
-      200,
-      durationInSeconds,
-    );
-    return req.user;
+  async getUser(@Request() req, @Res() res): Promise<any> {
+    try {
+      res
+        .status(HttpStatus.ACCEPTED)
+        .send({ message: 'User returned successfully', user: req.user });
+    } catch (error) {
+      res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send({ message: 'Something went wrong' });
+    }
   }
 }

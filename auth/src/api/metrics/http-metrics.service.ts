@@ -35,7 +35,7 @@ export class HttpMetricsService {
     statusCode: number,
     duration: number,
   ): void {
-    this.httpRequestCounter.labels(method, route, statusCode.toString()).inc();
+    this.httpRequestCounter.labels(method, route, statusCode.toString()).inc(1);
     this.httpRequestDurationHistogram
       .labels(method, route, statusCode.toString())
       .observe(duration);

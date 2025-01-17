@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth/system-metrics")
 public class SystemMetricsController {
 
-
     private KafkaTemplate<String, String> kafkaTemplate;
 
     public SystemMetricsController(KafkaTemplate<String, String> kafkaTemplate){

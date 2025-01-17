@@ -4,7 +4,7 @@ public class Utils {
 
     public static Double parseMetrics(String[] lines, String metric){
 
-        Double metricUsage = null;
+        Double metricUsage = 0.0;
 
         try {
             for (String line : lines) {

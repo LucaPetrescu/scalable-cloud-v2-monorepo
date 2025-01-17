@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -8,6 +8,7 @@ import { AuthModule } from './api/auth/auth.module';
 import { MetricsModule } from './api/metrics/metrics.module';
 import { PassportModule } from '@nestjs/passport';
 import { DatabaseService } from './api/database/database.service';
+import { HttpMetricsMiddleware } from './api/middlewares/http-metrics.middleware';
 
 @Module({
   imports: [
@@ -20,4 +21,8 @@ import { DatabaseService } from './api/database/database.service';
   controllers: [AppController],
   providers: [AppService, DatabaseService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(HttpMetricsMiddleware).forRoutes('*');
+  }
+}
