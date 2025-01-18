@@ -1,32 +1,27 @@
 package com.masterthesis.alertingsystem.query;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class PrometheusQueryClient {
 
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final WebClient webClient;
 
     private final String prometheusUrl = "http://localhost:9090/api/v1/query";
 
-    public PrometheusQueryClient(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
+    public PrometheusQueryClient(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl(prometheusUrl).build();
     }
 
     public JsonNode query(String query) {
-        String url = prometheusUrl + "?query=" + query;
-        String response = restTemplate.getForObject(url, String.class);
-
-        try {
-            JsonNode jsonResponse = objectMapper.readTree(response);
-            return jsonResponse.path("data").path("result");
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse Prometheus response", e);
-        }
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder.queryParam("query", query).build())
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .block();
     }
 }
