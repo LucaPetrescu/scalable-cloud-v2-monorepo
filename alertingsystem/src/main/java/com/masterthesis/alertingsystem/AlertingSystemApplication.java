@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class AlertingsystemApplication {
+public class AlertingSystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AlertingsystemApplication.class, args);
+		SpringApplication.run(AlertingSystemApplication.class, args);
 	}
 
 }
