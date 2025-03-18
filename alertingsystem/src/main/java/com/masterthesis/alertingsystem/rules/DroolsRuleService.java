@@ -1,11 +1,14 @@
 package com.masterthesis.alertingsystem.rules;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.masterthesis.alertingsystem.dtos.MetricsResponseDto;
 import com.masterthesis.alertingsystem.query.PrometheusQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 @Service
@@ -15,8 +18,12 @@ public class DroolsRuleService {
     private PrometheusQueryService queryClient;
     private DroolsRuleEngine droolsRuleEngine;
 
+
     @Scheduled(fixedRate = 5000)
-    public void analyzeMetrics() {
+    public ArrayList<JsonNode> getAllMetrics() {
+
+        ArrayList<JsonNode> queriedMetrics = new ArrayList<>();
+
         String[] queries = {
                 "cpu_usage_percent",
                 "ram_usage_percent",
@@ -29,30 +36,55 @@ public class DroolsRuleService {
                 "mongo_memory_usage_bytes"
             };
 
-        for(String query : queries) {
-            JsonNode metrics = queryClient.query(query);
-            Iterator<JsonNode> iterator = metrics.elements();
-
-            while(iterator.hasNext()){
-                JsonNode metricNode = iterator.next();
-                System.out.println("System: " + metricNode);
-            }
-        }
-    }
-
-    public void analyzeCustomMetric(String metricQueryName) {
-        JsonNode metrics = queryClient.query(metricQueryName);
-        Iterator<JsonNode> iterator = metrics.elements();
-
-        while(iterator.hasNext()){
-            JsonNode metricNode = iterator.next();
-            String metricName = metricNode.path("metric").path("__name__").asText();
-            double metricValue = metricNode.path("value").get(1).asDouble();
-
-//            if(ruleEngine.isMetricExceedingThreshold(metricName, metricValue)){
-//                handleThresholdExceeded(metricName, metricValue);
+//        for(String query : queries) {
+//            JsonNode metrics = queryClient.query(query);
+//            Iterator<JsonNode> iterator = metrics.elements();
+//
+//            while(iterator.hasNext()){
+//                JsonNode metricNode = iterator.next();
+//                queriedMetrics.add(metricNode);
 //            }
-        }
+//        }
+
+        JsonNode metric = queryClient.query(queries[0]);
+
+        ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
+
+        JsonNode metricResult = resultArrayNode.get(0);
+
+        JsonNode metricName = metricResult.at("/metric/__name__");
+
+        JsonNode metricValue = metric.at()
+
+        System.out.println(metricName.toString());
+
+        return queriedMetrics;
+
     }
+
+    public JsonNode getMetric(String metricName) {
+        JsonNode metric = queryClient.query(metricName);
+
+        System.out.println(metric);
+
+        return metric;
+    }
+
+//    public MetricsResponseDto getMetricForService(String serviceName, String metricName) {
+//        JsonNode metrics = queryClient.query(metricName);
+//        Iterator<JsonNode> iterator = metrics.elements();
+//
+//        while(iterator.hasNext()){
+//            JsonNode metricNode = iterator.next();
+//            String metricNameResult = metricNode.path("metric").path("__name__").asText();
+//            double metricValue = metricNode.path("value").get(1).asDouble();
+//
+//            return new MetricsResponseDto(metricNameResult, metricValue);
+//
+//        }
+//
+//        return null;
+//    }
+
 
 }

@@ -19,7 +19,14 @@ public class DroolsRuleEngine {
         this.thresholds = Map.of(
                 "cpu_usage_percent", Map.of("max", 75.0),
                 "ram_usage_percent", Map.of("max", 80.0),
-                "http_requests_total", Map.of("max", 1000.0));
+                "http_requests_total", Map.of("max", 1000.0),
+                "http_requests_duration_seconds", Map.of("max", 1.0),
+                "mongo_connection_pool_size", Map.of("max", 100.0),
+                "mongo_active_connections", Map.of("max", 80.0),
+                "mongo_available_connections", Map.of("min", 20.0),
+                "mongo_query_time_seconds", Map.of("max", 0.5),
+                "mongo_memory_usage_bytes", Map.of("max", 300000000.0)
+        );
     }
 
     public boolean isMetricExceedingThreshold(String metricName, double value) {
