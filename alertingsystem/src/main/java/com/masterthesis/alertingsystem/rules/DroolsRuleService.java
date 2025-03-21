@@ -20,9 +20,9 @@ public class DroolsRuleService {
 
 
     @Scheduled(fixedRate = 5000)
-    public ArrayList<JsonNode> getAllMetrics() {
+    public ArrayList<MetricsResponseDto> getAllMetrics() {
 
-        ArrayList<JsonNode> queriedMetrics = new ArrayList<>();
+        ArrayList<MetricsResponseDto> queriedMetrics = new ArrayList<>();
 
         String[] queries = {
                 "cpu_usage_percent",
@@ -52,11 +52,15 @@ public class DroolsRuleService {
 
         JsonNode metricResult = resultArrayNode.get(0);
 
-        JsonNode metricName = metricResult.at("/metric/__name__");
+        String metricName = metricResult.at("/metric/__name__").toString();
 
-        JsonNode metricValue = metric.at()
+        String metricValue = metricResult.at("/value").get(1).toString();
 
-        System.out.println(metricName.toString());
+        double metricValueDouble = Double.parseDouble(metricValue);
+
+        MetricsResponseDto metricsResponse = new MetricsResponseDto(metricName, metricValueDouble);
+
+        queriedMetrics.add(metricsResponse);
 
         return queriedMetrics;
 
