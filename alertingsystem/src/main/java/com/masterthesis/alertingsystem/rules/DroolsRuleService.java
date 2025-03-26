@@ -3,6 +3,7 @@ package com.masterthesis.alertingsystem.rules;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.masterthesis.alertingsystem.dtos.MetricsResponseDto;
+import com.masterthesis.alertingsystem.exceptions.InvalidMetricException;
 import com.masterthesis.alertingsystem.query.MetricType;
 import com.masterthesis.alertingsystem.query.PrometheusQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,11 @@ public class DroolsRuleService {
 
                     MetricsResponseDto metricsResponse = new MetricsResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
                     queriedMetrics.add(metricsResponse);
+                } else {
+                    throw new IllegalArgumentException("Metric data is non-existent or invalid");
                 }
             } catch (Exception e){
-
+                System.err.println("❌ Metric retrieval failed: " + e.getMessage());
             }
         }
 
@@ -68,14 +71,18 @@ public class DroolsRuleService {
 
                 metricsResponseDto = new MetricsResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
 
+            } else {
+                throw new IllegalArgumentException("Metric data is non-existent or invalid");
             }
 
             return metricsResponseDto;
 
         } catch(Exception e){
-            System.err.println("Error querying metric " + metricQuery + ": " + e.getMessage());
-            return null;
+            System.err.println("❌ Metric retrieval failed: " + e.getMessage());
+
         }
+
+        return metricsResponseDto;
     }
 
 }
