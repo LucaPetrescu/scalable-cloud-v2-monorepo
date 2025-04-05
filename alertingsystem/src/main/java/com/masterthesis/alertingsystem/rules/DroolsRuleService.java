@@ -79,10 +79,17 @@ public class DroolsRuleService {
 
         } catch(Exception e){
             System.err.println("❌ Metric retrieval failed: " + e.getMessage());
-
         }
 
         return metricsResponseDto;
+    }
+
+    public void processMetricWithRules(MetricsResponseDto metric){
+        boolean isAlert = droolsRuleEngine.isMetricExceedingThreshold(metric.getMetricName(), metric.getMetricValue());
+
+        if (isAlert){
+
+        }
     }
 
 }
