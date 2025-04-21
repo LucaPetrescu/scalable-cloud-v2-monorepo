@@ -13,15 +13,7 @@ public class RedisMessagePublisher implements MessagePublisher{
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private ChannelTopic topic;
-
     private List<ChannelTopic> topics = null;
-
-    public RedisMessagePublisher(RedisTemplate<String, Object> redisTemplate, ChannelTopic topic) {
-        this.redisTemplate = redisTemplate;
-        this.topic = topic;
-    }
 
     public RedisMessagePublisher(RedisTemplate<String, Object> redisTemplate, List<ChannelTopic> topics) {
         this.redisTemplate = redisTemplate;
@@ -30,7 +22,11 @@ public class RedisMessagePublisher implements MessagePublisher{
 
     @Override
     public void publish(Message message){
-        redisTemplate.convertAndSend(message.getTopicName(), message);
+        for(ChannelTopic t: topics) {
+            if(t.getTopic().equals(message.getTopicName())){
+                redisTemplate.convertAndSend(t.getTopic(), message);
+            }
+        }
     }
 
 }

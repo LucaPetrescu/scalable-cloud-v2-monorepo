@@ -28,6 +28,7 @@ public class DroolsRuleService {
     @Autowired
     private DroolsRuleEngine droolsRuleEngine;
 
+    @Autowired
     private RedisMessagePublisher redisMessagePublisher;
 
     public ArrayList<MetricsResponseDto> getAllMetrics(String serviceName) {
