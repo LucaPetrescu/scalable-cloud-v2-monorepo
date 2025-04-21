@@ -15,6 +15,7 @@ public class RedisMessageSubscriber implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] bytes) {
         messageList.add(message.toString());
+        System.out.println(messageList.toString());
     }
 
 }

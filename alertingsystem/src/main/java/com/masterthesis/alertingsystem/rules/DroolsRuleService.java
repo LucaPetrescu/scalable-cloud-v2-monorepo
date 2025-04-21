@@ -9,6 +9,9 @@ import com.masterthesis.alertingsystem.exceptions.NothingToUpdateException;
 import com.masterthesis.alertingsystem.exceptions.ThresholdsLoadingException;
 import com.masterthesis.alertingsystem.query.MetricType;
 import com.masterthesis.alertingsystem.query.PrometheusQueryService;
+import com.masterthesis.alertingsystem.redis.Message;
+import com.masterthesis.alertingsystem.redis.RedisMessagePublisher;
+import com.masterthesis.alertingsystem.rules.facts.Alert;
 import com.masterthesis.alertingsystem.rules.facts.Threshold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ public class DroolsRuleService {
 
     @Autowired
     private DroolsRuleEngine droolsRuleEngine;
+
+    private RedisMessagePublisher redisMessagePublisher;
 
     public ArrayList<MetricsResponseDto> getAllMetrics(String serviceName) {
 
@@ -76,6 +81,8 @@ public class DroolsRuleService {
         } else if(serviceName.equals("inventory-service")){
             serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
         }
+
+        redisMessagePublisher.publish(new Message("Garbage", "Garbage", new Alert("Garbage", "Garbage", 0)));
 
         try{
             JsonNode metric = queryClient.query(metricQuery);
