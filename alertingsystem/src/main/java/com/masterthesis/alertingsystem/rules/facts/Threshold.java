@@ -1,13 +1,13 @@
 package com.masterthesis.alertingsystem.rules.facts;
 
-public class MetricData {
+public class Threshold {
 
     private String name;
-    private double value;
+    private double max;
 
-    public MetricData(String name, double value) {
+    public Threshold(String name, double max) {
         this.name = name;
-        this.value = value;
+        this.max = max;
     }
 
     public String getName() {
@@ -18,12 +18,11 @@ public class MetricData {
         this.name = name;
     }
 
-    public double getValue() {
-        return value;
+    public double getMax() {
+        return max;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setMax(double max) {
+        this.max = max;
     }
-
 }

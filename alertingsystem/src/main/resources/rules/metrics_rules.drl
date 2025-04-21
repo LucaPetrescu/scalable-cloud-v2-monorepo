@@ -1,0 +1,22 @@
+package rules
+
+import com.masterthesis.alertingsystem.rules.facts.Alert
+import com.masterthesis.alertingsystem.rules.facts.Metric
+import com.masterthesis.alertingsystem.rules.facts.Threshold
+
+global java.util.List alerts
+
+dialect "mvel"
+
+rule "Checking metric usage against threshold"
+    when
+       $threshold : Threshold()
+       $metric : Metric(name == $threshold.name, value > $threshold.max)
+    then
+        Alert alert = new Alert(
+            "Threshold exceeded for " + $metric.name,
+            $metric.name,
+            $metric.value
+        );
+        alerts.add(alert);
+    end

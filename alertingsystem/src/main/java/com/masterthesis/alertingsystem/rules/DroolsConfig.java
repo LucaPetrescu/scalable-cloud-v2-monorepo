@@ -20,9 +20,9 @@ public class DroolsConfig {
 
     @Bean
     public KieContainer kieContainer() throws IOException {
-        Resource rulesResource = new ClassPathResource("rules/metricsRules.drl");
+        Resource rulesResource = new ClassPathResource("rules/metrics_rules.drl");
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
-        kieFileSystem.write("src/main/resources/rules/metricsRules.drl", ResourceFactory.newInputStreamResource(rulesResource.getInputStream()));
+        kieFileSystem.write("src/main/resources/rules/metrics_rules.drl", ResourceFactory.newInputStreamResource(rulesResource.getInputStream()));
 
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
         kieBuilder.buildAll();

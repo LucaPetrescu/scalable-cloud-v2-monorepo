@@ -1,0 +1,19 @@
+thresholds:
+  cpu_usage_percent:
+    max: 80.0
+  ram_usage_percent:
+    max: 80.0
+  http_requests_total:
+    max: 1000.0
+  http_requests_duration_seconds:
+    max: 1.0
+  mongo_connection_pool_size:
+    max: 100.0
+  mongo_active_connections:
+    max: 80.0
+  mongo_available_connections:
+    max: 20.0
+  mongo_query_time_seconds:
+    max: 0.5
+  mongo_memory_usage_bytes:
+    max: 300000000.0
