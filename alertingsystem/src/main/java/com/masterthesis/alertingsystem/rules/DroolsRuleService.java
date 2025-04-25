@@ -83,7 +83,7 @@ public class DroolsRuleService {
             serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
         }
 
-        redisMessagePublisher.publish(new Message("Garbage", "Garbage", new Alert("Garbage", "Garbage", 0)));
+        redisMessagePublisher.publish(new Message("Garbage", "auth-service-alerts-topic", new Alert("Garbage", "Garbage", 0)));
 
         try{
             JsonNode metric = queryClient.query(metricQuery);

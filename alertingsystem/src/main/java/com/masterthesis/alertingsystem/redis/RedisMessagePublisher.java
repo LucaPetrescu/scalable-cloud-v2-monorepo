@@ -23,6 +23,7 @@ public class RedisMessagePublisher implements MessagePublisher{
     @Override
     public void publish(Message message){
         for(ChannelTopic t: topics) {
+            System.out.println("Aici " + t.getTopic());
             if(t.getTopic().equals(message.getTopicName())){
                 redisTemplate.convertAndSend(t.getTopic(), message);
             }
