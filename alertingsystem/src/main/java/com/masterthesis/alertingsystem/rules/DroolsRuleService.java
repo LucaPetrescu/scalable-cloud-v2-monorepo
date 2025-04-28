@@ -13,6 +13,9 @@ import com.masterthesis.alertingsystem.redis.Message;
 import com.masterthesis.alertingsystem.redis.RedisMessagePublisher;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 import com.masterthesis.alertingsystem.rules.facts.Threshold;
+
+import com.masterthesis.alertingsystem.redis.utils.ServiceType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,8 +86,6 @@ public class DroolsRuleService {
             serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
         }
 
-        redisMessagePublisher.publish(new Message("Garbage", "auth-service-alerts-topic", new Alert("Garbage", "Garbage", 0)));
-
         try{
             JsonNode metric = queryClient.query(metricQuery);
             ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
@@ -98,7 +99,7 @@ public class DroolsRuleService {
 
                 MetricType metricType = MetricType.fromQueryName(metricQuery);
 
-                processMetricWithThreshold(metricName, metricValueDouble, serviceNameFilePath);
+                processMetricWithThreshold(metricName, metricValueDouble, serviceName);
 
                 metricsResponseDto = new MetricsResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
 
@@ -141,8 +142,17 @@ public class DroolsRuleService {
 
     }
 
-    public void processMetricWithThreshold(String metricName, double metricValue, String serviceRulesFilePath) {
-        boolean thresholdExceeded = droolsRuleEngine.isMetricExceedingThreshold(metricName, metricValue, serviceRulesFilePath);
+    public void processMetricWithThreshold(String metricName, double metricValue, String serviceName) {
+        boolean thresholdExceeded = droolsRuleEngine.isMetricExceedingThreshold(metricName, metricValue, serviceName);
+
+        if(thresholdExceeded) {
+            if(serviceName.equals("auth-service")){
+                redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, new Alert("Metric exceeded for " + serviceName, metricName, metricValue)));
+            }else if(serviceName.equals("inventory-service")){
+                redisMessagePublisher.publish(new Message(ServiceType.INVENTORY_SERVICE, new Alert("Metric exceeded for " + serviceName, metricName, metricValue)));
+            }
+        }
+
     }
 
     public List<RuleDto> getRulesForService(String serviceName) throws ThresholdsLoadingException {

@@ -71,8 +71,6 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
 
-//        redisTemplate.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
-
     }
 
     @Bean
