@@ -1,6 +1,6 @@
 package com.masterthesis.alertingsystem.controllers;
 
-import com.masterthesis.alertingsystem.dtos.MetricsResponseDto;
+import com.masterthesis.alertingsystem.dtos.MetricResponseDto;
 import com.masterthesis.alertingsystem.rules.DroolsRuleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,16 +21,16 @@ public class MetricsController {
     }
 
     @GetMapping("/getMetric")
-    public ResponseEntity<MetricsResponseDto> getMetric(@RequestParam(name = "metricName", required = true) String metricName,
-                                                        @RequestParam(name = "serviceName", required = true) String serviceName) {
-        MetricsResponseDto metricResponseDto = droolsRuleService.getMetric(serviceName, metricName);
+    public ResponseEntity<MetricResponseDto> getMetric(@RequestParam(name = "metricName", required = true) String metricName,
+                                                       @RequestParam(name = "serviceName", required = true) String serviceName) {
+        MetricResponseDto metricResponseDto = droolsRuleService.getMetric(serviceName, metricName);
         return new ResponseEntity<>(metricResponseDto, HttpStatus.OK);
     }
 
     @GetMapping("/getAllMetrics")
-    public ResponseEntity<ArrayList<MetricsResponseDto>> getMetrics(@RequestParam(name = "serviceName", required = true) String serviceName) {
-        ArrayList<MetricsResponseDto> metricsResponseDtoList = droolsRuleService.getAllMetrics(serviceName);
-        return new ResponseEntity<>(metricsResponseDtoList, HttpStatus.OK);
+    public ResponseEntity<ArrayList<MetricResponseDto>> getMetrics(@RequestParam(name = "serviceName", required = true) String serviceName) {
+        ArrayList<MetricResponseDto> metricResponseDtoList = droolsRuleService.getAllMetrics(serviceName);
+        return new ResponseEntity<>(metricResponseDtoList, HttpStatus.OK);
     }
 
 }

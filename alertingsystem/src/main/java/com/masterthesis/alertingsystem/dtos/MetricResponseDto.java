@@ -1,17 +1,15 @@
 package com.masterthesis.alertingsystem.dtos;
 
-import java.util.ArrayList;
-
-public class MetricsResponseDto {
+public class MetricResponseDto {
 
     private String metricName;
     private double metricValue;
     private String metricDisplayName;
     private String metricUnit;
 
-    public MetricsResponseDto() {}
+    public MetricResponseDto() {}
 
-    public MetricsResponseDto(String metricName, double metricValue, String metricDisplayName, String metricUnit) {
+    public MetricResponseDto(String metricName, double metricValue, String metricDisplayName, String metricUnit) {
         this.metricName = metricName;
         this.metricValue = metricValue;
         this.metricDisplayName = metricDisplayName;

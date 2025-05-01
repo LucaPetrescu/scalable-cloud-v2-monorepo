@@ -2,7 +2,7 @@ package com.masterthesis.alertingsystem.rules;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.masterthesis.alertingsystem.dtos.MetricsResponseDto;
+import com.masterthesis.alertingsystem.dtos.MetricResponseDto;
 import com.masterthesis.alertingsystem.dtos.NewRuleDto;
 import com.masterthesis.alertingsystem.dtos.RuleDto;
 import com.masterthesis.alertingsystem.exceptions.NothingToUpdateException;
@@ -10,6 +10,7 @@ import com.masterthesis.alertingsystem.exceptions.ThresholdsLoadingException;
 import com.masterthesis.alertingsystem.query.MetricType;
 import com.masterthesis.alertingsystem.query.PrometheusQueryService;
 import com.masterthesis.alertingsystem.redis.Message;
+import com.masterthesis.alertingsystem.redis.RedisAlertCacheService;
 import com.masterthesis.alertingsystem.redis.RedisMessagePublisher;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 import com.masterthesis.alertingsystem.rules.facts.Threshold;
@@ -34,9 +35,12 @@ public class DroolsRuleService {
     @Autowired
     private RedisMessagePublisher redisMessagePublisher;
 
-    public ArrayList<MetricsResponseDto> getAllMetrics(String serviceName) {
+    @Autowired
+    private RedisAlertCacheService redisAlertCacheService;
 
-        ArrayList<MetricsResponseDto> queriedMetrics = new ArrayList<>();
+    public ArrayList<MetricResponseDto> getAllMetrics(String serviceName) {
+
+        ArrayList<MetricResponseDto> queriedMetrics = new ArrayList<>();
 
         String serviceNameFilePath = "";
 
@@ -60,7 +64,7 @@ public class DroolsRuleService {
 
                     processMetricWithThreshold(metricName, metricValueDouble, serviceNameFilePath);
 
-                    MetricsResponseDto metricsResponse = new MetricsResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
+                    MetricResponseDto metricsResponse = new MetricResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
                     queriedMetrics.add(metricsResponse);
                 } else {
                     throw new IllegalArgumentException("Metric data is non-existent or invalid");
@@ -74,9 +78,9 @@ public class DroolsRuleService {
 
     }
 
-    public MetricsResponseDto getMetric(String serviceName, String metricQuery) {
+    public MetricResponseDto getMetric(String serviceName, String metricQuery) {
 
-        MetricsResponseDto metricsResponseDto = null;
+        MetricResponseDto metricResponseDto = null;
 
         String serviceNameFilePath = "";
 
@@ -101,19 +105,19 @@ public class DroolsRuleService {
 
                 processMetricWithThreshold(metricName, metricValueDouble, serviceName);
 
-                metricsResponseDto = new MetricsResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
+                metricResponseDto = new MetricResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
 
             } else {
                 throw new IllegalArgumentException("Metric data is non-existent or invalid");
             }
 
-            return metricsResponseDto;
+            return metricResponseDto;
 
         } catch(Exception e){
             System.err.println("❌ Metric retrieval failed: " + e.getMessage());
         }
 
-        return metricsResponseDto;
+        return metricResponseDto;
     }
 
     public List<NewRuleDto> changeMetricsRules(String serviceName, List<NewRuleDto> newRulesDtoList) throws ThresholdsLoadingException, NothingToUpdateException {
@@ -145,11 +149,21 @@ public class DroolsRuleService {
     public void processMetricWithThreshold(String metricName, double metricValue, String serviceName) {
         boolean thresholdExceeded = droolsRuleEngine.isMetricExceedingThreshold(metricName, metricValue, serviceName);
 
+        String cacheKey = serviceName + ":" + metricName;
+
+        String alertReason = "Metric exceeded for " + serviceName;
+
         if(thresholdExceeded) {
             if(serviceName.equals("auth-service")){
-                redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, new Alert("Metric exceeded for " + serviceName, metricName, metricValue)));
-            }else if(serviceName.equals("inventory-service")){
+                redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, new Alert(alertReason, metricName, metricValue)));
+                if(!redisAlertCacheService.isAlertCached(cacheKey)) {
+                    redisAlertCacheService.cacheAlert(cacheKey, new Alert(alertReason, metricName, metricValue), 7);
+                }
+            } else if(serviceName.equals("inventory-service")) {
                 redisMessagePublisher.publish(new Message(ServiceType.INVENTORY_SERVICE, new Alert("Metric exceeded for " + serviceName, metricName, metricValue)));
+                if(!redisAlertCacheService.isAlertCached(cacheKey)){
+                    redisAlertCacheService.cacheAlert(cacheKey, new Alert(alertReason, metricName, metricValue), 7);
+                }
             }
         }
 
