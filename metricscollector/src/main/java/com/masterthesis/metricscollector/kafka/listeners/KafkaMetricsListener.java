@@ -72,64 +72,135 @@ public class KafkaMetricsListener {
         }
     }
 
+    /**
+    AUTH METRICS
+     */
+
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"0"}))
-    public void listenCpuMetrics(ConsumerRecord<String, String> record) {
+    public void listenAuthCpuMetrics(ConsumerRecord<String, String> record) {
 
         cpuMetrics.set(Utils.parseMetrics(record.value().split("\n"), "cpu_usage_percent"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"1"}))
-    public void listenRamMetrics(ConsumerRecord<String, String> record) {
+    public void listenAuthRamMetrics(ConsumerRecord<String, String> record) {
 
         ramMetrics.set(Utils.parseMetrics(record.value().split("\n"), "memory_usage_percent"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"2"}))
-    public void listenHttpRequestCount(ConsumerRecord<String, String> record) {
+    public void listenAuthHttpRequestCount(ConsumerRecord<String, String> record) {
 
         httpRequestCounter.inc(Utils.parseMetrics(record.value().split("\n"), "http_requests_total"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"3"}))
-    public void listenHttpRequestDuration(ConsumerRecord<String, String> record) {
+    public void listenAuthHttpRequestDuration(ConsumerRecord<String, String> record) {
 
         httpRequestDurationHistogram.observe(Utils.parseMetrics(record.value().split("\n"), "http_request_duration_seconds"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"4"}))
-    public void listenMongoConnectionPoolSize(ConsumerRecord<String, String> record) {
+    public void listenAuthMongoConnectionPoolSize(ConsumerRecord<String, String> record) {
 
         mongoConnectionPoolSize.set(Utils.parseMetrics(record.value().split("\n"), "mongo_connection_pool_size"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"5"}))
-    public void listenMongoActiveConnections(ConsumerRecord<String, String> record) {
+    public void listenAuthMongoActiveConnections(ConsumerRecord<String, String> record) {
 
         mongoActiveConnections.set(Utils.parseMetrics(record.value().split("\n"), "mongo_active_connections"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"6"}))
-    public void listenMongoAvailableConnections(ConsumerRecord<String, String> record) {
+    public void listenAuthMongoAvailableConnections(ConsumerRecord<String, String> record) {
 
         mongoAvailableConnections.set(Utils.parseMetrics(record.value().split("\n"), "mongo_available_connections"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic="auth-service-topic", partitions = {"7"}))
-    public void listenMongoQueryTimeSeconds(ConsumerRecord<String, String> record) {
+    public void listenAuthMongoQueryTimeSeconds(ConsumerRecord<String, String> record) {
 
         mongoQueryTimeSeconds.set(Utils.parseMetrics(record.value().split("\n"), "mongo_query_time_seconds"));
 
     }
 
     @KafkaListener(topicPartitions = @TopicPartition(topic = "auth-service-topic", partitions = {"8"}))
-    public void listenMongoMemoryUsageBytes(ConsumerRecord<String, String> record) {
+    public void listenAuthMongoMemoryUsageBytes(ConsumerRecord<String, String> record) {
+
+        mongoMemoryUsageBytes.set(Utils.parseMetrics(record.value().split("\n"), "mongo_memory_usage_bytes"));
+
+    }
+
+    /**
+     INVENTORY METRICS
+     */
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"0"}))
+    public void listenInventoryCpuMetrics(ConsumerRecord<String, String> record) {
+
+        cpuMetrics.set(Utils.parseMetrics(record.value().split("\n"), "cpu_usage_percent"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"1"}))
+    public void listenInventoryRamMetrics(ConsumerRecord<String, String> record) {
+
+        ramMetrics.set(Utils.parseMetrics(record.value().split("\n"), "memory_usage_percent"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"2"}))
+    public void listenInventoryHttpRequestCount(ConsumerRecord<String, String> record) {
+
+        httpRequestCounter.inc(Utils.parseMetrics(record.value().split("\n"), "http_requests_total"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"3"}))
+    public void listenInventoryHttpRequestDuration(ConsumerRecord<String, String> record) {
+
+        httpRequestDurationHistogram.observe(Utils.parseMetrics(record.value().split("\n"), "http_request_duration_seconds"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"4"}))
+    public void listenInventoryMongoConnectionPoolSize(ConsumerRecord<String, String> record) {
+
+        mongoConnectionPoolSize.set(Utils.parseMetrics(record.value().split("\n"), "mongo_connection_pool_size"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"5"}))
+    public void listenInventoryMongoActiveConnections(ConsumerRecord<String, String> record) {
+
+        mongoActiveConnections.set(Utils.parseMetrics(record.value().split("\n"), "mongo_active_connections"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"6"}))
+    public void listenInventoryMongoAvailableConnections(ConsumerRecord<String, String> record) {
+
+        mongoAvailableConnections.set(Utils.parseMetrics(record.value().split("\n"), "mongo_available_connections"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic="inventory-service-topic", partitions = {"7"}))
+    public void listenInventoryMongoQueryTimeSeconds(ConsumerRecord<String, String> record) {
+
+        mongoQueryTimeSeconds.set(Utils.parseMetrics(record.value().split("\n"), "mongo_query_time_seconds"));
+
+    }
+
+    @KafkaListener(topicPartitions = @TopicPartition(topic = "inventory-service-topic", partitions = {"8"}))
+    public void listenInventoryMongoMemoryUsageBytes(ConsumerRecord<String, String> record) {
 
         mongoMemoryUsageBytes.set(Utils.parseMetrics(record.value().split("\n"), "mongo_memory_usage_bytes"));
 

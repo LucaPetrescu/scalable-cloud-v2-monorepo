@@ -1,20 +1,24 @@
-package com.masterthesis.metricscollector.metrics.auth.NetworkMetrics;
+package com.masterthesis.metricscollector.metrics.inventory.NetworkMetrics;
 
 import com.masterthesis.metricscollector.exceptions.MetricReceivingException;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth/network-metrics")
-public class NetworkMetricsController {
+@RequestMapping("inventory/network-metrics")
+public class NetworkInventoryMetricsController {
 
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    public NetworkMetricsController(KafkaTemplate<String, String> kafkaTemplate){
+    public NetworkInventoryMetricsController(KafkaTemplate<String, String> kafkaTemplate){
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    private String topicName = "auth-service-topic";
+    private String topicName = "inventory-service-topic";
+
 
     @PostMapping("/http-request-count")
     public String getHttpRequestCount(@RequestBody String httpRequestCountMetrics) {
@@ -39,5 +43,6 @@ public class NetworkMetricsController {
 
         return httpRequestDurationMetrics;
     }
+
 
 }
