@@ -1,40 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import '@fontsource/inter';
 
-:root {
-  scroll-behavior: smooth;
-  --primary: #4154f1;
-  --second: #717ff5;
-  --bgColor: #f6f9ff;
+.app {
+  min-height: 100vh;
+  width: 100%;
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
-  color: #444444;
-  background: var(--bgColor);
-}
-
-* {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-a {
-  color: var(--primary);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-a:hover {
-  color: var(--second);
-  text-decoration: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Nunito", sans-serif;
-}
+  font-family: 'Inter', sans-serif;
+} 
