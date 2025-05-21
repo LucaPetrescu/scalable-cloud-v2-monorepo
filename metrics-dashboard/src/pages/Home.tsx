@@ -1,5 +1,4 @@
 import React from 'react';
-import { Dashboard } from '../components/Dashboard/Dashboard.tsx';
 import { Sidebar } from '../components/Sidebar/Sidebar.tsx';
 import logo from '../assets/welcome_page.gif';
 
