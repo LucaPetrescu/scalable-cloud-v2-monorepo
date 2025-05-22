@@ -15,7 +15,7 @@ const Metrics = () => {
                     {service} {'>'} {metricType}
                 </h1>
                 <div className="bg-white rounded-lg shadow p-6 min-h-[calc(100vh-2rem)] flex flex-col gap-4">
-                    <Topbar service={service} />
+                    <Topbar service={service} metricType={metricType} />
                     <Grid metricType={metricType} />
                 </div>
             </div>

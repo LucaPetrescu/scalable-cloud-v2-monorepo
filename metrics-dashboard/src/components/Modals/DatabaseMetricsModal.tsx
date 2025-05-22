@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 
-interface SystemMetricsModalProps {
+interface DatabaseMetricsModalProps {
     isOpen: boolean;
     service: string;
     onClose: () => void;
 }
 
-export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsModalProps) => {
+export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetricsModalProps) => {
     const [thresholds, setThresholds] = useState({
-        cpu: 80,
-        memory: 85,
-        disk: 90,
+        httpRequestCount: 1000,
+        httpRequestDuration: 1000,
     });
 
     if (!isOpen) return null;
@@ -35,20 +34,49 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
                 <div className="p-6 space-y-6">
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <label className="text-stone-700 font-medium">CPU Usage Threshold (%)</label>
+                            <label className="text-stone-700 font-medium">Connection Pool Size (%)</label>
                             <input
                                 type="text"
-                                value={thresholds.cpu}
-                                onChange={(e) => handleThresholdChange('cpu', parseInt(e.target.value))}
+                                value={thresholds.connectionPoolSize}
+                                onChange={(e) => handleThresholdChange('connectionPoolSize', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
                         </div>
                         <div className="flex items-center justify-between">
-                            <label className="text-stone-700 font-medium">Memory Usage Threshold (%)</label>
+                            <label className="text-stone-700 font-medium">Active Connections (%)</label>
                             <input
                                 type="text"
-                                value={thresholds.memory}
-                                onChange={(e) => handleThresholdChange('memory', parseInt(e.target.value))}
+                                value={thresholds.activeConnections}
+                                onChange={(e) => handleThresholdChange('activeConnections', parseInt(e.target.value))}
+                                className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            />
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <label className="text-stone-700 font-medium">Available Connections (%)</label>
+                            <input
+                                type="text"
+                                value={thresholds.availableConnections}
+                                onChange={(e) =>
+                                    handleThresholdChange('availableConnections', parseInt(e.target.value))
+                                }
+                                className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            />
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <label className="text-stone-700 font-medium">Query Time (%)</label>
+                            <input
+                                type="text"
+                                value={thresholds.queryTime}
+                                onChange={(e) => handleThresholdChange('queryTime', parseInt(e.target.value))}
+                                className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            />
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <label className="text-stone-700 font-medium">Memory Usage (%)</label>
+                            <input
+                                type="text"
+                                value={thresholds.memoryUsage}
+                                onChange={(e) => handleThresholdChange('memoryUsage', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
                         </div>

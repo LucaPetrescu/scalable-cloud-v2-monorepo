@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
-import { SystemMetricsModal } from '../Modals/SystemMetricsModal/SystemMetricsModal.tsx';
+import { SystemMetricsModal } from '../Modals/SystemMetricsModal.tsx';
+import { NetworkMetricsModal } from '../Modals/NetworkMetricsModal.tsx';
+import { DatabaseMetricsModal } from '../Modals/DatabaseMetricsModal.tsx';
 
-export const Topbar = ({ service }) => {
+export const Topbar = ({ service, metricType }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
@@ -15,7 +17,15 @@ export const Topbar = ({ service }) => {
                 <FaEdit size={16} />
                 <span>View and edit thresholds</span>
             </button>
-            <SystemMetricsModal service={service} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            {metricType === 'system-metrics' && (
+                <SystemMetricsModal service={service} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            )}
+            {metricType === 'network-metrics' && (
+                <NetworkMetricsModal service={service} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            )}
+            {metricType === 'database-metrics' && (
+                <DatabaseMetricsModal service={service} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            )}
         </div>
     );
 };
