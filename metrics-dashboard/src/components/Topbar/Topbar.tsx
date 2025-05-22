@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { SystemMetricsModal } from '../Modals/SystemMetricsModal/SystemMetricsModal.tsx';
 
-export const Topbar = () => {
+export const Topbar = ({ service }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
@@ -15,7 +15,7 @@ export const Topbar = () => {
                 <FaEdit size={16} />
                 <span>View and edit thresholds</span>
             </button>
-            <SystemMetricsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            <SystemMetricsModal service={service} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
         </div>
     );
 };

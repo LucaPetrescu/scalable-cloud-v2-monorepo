@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Sidebar } from '../components/Sidebar/Sidebar.tsx';
 import { Topbar } from '../components/Topbar/Topbar.tsx';
 import { Grid } from '../components/Grid/Grid.tsx';
+
 const Metrics = () => {
     const { service, metricType } = useParams();
 
@@ -14,8 +15,8 @@ const Metrics = () => {
                     {service} {'>'} {metricType}
                 </h1>
                 <div className="bg-white rounded-lg shadow p-6 min-h-[calc(100vh-2rem)] flex flex-col gap-4">
-                    <Topbar />
-                    <Grid />
+                    <Topbar service={service} />
+                    <Grid metricType={metricType} />
                 </div>
             </div>
         </main>

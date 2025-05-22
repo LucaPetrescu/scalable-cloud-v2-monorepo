@@ -2,7 +2,7 @@ package com.masterthesis.metricscollector.utils;
 
 public class Utils {
 
-    public static Double parseMetrics(String[] lines, String metric){
+    public static Double parseMetrics(String service, String[] lines, String metric){
 
         Double metricUsage = 0.0;
 
@@ -12,7 +12,7 @@ public class Utils {
                     String[] parts = line.split("\\s+");
                     if (parts.length > 1) {
                         metricUsage = Double.parseDouble(parts[1]);
-                        System.out.println("Parsed " + metric +  " Usage: " + metricUsage);
+                        System.out.println(service + " " + metric +  " Usage: " + metricUsage);
                     }
                 }
             }

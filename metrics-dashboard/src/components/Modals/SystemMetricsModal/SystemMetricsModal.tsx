@@ -3,10 +3,11 @@ import { IoClose } from 'react-icons/io5';
 
 interface SystemMetricsModalProps {
     isOpen: boolean;
+    service: string;
     onClose: () => void;
 }
 
-export const SystemMetricsModal = ({ isOpen, onClose }: SystemMetricsModalProps) => {
+export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsModalProps) => {
     const [thresholds, setThresholds] = useState({
         cpu: 80,
         memory: 85,
@@ -26,7 +27,7 @@ export const SystemMetricsModal = ({ isOpen, onClose }: SystemMetricsModalProps)
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
                 <div className="flex items-center justify-between p-4 border-b border-stone-200">
-                    <h2 className="text-xl font-semibold text-stone-800">System Metrics Thresholds</h2>
+                    <h2 className="text-xl font-semibold text-stone-800">{service} Metrics Thresholds</h2>
                     <button onClick={onClose} className="text-stone-500 hover:text-stone-700 transition-colors">
                         <IoClose size={24} />
                     </button>
