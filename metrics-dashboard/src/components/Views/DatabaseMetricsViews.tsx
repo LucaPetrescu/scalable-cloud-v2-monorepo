@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDatabaseMetrics } from '../../hooks/useDatabaseMetrics.tsx';
+import { useDatabaseMetrics } from '../../hooks/metrics/useDatabaseMetrics.tsx';
 import { Card } from '../StatCards/Card.tsx';
 
 export const DatabaseMetricsViews = () => {

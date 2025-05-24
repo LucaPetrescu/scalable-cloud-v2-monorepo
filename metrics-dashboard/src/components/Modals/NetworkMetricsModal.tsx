@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
+import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
 
 interface NetworkMetricsModalProps {
     isOpen: boolean;
@@ -7,11 +8,29 @@ interface NetworkMetricsModalProps {
     onClose: () => void;
 }
 
+interface Thresholds {
+    httpRequestCount?: number;
+    httpRequestDuration?: number;
+}
+
 export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetricsModalProps) => {
-    const [thresholds, setThresholds] = useState({
-        httpRequestCount: 1000,
-        httpRequestDuration: 1000,
-    });
+    const [thresholds, setThresholds] = useState<Thresholds>({});
+    const allThresholds = useThresholds(service);
+
+    console.log(allThresholds);
+
+    useEffect(() => {
+        const newThresholds: Thresholds = {};
+        for (const threshold of allThresholds) {
+            if (threshold.name === 'http_requests_total') {
+                newThresholds.httpRequestCount = threshold.max;
+            }
+            if (threshold.name === 'http_request_duration_seconds') {
+                newThresholds.httpRequestDuration = threshold.max;
+            }
+        }
+        setThresholds(newThresholds);
+    }, [allThresholds]);
 
     if (!isOpen) return null;
 

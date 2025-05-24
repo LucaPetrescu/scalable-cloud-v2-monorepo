@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
+import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
 
 interface DatabaseMetricsModalProps {
     isOpen: boolean;
@@ -7,15 +8,43 @@ interface DatabaseMetricsModalProps {
     onClose: () => void;
 }
 
+interface Thresholds {
+    mongoConnectionPoolSize?: number;
+    mongoActiveConnections?: number;
+    mongoAvailableConnections?: number;
+    mongoQueryTime?: number;
+    mongoMemoryUsage?: number;
+}
+
 export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetricsModalProps) => {
-    const [thresholds, setThresholds] = useState({
-        httpRequestCount: 1000,
-        httpRequestDuration: 1000,
-    });
+    const [thresholds, setThresholds] = useState<Thresholds>({});
+    const allThresholds = useThresholds(service);
+
+    useEffect(() => {
+        const newThresholds: Thresholds = {};
+        for (const threshold of allThresholds) {
+            if (threshold.name === 'mongo_connection_pool_size') {
+                newThresholds.mongoConnectionPoolSize = threshold.max;
+            }
+            if (threshold.name === 'mongo_active_connections') {
+                newThresholds.mongoActiveConnections = threshold.max;
+            }
+            if (threshold.name === 'mongo_available_connections') {
+                newThresholds.mongoAvailableConnections = threshold.max;
+            }
+            if (threshold.name === 'mongo_query_time_seconds') {
+                newThresholds.mongoQueryTime = threshold.max;
+            }
+            if (threshold.name === 'mongo_memory_usage_bytes') {
+                newThresholds.mongoMemoryUsage = threshold.max;
+            }
+        }
+        setThresholds(newThresholds);
+    }, [allThresholds]);
 
     if (!isOpen) return null;
 
-    const handleThresholdChange = (metric: keyof typeof thresholds, value: number) => {
+    const handleThresholdChange = (metric: keyof Thresholds, value: number) => {
         setThresholds((prev) => ({
             ...prev,
             [metric]: value,
@@ -37,8 +66,10 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                             <label className="text-stone-700 font-medium">Connection Pool Size (%)</label>
                             <input
                                 type="text"
-                                value={thresholds.connectionPoolSize}
-                                onChange={(e) => handleThresholdChange('connectionPoolSize', parseInt(e.target.value))}
+                                value={thresholds.mongoConnectionPoolSize}
+                                onChange={(e) =>
+                                    handleThresholdChange('mongoConnectionPoolSize', parseInt(e.target.value))
+                                }
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
                         </div>
@@ -46,8 +77,10 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                             <label className="text-stone-700 font-medium">Active Connections (%)</label>
                             <input
                                 type="text"
-                                value={thresholds.activeConnections}
-                                onChange={(e) => handleThresholdChange('activeConnections', parseInt(e.target.value))}
+                                value={thresholds.mongoActiveConnections}
+                                onChange={(e) =>
+                                    handleThresholdChange('mongoActiveConnections', parseInt(e.target.value))
+                                }
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
                         </div>
@@ -55,9 +88,9 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                             <label className="text-stone-700 font-medium">Available Connections (%)</label>
                             <input
                                 type="text"
-                                value={thresholds.availableConnections}
+                                value={thresholds.mongoAvailableConnections}
                                 onChange={(e) =>
-                                    handleThresholdChange('availableConnections', parseInt(e.target.value))
+                                    handleThresholdChange('mongoAvailableConnections', parseInt(e.target.value))
                                 }
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
@@ -66,8 +99,8 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                             <label className="text-stone-700 font-medium">Query Time (%)</label>
                             <input
                                 type="text"
-                                value={thresholds.queryTime}
-                                onChange={(e) => handleThresholdChange('queryTime', parseInt(e.target.value))}
+                                value={thresholds.mongoQueryTime}
+                                onChange={(e) => handleThresholdChange('mongoQueryTime', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
                         </div>
@@ -75,8 +108,8 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                             <label className="text-stone-700 font-medium">Memory Usage (%)</label>
                             <input
                                 type="text"
-                                value={thresholds.memoryUsage}
-                                onChange={(e) => handleThresholdChange('memoryUsage', parseInt(e.target.value))}
+                                value={thresholds.mongoMemoryUsage}
+                                onChange={(e) => handleThresholdChange('mongoMemoryUsage', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
                         </div>

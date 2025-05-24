@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
+import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
 
 interface SystemMetricsModalProps {
     isOpen: boolean;
@@ -7,15 +8,31 @@ interface SystemMetricsModalProps {
     onClose: () => void;
 }
 
+interface Thresholds {
+    cpu?: number;
+    ram?: number;
+}
+
 export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsModalProps) => {
-    const [thresholds, setThresholds] = useState({
-        cpu: 80,
-        memory: 85,
-    });
+    const [thresholds, setThresholds] = useState<Thresholds>({});
+    const allThresholds = useThresholds(service);
+
+    useEffect(() => {
+        const newThresholds: Thresholds = {};
+        for (const threshold of allThresholds) {
+            if (threshold.name === 'cpu_usage_percent') {
+                newThresholds.cpu = threshold.max;
+            }
+            if (threshold.name === 'ram_usage_percent') {
+                newThresholds.ram = threshold.max;
+            }
+        }
+        setThresholds(newThresholds);
+    }, [allThresholds]);
 
     if (!isOpen) return null;
 
-    const handleThresholdChange = (metric: keyof typeof thresholds, value: number) => {
+    const handleThresholdChange = (metric: keyof Thresholds, value: number) => {
         setThresholds((prev) => ({
             ...prev,
             [metric]: value,
@@ -36,8 +53,8 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">CPU Usage Threshold (%)</label>
                             <input
-                                type="text"
-                                value={thresholds.cpu}
+                                type="number"
+                                value={thresholds.cpu || 0}
                                 onChange={(e) => handleThresholdChange('cpu', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
@@ -45,9 +62,9 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">Memory Usage Threshold (%)</label>
                             <input
-                                type="text"
-                                value={thresholds.memory}
-                                onChange={(e) => handleThresholdChange('memory', parseInt(e.target.value))}
+                                type="number"
+                                value={thresholds.ram || 0}
+                                onChange={(e) => handleThresholdChange('ram', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
                         </div>

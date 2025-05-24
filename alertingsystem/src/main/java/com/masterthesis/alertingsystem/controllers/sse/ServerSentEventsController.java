@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/metrics/sse")
@@ -28,16 +29,40 @@ public class ServerSentEventsController {
 
     @GetMapping("/pushAuthServiceMetrics")
     public SseEmitter streamMetricsForAuthService() {
-        SseEmitter sseEmitter = new SseEmitter();
+        // Set a longer timeout (e.g., 30 seconds)
+        SseEmitter sseEmitter = new SseEmitter(30000L);
+        
         executorService.execute(() -> {
-            while(true) {
-                ArrayList<MetricResponseDto> metricResponseDtoList = droolsRuleService.getAllMetrics("auth-service");
-                try {
-                    sseEmitter.send(SseEmitter.event().name("auth-service-metrics").data(metricResponseDtoList));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    ArrayList<MetricResponseDto> metricResponseDtoList = droolsRuleService.getAllMetrics("auth-service");
+                    try {
+                        sseEmitter.send(SseEmitter.event()
+                            .name("auth-service-metrics")
+                            .data(metricResponseDtoList));
+                        
+                        // Add a small delay to prevent overwhelming the connection
+                        Thread.sleep(1000);
+                    } catch (IOException e) {
+                        sseEmitter.completeWithError(e);
+                        break;
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
                 }
+            } catch (Exception e) {
+                sseEmitter.completeWithError(e);
             }
+        });
+
+        // Handle client disconnection
+        sseEmitter.onCompletion(() -> {
+            // Clean up resources if needed
+        });
+
+        sseEmitter.onTimeout(() -> {
+            sseEmitter.complete();
         });
 
         return sseEmitter;
@@ -45,16 +70,37 @@ public class ServerSentEventsController {
 
     @GetMapping("/pushInventoryServiceMetrics")
     public SseEmitter streamMetricsForInventoryService() {
-        SseEmitter sseEmitter = new SseEmitter();
+        SseEmitter sseEmitter = new SseEmitter(30000L);
+        
         executorService.execute(() -> {
-            while(true) {
-                ArrayList<MetricResponseDto> metricResponseDtoList = droolsRuleService.getAllMetrics("inventory-service");
-                try {
-                    sseEmitter.send(SseEmitter.event().name("inventory-service-metrics").data(metricResponseDtoList));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    ArrayList<MetricResponseDto> metricResponseDtoList = droolsRuleService.getAllMetrics("inventory-service");
+                    try {
+                        sseEmitter.send(SseEmitter.event()
+                            .name("inventory-service-metrics")
+                            .data(metricResponseDtoList));
+                        
+                        Thread.sleep(1000);
+                    } catch (IOException e) {
+                        sseEmitter.completeWithError(e);
+                        break;
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
                 }
+            } catch (Exception e) {
+                sseEmitter.completeWithError(e);
             }
+        });
+
+        sseEmitter.onCompletion(() -> {
+            // Clean up resources if needed
+        });
+
+        sseEmitter.onTimeout(() -> {
+            sseEmitter.complete();
         });
 
         return sseEmitter;

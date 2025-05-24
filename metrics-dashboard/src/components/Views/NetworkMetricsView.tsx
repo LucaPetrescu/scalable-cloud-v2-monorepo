@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNetworkMetrics } from '../../hooks/useNetworkMetrics.tsx';
+import { useNetworkMetrics } from '../../hooks/metrics/useNetworkMetrics.tsx';
 import { Card } from '../StatCards/Card.tsx';
 
 export const NetworkMetricsView = () => {

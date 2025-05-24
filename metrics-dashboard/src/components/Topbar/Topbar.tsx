@@ -3,7 +3,6 @@ import { FaEdit } from 'react-icons/fa';
 import { SystemMetricsModal } from '../Modals/SystemMetricsModal.tsx';
 import { NetworkMetricsModal } from '../Modals/NetworkMetricsModal.tsx';
 import { DatabaseMetricsModal } from '../Modals/DatabaseMetricsModal.tsx';
-
 export const Topbar = ({ service, metricType }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
