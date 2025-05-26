@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
+import { useChangeThresholds } from '../../hooks/thresholds/useChangeThresholds.tsx';
 
 interface NetworkMetricsModalProps {
     isOpen: boolean;
@@ -16,6 +17,7 @@ interface Thresholds {
 export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetricsModalProps) => {
     const [thresholds, setThresholds] = useState<Thresholds>({});
     const allThresholds = useThresholds(service);
+    const { changeThresholds } = useChangeThresholds();
 
     console.log(allThresholds);
 
@@ -41,6 +43,21 @@ export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetrics
         }));
     };
 
+    const handleSave = async () => {
+        try {
+            const newRules = [
+                { metricName: 'http_requests_total', value: thresholds.httpRequestCount || 0 },
+                { metricName: 'http_request_duration_seconds', value: thresholds.httpRequestDuration || 0 },
+            ];
+
+            await changeThresholds(service, newRules);
+            onClose();
+        } catch (error) {
+            console.error('Error saving thresholds:', error);
+            // You might want to show an error message to the user here
+        }
+    };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
@@ -55,7 +72,7 @@ export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetrics
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">HTTP Request Count Threshold (%)</label>
                             <input
-                                type="text"
+                                type="number"
                                 value={thresholds.httpRequestCount}
                                 onChange={(e) => handleThresholdChange('httpRequestCount', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
@@ -64,7 +81,7 @@ export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetrics
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">HTTP Request Duration Threshold (%)</label>
                             <input
-                                type="text"
+                                type="number"
                                 value={thresholds.httpRequestDuration}
                                 onChange={(e) => handleThresholdChange('httpRequestDuration', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
@@ -79,10 +96,7 @@ export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetrics
                             Cancel
                         </button>
                         <button
-                            onClick={() => {
-                                console.log('Saving thresholds:', thresholds);
-                                onClose();
-                            }}
+                            onClick={handleSave}
                             className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
                         >
                             Save Changes

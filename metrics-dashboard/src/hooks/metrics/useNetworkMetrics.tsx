@@ -33,7 +33,9 @@ export const useNetworkMetrics = () => {
                 try {
                     const data = JSON.parse(event.data);
                     const networkMetrics = data
-                        .filter((metric) => ['"http_requests_total"'].includes(metric.metricName))
+                        .filter((metric) =>
+                            ['"http_requests_total"', '"http_request_duration"'].includes(metric.metricName),
+                        )
                         .map((metric) => ({
                             ...metric,
                             metricName: metric.metricName.replace(/"/g, ''),

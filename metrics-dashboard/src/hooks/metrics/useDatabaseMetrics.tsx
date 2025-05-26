@@ -38,6 +38,8 @@ export const useDatabaseMetrics = () => {
                                 '"mongo_connection_pool_size"',
                                 '"mongo_active_connections"',
                                 '"mongo_available_connections"',
+                                '"mongo_query_time_seconds"',
+                                '"mongo_memory_usage_bytes"',
                             ].includes(metric.metricName),
                         )
                         .map((metric) => ({

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSystemMetrics } from '../../hooks/metrics/useSystemMetrics.tsx';
 import { Card } from '../StatCards/Card.tsx';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-interface MetricData {
-    timestamp: number;
-    displayTime: string;
-    cpu: number;
-    ram: number;
-}
+import { ActivityGraph } from '../ActivityGraph/ActivityGraph.tsx';
+import { MetricData } from '../../types/MetricData.ts';
+import { formatMetric } from '../../utils/metricFormatter.ts';
+import { metricColors } from '../../utils/graphLineColor.ts';
 
 export const SystemMetricsViews = () => {
     const metrics = useSystemMetrics();
@@ -21,76 +17,33 @@ export const SystemMetricsViews = () => {
                     const localTimestamp = Date.now();
                     const displayTime = new Date(localTimestamp).toLocaleTimeString();
 
-                    console.log(metric);
-
-                    if (metric.metricName === 'cpu_usage_percent') {
-                        return {
-                            timestamp: localTimestamp,
-                            displayTime,
-                            cpu: metric.metricValue,
-                            ram: historicalData[historicalData.length - 1]?.ram || 0,
-                        };
-                    } else if (metric.metricName === 'ram_usage_percent') {
-                        return {
-                            timestamp: localTimestamp,
-                            displayTime,
-                            ram: metric.metricValue,
-                            cpu: historicalData[historicalData.length - 1]?.cpu || 0,
-                        };
-                    }
-                    return null;
+                    return {
+                        metricName: metric.metricName,
+                        timestamp: localTimestamp,
+                        value: metric.metricValue,
+                        displayTime,
+                    };
                 })
                 .filter(Boolean);
 
             setHistoricalData((prev) => {
                 const updated = [...prev, ...newData];
-                // Keep only last 20 data points
+
                 return updated.slice(-20);
             });
         }
     }, [metrics]);
 
+    const groupedMetrics = historicalData.reduce<Record<string, MetricData[]>>((acc, data) => {
+        if (!acc[data.metricName]) {
+            acc[data.metricName] = [];
+        }
+        acc[data.metricName].push(data);
+        return acc;
+    }, {});
+
     const formatValue = (metric) => {
         return `${metric.metricValue.toFixed(2)}%`;
-    };
-
-    const getTitle = (metricName) => {
-        switch (metricName) {
-            case 'cpu_usage_percent':
-                return 'CPU Usage';
-            case 'ram_usage_percent':
-                return 'Memory Usage';
-            default:
-                return metricName;
-        }
-    };
-
-    const formatXAxis = (timestamp: number) => {
-        const date = new Date(timestamp);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    };
-
-    const CustomTooltip = ({ active, payload, label }: any) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="bg-white p-3 border border-gray-200 rounded shadow">
-                    <p className="text-sm font-medium text-gray-700">
-                        {new Date(label).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: false,
-                        })}
-                    </p>
-                    {payload.map((entry: any, index: number) => (
-                        <p key={index} className="text-sm" style={{ color: entry.color }}>
-                            {entry.name}: {entry.value.toFixed(2)}%
-                        </p>
-                    ))}
-                </div>
-            );
-        }
-        return null;
     };
 
     return (
@@ -99,7 +52,7 @@ export const SystemMetricsViews = () => {
             {metrics.map((metric) => (
                 <div key={metric.metricName} className="col-span-4">
                     <Card
-                        title={getTitle(metric.metricName)}
+                        title={formatMetric(metric.metricName)}
                         value={formatValue(metric)}
                         period={`Last updated: ${new Date(Date.now()).toLocaleTimeString([], {
                             hour: '2-digit',
@@ -111,68 +64,46 @@ export const SystemMetricsViews = () => {
                 </div>
             ))}
 
-            {/* Historical Data Graphs */}
+            {/* System Metrics Graphs */}
             <div className="col-span-12 mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-white p-6 rounded-lg shadow">
-                        <h3 className="text-lg font-semibold text-stone-800 mb-4">CPU Usage Over Time</h3>
-                        <div className="h-[300px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={historicalData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis
-                                        dataKey="timestamp"
-                                        tickFormatter={formatXAxis}
-                                        interval="preserveStartEnd"
-                                        tick={{ fontSize: 12 }}
-                                        angle={-45}
-                                        textAnchor="end"
-                                        height={60}
-                                    />
-                                    <YAxis
-                                        domain={[0, 100]}
-                                        tickFormatter={(value) => `${value}%`}
-                                        tick={{ fontSize: 12 }}
-                                    />
-                                    <Tooltip content={<CustomTooltip />} />
-                                    <Line type="monotone" dataKey="cpu" stroke="#8884d8" name="CPU Usage" dot={false} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </div>
+                    {/* CPU Graph */}
+                    {groupedMetrics['cpu_usage_percent'] && (
+                        <ActivityGraph
+                            isPercentage={true}
+                            title={formatMetric('cpu_usage_percent')}
+                            metrics={[
+                                {
+                                    name: 'cpu_usage_percent',
+                                    data: groupedMetrics['cpu_usage_percent'].map((d) => ({
+                                        timestamp: d.timestamp,
+                                        value: d.value,
+                                        displayTime: d.displayTime,
+                                    })),
+                                    color: metricColors['cpu_usage_percent'],
+                                },
+                            ]}
+                        />
+                    )}
 
-                    <div className="bg-white p-6 rounded-lg shadow">
-                        <h3 className="text-lg font-semibold text-stone-800 mb-4">Memory Usage Over Time</h3>
-                        <div className="h-[300px]">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <LineChart data={historicalData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis
-                                        dataKey="timestamp"
-                                        tickFormatter={formatXAxis}
-                                        interval="preserveStartEnd"
-                                        tick={{ fontSize: 12 }}
-                                        angle={-45}
-                                        textAnchor="end"
-                                        height={60}
-                                    />
-                                    <YAxis
-                                        domain={[0, 100]}
-                                        tickFormatter={(value) => `${value}%`}
-                                        tick={{ fontSize: 12 }}
-                                    />
-                                    <Tooltip content={<CustomTooltip />} />
-                                    <Line
-                                        type="monotone"
-                                        dataKey="ram"
-                                        stroke="#82ca9d"
-                                        name="Memory Usage"
-                                        dot={false}
-                                    />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </div>
+                    {/* RAM Graph */}
+                    {groupedMetrics['ram_usage_percent'] && (
+                        <ActivityGraph
+                            isPercentage={true}
+                            title={formatMetric('ram_usage_percent')}
+                            metrics={[
+                                {
+                                    name: 'ram_usage_percent',
+                                    data: groupedMetrics['ram_usage_percent'].map((d) => ({
+                                        timestamp: d.timestamp,
+                                        value: d.value,
+                                        displayTime: d.displayTime,
+                                    })),
+                                    color: metricColors['ram_usage_percent'],
+                                },
+                            ]}
+                        />
+                    )}
                 </div>
             </div>
         </>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
+import { useChangeThresholds } from '../../hooks/thresholds/useChangeThresholds.tsx';
 
 interface SystemMetricsModalProps {
     isOpen: boolean;
@@ -16,6 +17,7 @@ interface Thresholds {
 export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsModalProps) => {
     const [thresholds, setThresholds] = useState<Thresholds>({});
     const allThresholds = useThresholds(service);
+    const { changeThresholds } = useChangeThresholds();
 
     useEffect(() => {
         const newThresholds: Thresholds = {};
@@ -37,6 +39,21 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
             ...prev,
             [metric]: value,
         }));
+    };
+
+    const handleSave = async () => {
+        try {
+            const newRules = [
+                { metricName: 'cpu_usage_percent', value: thresholds.cpu || 0 },
+                { metricName: 'ram_usage_percent', value: thresholds.ram || 0 },
+            ];
+
+            await changeThresholds(service, newRules);
+            onClose();
+        } catch (error) {
+            console.error('Error saving thresholds:', error);
+            // You might want to show an error message to the user here
+        }
     };
 
     return (
@@ -77,10 +94,7 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
                             Cancel
                         </button>
                         <button
-                            onClick={() => {
-                                console.log('Saving thresholds:', thresholds);
-                                onClose();
-                            }}
+                            onClick={handleSave}
                             className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
                         >
                             Save Changes

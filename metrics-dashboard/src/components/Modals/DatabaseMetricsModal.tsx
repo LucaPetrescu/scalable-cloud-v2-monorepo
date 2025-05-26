@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
+import { useChangeThresholds } from '../../hooks/thresholds/useChangeThresholds.tsx';
 
 interface DatabaseMetricsModalProps {
     isOpen: boolean;
@@ -19,6 +20,7 @@ interface Thresholds {
 export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetricsModalProps) => {
     const [thresholds, setThresholds] = useState<Thresholds>({});
     const allThresholds = useThresholds(service);
+    const { changeThresholds } = useChangeThresholds();
 
     useEffect(() => {
         const newThresholds: Thresholds = {};
@@ -51,6 +53,24 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
         }));
     };
 
+    const handleSave = async () => {
+        try {
+            const newRules = [
+                { metricName: 'mongo_connection_pool_size', value: thresholds.mongoConnectionPoolSize || 0 },
+                { metricName: 'mongo_active_connections', value: thresholds.mongoActiveConnections || 0 },
+                { metricName: 'mongo_available_connections', value: thresholds.mongoAvailableConnections || 0 },
+                { metricName: 'mongo_query_time_seconds', value: thresholds.mongoQueryTime || 0 },
+                { metricName: 'mongo_memory_usage_bytes', value: thresholds.mongoMemoryUsage || 0 },
+            ];
+
+            await changeThresholds(service, newRules);
+            onClose();
+        } catch (error) {
+            console.error('Error saving thresholds:', error);
+            // You might want to show an error message to the user here
+        }
+    };
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
@@ -65,8 +85,8 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">Connection Pool Size (%)</label>
                             <input
-                                type="text"
-                                value={thresholds.mongoConnectionPoolSize}
+                                type="number"
+                                value={thresholds.mongoConnectionPoolSize || 0}
                                 onChange={(e) =>
                                     handleThresholdChange('mongoConnectionPoolSize', parseInt(e.target.value))
                                 }
@@ -76,8 +96,8 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">Active Connections (%)</label>
                             <input
-                                type="text"
-                                value={thresholds.mongoActiveConnections}
+                                type="number"
+                                value={thresholds.mongoActiveConnections || 0}
                                 onChange={(e) =>
                                     handleThresholdChange('mongoActiveConnections', parseInt(e.target.value))
                                 }
@@ -87,8 +107,8 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">Available Connections (%)</label>
                             <input
-                                type="text"
-                                value={thresholds.mongoAvailableConnections}
+                                type="number"
+                                value={thresholds.mongoAvailableConnections || 0}
                                 onChange={(e) =>
                                     handleThresholdChange('mongoAvailableConnections', parseInt(e.target.value))
                                 }
@@ -98,8 +118,8 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">Query Time (%)</label>
                             <input
-                                type="text"
-                                value={thresholds.mongoQueryTime}
+                                type="number"
+                                value={thresholds.mongoQueryTime || 0}
                                 onChange={(e) => handleThresholdChange('mongoQueryTime', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
@@ -107,8 +127,8 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                         <div className="flex items-center justify-between">
                             <label className="text-stone-700 font-medium">Memory Usage (%)</label>
                             <input
-                                type="text"
-                                value={thresholds.mongoMemoryUsage}
+                                type="number"
+                                value={thresholds.mongoMemoryUsage || 0}
                                 onChange={(e) => handleThresholdChange('mongoMemoryUsage', parseInt(e.target.value))}
                                 className="w-24 px-3 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
                             />
@@ -122,10 +142,7 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                             Cancel
                         </button>
                         <button
-                            onClick={() => {
-                                console.log('Saving thresholds:', thresholds);
-                                onClose();
-                            }}
+                            onClick={handleSave}
                             className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors"
                         >
                             Save Changes
