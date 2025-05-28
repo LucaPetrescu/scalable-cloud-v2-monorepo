@@ -86,19 +86,19 @@ export const NetworkMetricsView = () => {
                     )}
 
                     {/* HTTP Request Duration Graph */}
-                    {groupedMetrics['http_request_duration'] && (
+                    {groupedMetrics['http_request_duration_seconds'] && (
                         <ActivityGraph
                             isPercentage={false}
                             title="HTTP Request Duration"
                             metrics={[
                                 {
-                                    name: 'http_request_duration',
-                                    data: groupedMetrics['http_request_duration'].map((d) => ({
+                                    name: 'http_request_duration_seconds',
+                                    data: groupedMetrics['http_request_duration_seconds'].map((d) => ({
                                         timestamp: d.timestamp,
                                         value: d.value,
                                         displayTime: d.displayTime,
                                     })),
-                                    color: metricColors['http_request_duration'],
+                                    color: metricColors['http_request_duration_seconds'],
                                 },
                             ]}
                         />

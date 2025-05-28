@@ -32,14 +32,16 @@ export const useNetworkMetrics = () => {
             es.addEventListener('auth-service-metrics', (event) => {
                 try {
                     const data = JSON.parse(event.data);
+                    console.log(data);
                     const networkMetrics = data
                         .filter((metric) =>
-                            ['"http_requests_total"', '"http_request_duration"'].includes(metric.metricName),
+                            ['"http_requests_total"', '"http_request_duration_seconds"'].includes(metric.metricName),
                         )
                         .map((metric) => ({
                             ...metric,
                             metricName: metric.metricName.replace(/"/g, ''),
                         }));
+
                     setMetrics(networkMetrics);
                 } catch (error) {
                     console.error('Error parsing network metrics data:', error);
