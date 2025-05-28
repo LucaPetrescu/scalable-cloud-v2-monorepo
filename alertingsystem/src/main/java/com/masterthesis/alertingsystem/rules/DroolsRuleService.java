@@ -61,8 +61,8 @@ public class DroolsRuleService {
                 if(!resultArrayNode.isEmpty()) {
                     JsonNode metricResult = resultArrayNode.get(0);
 
-                    String metricName = metricResult.at("/metric/__name__").asText();
-                    String metricValue = metricResult.at("/value").get(1).asText();
+                    String metricName = metricResult.at("/metric/__name__").toString();
+                    String metricValue = metricResult.at("/value").get(1).toString().replace("\"", "");
                     double metricValueDouble = Double.parseDouble(metricValue);
 
                     processMetricWithThreshold(metricName, metricValueDouble, serviceNameFilePath);
@@ -156,8 +156,8 @@ public class DroolsRuleService {
                 if (!resultArrayNode.isEmpty()) {
                     JsonNode metricResult = resultArrayNode.get(0);
 
-                    String metricName = metricResult.at("/metric/__name__").asText();
-                    String metricValue = metricResult.at("/value").get(1).asText();
+                    String metricName = metricResult.at("/metric/__name__").toString();
+                    String metricValue = metricResult.at("/value").get(1).toString().replace("\"", "");
                     double metricValueDouble = Double.parseDouble(metricValue);
 
                     MetricType metricType = MetricType.fromQueryName(metricQuery);
