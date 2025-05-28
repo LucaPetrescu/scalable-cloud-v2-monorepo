@@ -50,11 +50,19 @@ public class DroolsRuleService {
             serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
         }
 
-        Double durationSum = null;
-        Double durationCount = null;
-
         for(MetricType metricType: MetricType.values()){
+
             try{
+
+                double httpRequestDurationSecondsCountValueDouble = getDoubleValueOfMetric(metricType.getQueryName(), "http_request_duration_seconds_count");
+                double httpRequestDurationSecondsSumValueDouble = getDoubleValueOfMetric(metricType.getQueryName(), "http_request_duration_seconds_sum");
+
+                double httpRequestDurationSecondsDoubleValue = httpRequestDurationSecondsSumValueDouble / httpRequestDurationSecondsCountValueDouble;
+
+                if(!Double.isNaN(httpRequestDurationSecondsDoubleValue)){
+                    queriedMetrics.add(new MetricResponseDto("http_request_duration_seconds", httpRequestDurationSecondsDoubleValue, "HTTP Request Duration", "seconds"));
+                }
+
                 JsonNode metric = queryClient.query(metricType.getQueryName());
                 ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
 
@@ -67,13 +75,6 @@ public class DroolsRuleService {
 
                     processMetricWithThreshold(metricName, metricValueDouble, serviceNameFilePath);
 
-                    // Store sum and count for HTTP duration calculation
-                    if (metricType == MetricType.HTTP_REQUEST_DURATION_SECONDS_SUM) {
-                        durationSum = metricValueDouble;
-                    } else if (metricType == MetricType.HTTP_REQUEST_DURATION_SECONDS_COUNT) {
-                        durationCount = metricValueDouble;
-                    }
-
                     MetricResponseDto metricsResponse = new MetricResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
                     queriedMetrics.add(metricsResponse);
                 } else {
@@ -82,22 +83,6 @@ public class DroolsRuleService {
             } catch (Exception e){
                 System.err.println("❌ Metric retrieval failed: " + e.getMessage());
             }
-        }
-
-        // Calculate and add average HTTP duration if we have both sum and count
-        if (durationSum != null && durationCount != null && durationCount > 0) {
-            double averageDuration = durationSum / durationCount;
-            
-            // Process the average duration with threshold
-            processMetricWithThreshold(MetricType.HTTP_DURATION.getQueryName(), averageDuration, serviceNameFilePath);
-
-            MetricResponseDto httpResponseDuration = new MetricResponseDto(
-                    MetricType.HTTP_DURATION.getQueryName(),
-                    averageDuration,
-                    MetricType.HTTP_DURATION.getDisplayName(),
-                    MetricType.HTTP_DURATION.getUnit()
-            );
-            queriedMetrics.add(httpResponseDuration);
         }
 
         return queriedMetrics;
@@ -253,6 +238,31 @@ public class DroolsRuleService {
         }
 
         return rulesDtosList;
+
+    }
+
+    private double getDoubleValueOfMetric(String metricName, String metricToCompare) {
+
+        double doubleValue = 0;
+
+        if(metricName.equals(metricToCompare)){
+
+            JsonNode metric = queryClient.query(metricName);
+            ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
+
+            if(!resultArrayNode.isEmpty()) {
+                JsonNode metricResult = resultArrayNode.get(0);
+
+                String metricNameString = metricResult.at("/metric/__name__").toString();
+                String metricValue = metricResult.at("/value").get(1).toString().replace("\"", "");
+                double metricValueDouble = Double.parseDouble(metricValue);
+
+                return metricValueDouble;
+
+            }
+        }
+
+        return doubleValue;
 
     }
 
