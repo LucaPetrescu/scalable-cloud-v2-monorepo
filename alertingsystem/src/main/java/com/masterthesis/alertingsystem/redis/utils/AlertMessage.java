@@ -1,33 +1,29 @@
 package com.masterthesis.alertingsystem.redis.utils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public class AlertMessage {
 
-    private String from;
-    private String text;
+    @JsonProperty("alert")
+    private Alert alert;
+
+    @JsonProperty("time")
     private String time;
 
-    public AlertMessage(String from, Alert alert, String time) {
-        this.from = from;
-        this.text = text;
+    public AlertMessage(Alert alert, String time) {
+        this.alert = alert;
         this.time = time;
     }
 
-    public String getFrom() {
-        return from;
+    public Alert getAlert() {
+        return alert;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setAlert(Alert alert) {
+        this.alert = alert;
     }
 
     public String getTime() {

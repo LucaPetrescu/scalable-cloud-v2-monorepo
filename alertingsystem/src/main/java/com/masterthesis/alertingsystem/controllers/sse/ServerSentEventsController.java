@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +45,8 @@ public class ServerSentEventsController {
                         
                         // Add a small delay to prevent overwhelming the connection
                         Thread.sleep(1000);
+
+                        System.out.println(Arrays.asList(metricResponseDtoList.toString()));
                     } catch (IOException e) {
                         sseEmitter.completeWithError(e);
                         break;

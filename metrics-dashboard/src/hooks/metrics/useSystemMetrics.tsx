@@ -32,7 +32,7 @@ export const useSystemMetrics = () => {
             es.addEventListener('auth-service-metrics', (event) => {
                 try {
                     const data = JSON.parse(event.data);
-                    const systemMetrics = data
+                    const systemMetrics = data[1]
                         .filter((metric) => ['"cpu_usage_percent"', '"ram_usage_percent"'].includes(metric.metricName))
                         .map((metric) => ({
                             ...metric,

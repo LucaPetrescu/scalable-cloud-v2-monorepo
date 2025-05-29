@@ -5,6 +5,7 @@ import { ActivityGraph } from '../ActivityGraph/ActivityGraph.tsx';
 import { MetricData } from '../../types/MetricData.ts';
 import { formatMetric } from '../../utils/metricFormatter.ts';
 import { metricColors } from '../../utils/graphLineColor.ts';
+import { NotificationsTable } from '../Notifications/NotificationsTable.tsx';
 
 export const NetworkMetricsView = () => {
     const metrics = useNetworkMetrics();
@@ -105,6 +106,7 @@ export const NetworkMetricsView = () => {
                     )}
                 </div>
             </div>
+            <NotificationsTable />
         </>
     );
 };

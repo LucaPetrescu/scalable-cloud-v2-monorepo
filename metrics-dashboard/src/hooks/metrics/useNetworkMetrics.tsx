@@ -32,8 +32,7 @@ export const useNetworkMetrics = () => {
             es.addEventListener('auth-service-metrics', (event) => {
                 try {
                     const data = JSON.parse(event.data);
-
-                    const networkMetrics = data
+                    const networkMetrics = data[1]
                         .filter((metric) =>
                             ['"http_requests_total"', 'http_request_duration_seconds'].includes(metric.metricName),
                         )

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
 import { useChangeThresholds } from '../../hooks/thresholds/useChangeThresholds.tsx';
+import { notificationService } from '../../services/NotificationService.ts';
 
 interface SystemMetricsModalProps {
     isOpen: boolean;
@@ -15,7 +16,7 @@ interface Thresholds {
 }
 
 export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsModalProps) => {
-    const [thresholds, setThresholds] = useState<Thresholds>({});
+    const [thresholds, setThresholds] = useState({});
     const allThresholds = useThresholds(service);
     const { changeThresholds } = useChangeThresholds();
 
@@ -47,6 +48,16 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
                 { metricName: 'cpu_usage_percent', value: thresholds.cpu || 0 },
                 { metricName: 'ram_usage_percent', value: thresholds.ram || 0 },
             ];
+
+            // Emit notifications for each changed threshold
+            for (const threshold of allThresholds) {
+                if (threshold.name === 'cpu_usage_percent' && threshold.max !== thresholds.cpu) {
+                    notificationService.notifyMetricChange(service, 'CPU Usage', threshold.max, thresholds.cpu || 0);
+                }
+                if (threshold.name === 'ram_usage_percent' && threshold.max !== thresholds.ram) {
+                    notificationService.notifyMetricChange(service, 'Memory Usage', threshold.max, thresholds.ram || 0);
+                }
+            }
 
             await changeThresholds(service, newRules);
             onClose();

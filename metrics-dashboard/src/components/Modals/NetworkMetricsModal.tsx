@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
 import { useChangeThresholds } from '../../hooks/thresholds/useChangeThresholds.tsx';
+import { notificationService } from '../../services/NotificationService.ts';
 
 interface NetworkMetricsModalProps {
     isOpen: boolean;
@@ -15,11 +16,9 @@ interface Thresholds {
 }
 
 export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetricsModalProps) => {
-    const [thresholds, setThresholds] = useState<Thresholds>({});
+    const [thresholds, setThresholds] = useState({});
     const allThresholds = useThresholds(service);
     const { changeThresholds } = useChangeThresholds();
-
-    console.log(allThresholds);
 
     useEffect(() => {
         const newThresholds: Thresholds = {};
@@ -49,6 +48,29 @@ export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetrics
                 { metricName: 'http_requests_total', value: thresholds.httpRequestCount || 0 },
                 { metricName: 'http_request_duration_seconds', value: thresholds.httpRequestDuration || 0 },
             ];
+
+            // Emit notifications for each changed threshold
+            for (const threshold of allThresholds) {
+                if (threshold.name === 'http_requests_total' && threshold.max !== thresholds.httpRequestCount) {
+                    notificationService.notifyMetricChange(
+                        service,
+                        'HTTP Request Count',
+                        threshold.max,
+                        thresholds.httpRequestCount || 0,
+                    );
+                }
+                if (
+                    threshold.name === 'http_request_duration_seconds' &&
+                    threshold.max !== thresholds.httpRequestDuration
+                ) {
+                    notificationService.notifyMetricChange(
+                        service,
+                        'HTTP Request Duration',
+                        threshold.max,
+                        thresholds.httpRequestDuration || 0,
+                    );
+                }
+            }
 
             await changeThresholds(service, newRules);
             onClose();

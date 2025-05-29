@@ -1,17 +1,24 @@
 package com.masterthesis.alertingsystem.rules.facts;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public class Alert {
 
-    public String reason;
-    public String affectedMetric;
-    public double exceededValue;
+    @JsonProperty("reason")
+    private String reason;
+
+    @JsonProperty("metricName")
+    private String affectedMetric;
+
+    @JsonProperty("metricValue")
+    private double exceededValue;
 
     public Alert(String reason, String affectedMetric, double exceededValue) {
-
         this.reason = reason;
         this.affectedMetric = affectedMetric;
         this.exceededValue = exceededValue;
-
     }
 
     public String getReason() {

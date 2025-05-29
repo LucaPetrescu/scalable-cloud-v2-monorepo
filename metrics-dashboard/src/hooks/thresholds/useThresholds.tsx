@@ -9,7 +9,7 @@ export const useThresholds = (serviceName: string) => {
             const response = await axios.get(`http://localhost:8085/rules/getRulesForService`, {
                 params: { serviceName },
             });
-            setThresholds(response.data);
+            setThresholds(response.data[1]);
         };
         fetchThresholds();
     }, [serviceName]);

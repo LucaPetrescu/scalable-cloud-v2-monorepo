@@ -32,7 +32,7 @@ export const useDatabaseMetrics = () => {
             es.addEventListener('auth-service-metrics', (event) => {
                 try {
                     const data = JSON.parse(event.data);
-                    const databaseMetrics = data
+                    const databaseMetrics = data[1]
                         .filter((metric) =>
                             [
                                 '"mongo_connection_pool_size"',

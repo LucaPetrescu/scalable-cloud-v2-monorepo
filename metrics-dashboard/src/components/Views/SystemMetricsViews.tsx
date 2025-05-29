@@ -5,10 +5,11 @@ import { ActivityGraph } from '../ActivityGraph/ActivityGraph.tsx';
 import { MetricData } from '../../types/MetricData.ts';
 import { formatMetric } from '../../utils/metricFormatter.ts';
 import { metricColors } from '../../utils/graphLineColor.ts';
+import { NotificationsTable } from '../Notifications/NotificationsTable.tsx';
 
 export const SystemMetricsViews = () => {
     const metrics = useSystemMetrics();
-    const [historicalData, setHistoricalData] = useState<MetricData[]>([]);
+    const [historicalData, setHistoricalData] = useState([]);
 
     useEffect(() => {
         if (metrics.length > 0) {
@@ -106,6 +107,7 @@ export const SystemMetricsViews = () => {
                     )}
                 </div>
             </div>
+            <NotificationsTable />
         </>
     );
 };

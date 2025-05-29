@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useThresholds } from '../../hooks/thresholds/useThresholds.tsx';
 import { useChangeThresholds } from '../../hooks/thresholds/useChangeThresholds.tsx';
+import { notificationService } from '../../services/NotificationService.ts';
 
 interface DatabaseMetricsModalProps {
     isOpen: boolean;
@@ -18,7 +19,7 @@ interface Thresholds {
 }
 
 export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetricsModalProps) => {
-    const [thresholds, setThresholds] = useState<Thresholds>({});
+    const [thresholds, setThresholds] = useState({});
     const allThresholds = useThresholds(service);
     const { changeThresholds } = useChangeThresholds();
 
@@ -62,6 +63,59 @@ export const DatabaseMetricsModal = ({ service, isOpen, onClose }: DatabaseMetri
                 { metricName: 'mongo_query_time_seconds', value: thresholds.mongoQueryTime || 0 },
                 { metricName: 'mongo_memory_usage_bytes', value: thresholds.mongoMemoryUsage || 0 },
             ];
+
+            // Emit notifications for each changed threshold
+            for (const threshold of allThresholds) {
+                if (
+                    threshold.name === 'mongo_connection_pool_size' &&
+                    threshold.max !== thresholds.mongoConnectionPoolSize
+                ) {
+                    notificationService.notifyMetricChange(
+                        service,
+                        'Connection Pool Size',
+                        threshold.max,
+                        thresholds.mongoConnectionPoolSize || 0,
+                    );
+                }
+                if (
+                    threshold.name === 'mongo_active_connections' &&
+                    threshold.max !== thresholds.mongoActiveConnections
+                ) {
+                    notificationService.notifyMetricChange(
+                        service,
+                        'Active Connections',
+                        threshold.max,
+                        thresholds.mongoActiveConnections || 0,
+                    );
+                }
+                if (
+                    threshold.name === 'mongo_available_connections' &&
+                    threshold.max !== thresholds.mongoAvailableConnections
+                ) {
+                    notificationService.notifyMetricChange(
+                        service,
+                        'Available Connections',
+                        threshold.max,
+                        thresholds.mongoAvailableConnections || 0,
+                    );
+                }
+                if (threshold.name === 'mongo_query_time_seconds' && threshold.max !== thresholds.mongoQueryTime) {
+                    notificationService.notifyMetricChange(
+                        service,
+                        'Query Time',
+                        threshold.max,
+                        thresholds.mongoQueryTime || 0,
+                    );
+                }
+                if (threshold.name === 'mongo_memory_usage_bytes' && threshold.max !== thresholds.mongoMemoryUsage) {
+                    notificationService.notifyMetricChange(
+                        service,
+                        'Memory Usage',
+                        threshold.max,
+                        thresholds.mongoMemoryUsage || 0,
+                    );
+                }
+            }
 
             await changeThresholds(service, newRules);
             onClose();

@@ -47,4 +47,14 @@ public class MetricResponseDto {
     public void setUnit(String metricUnit) {
         this.metricUnit = metricUnit;
     }
+
+    @Override
+    public String toString() {
+        return "MetricResponseDto{" +
+                "metricName='" + metricName + '\'' +
+                ", metricValue=" + metricValue +
+                ", metricDisplayName='" + metricDisplayName + '\'' +
+                ", metricUnit='" + metricUnit + '\'' +
+                '}';
+    }
 }

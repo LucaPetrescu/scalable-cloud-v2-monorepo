@@ -1,7 +1,6 @@
 package com.masterthesis.alertingsystem.dtos;
 
 public class RuleDto {
-
     private String name;
     private double max;
 

@@ -12,6 +12,7 @@ import com.masterthesis.alertingsystem.query.PrometheusQueryService;
 import com.masterthesis.alertingsystem.redis.Message;
 import com.masterthesis.alertingsystem.redis.RedisAlertCacheService;
 import com.masterthesis.alertingsystem.redis.RedisMessagePublisher;
+import com.masterthesis.alertingsystem.redis.utils.AlertMessage;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 import com.masterthesis.alertingsystem.rules.facts.Threshold;
 
@@ -199,20 +200,39 @@ public class DroolsRuleService {
     public void processMetricWithThreshold(String metricName, double metricValue, String serviceName) {
         boolean thresholdExceeded = droolsRuleEngine.isMetricExceedingThreshold(metricName, metricValue, serviceName);
 
-        String cacheKey = serviceName + ":" + metricName;
+        String cacheKey = serviceName + ":" + metricName + "-" + metricValue;
 
         String alertReason = "Metric exceeded for " + serviceName;
 
+        Alert dummyAlert = new Alert("dummy", "dummy", 0);
+
+        AlertMessage alertMessage = new AlertMessage(dummyAlert, "time");
+
+        redisMessagePublisher.publish(alertMessage, "auth-service-alerts-topic");
+
         if(thresholdExceeded) {
             if(serviceName.equals("auth-service")){
-                redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, new Alert(alertReason, metricName, metricValue)));
                 if(!redisAlertCacheService.isAlertCached(cacheKey)) {
-                    redisAlertCacheService.cacheAlert(cacheKey, new Alert(alertReason, metricName, metricValue), 7);
+
+                    Alert alert = new Alert(alertReason, metricName, metricValue);
+
+                    redisAlertCacheService.cacheAlert(cacheKey, alert, 7);
+                    redisMessagePublisher.publish(alertMessage, "auth-service-alerts-topic");
+//                    redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, alert), "auth-service-alerts-topic");
+                } else {
+                    Alert alert = redisAlertCacheService.getCachedAlert(alertReason);
+//                    redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, alert), "auth-service-alerts-topic");
                 }
             } else if(serviceName.equals("inventory-service")) {
-                redisMessagePublisher.publish(new Message(ServiceType.INVENTORY_SERVICE, new Alert("Metric exceeded for " + serviceName, metricName, metricValue)));
                 if(!redisAlertCacheService.isAlertCached(cacheKey)){
+
+                    Alert alert = new Alert(alertReason, metricName, metricValue);
+
                     redisAlertCacheService.cacheAlert(cacheKey, new Alert(alertReason, metricName, metricValue), 7);
+//                    redisMessagePublisher.publish(new Message(ServiceType.INVENTORY_SERVICE, alert), "inventory-service-alerts-topic");
+                } else {
+                    Alert alert = redisAlertCacheService.getCachedAlert(alertReason);
+//                    redisMessagePublisher.publish(new Message(ServiceType.INVENTORY_SERVICE, alert));
                 }
             }
         }
