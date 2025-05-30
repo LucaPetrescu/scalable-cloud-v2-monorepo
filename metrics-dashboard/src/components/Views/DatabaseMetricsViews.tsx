@@ -6,14 +6,15 @@ import { MetricData } from '../../types/MetricData.ts';
 import { formatMetric } from '../../utils/metricFormatter.ts';
 import { metricColors } from '../../utils/graphLineColor.ts';
 import { NotificationsTable } from '../Notifications/NotificationsTable.tsx';
+import { useMetrics } from '../../context/MetricsContext.tsx';
 
 export const DatabaseMetricsViews = () => {
-    const metrics = useDatabaseMetrics();
     const [historicalData, setHistoricalData] = useState([]);
+    const { databaseMetrics } = useMetrics();
 
     useEffect(() => {
-        if (metrics.length > 0) {
-            const newData = metrics
+        if (databaseMetrics.length > 0) {
+            const newData = databaseMetrics
                 .map((metric) => {
                     const localTimestamp = Date.now();
                     const displayTime = new Date(localTimestamp).toLocaleTimeString();
@@ -33,7 +34,7 @@ export const DatabaseMetricsViews = () => {
                 return updated.slice(-20);
             });
         }
-    }, [metrics]);
+    }, [databaseMetrics]);
 
     const formatValueForCardMetrics = (metric) => {
         switch (metric.metricName) {
@@ -60,7 +61,7 @@ export const DatabaseMetricsViews = () => {
     return (
         <>
             {/* Current Metrics Cards */}
-            {metrics
+            {databaseMetrics
                 .filter(
                     (metric) =>
                         metric.metricName !== 'mongo_query_time_seconds' &&

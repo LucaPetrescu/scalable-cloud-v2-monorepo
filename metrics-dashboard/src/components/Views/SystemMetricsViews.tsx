@@ -6,14 +6,15 @@ import { MetricData } from '../../types/MetricData.ts';
 import { formatMetric } from '../../utils/metricFormatter.ts';
 import { metricColors } from '../../utils/graphLineColor.ts';
 import { NotificationsTable } from '../Notifications/NotificationsTable.tsx';
+import { useMetrics } from '../../context/MetricsContext.tsx';
 
 export const SystemMetricsViews = () => {
-    const metrics = useSystemMetrics();
     const [historicalData, setHistoricalData] = useState([]);
+    const { systemMetrics } = useMetrics();
 
     useEffect(() => {
-        if (metrics.length > 0) {
-            const newData = metrics
+        if (systemMetrics.length > 0) {
+            const newData = systemMetrics
                 .map((metric) => {
                     const localTimestamp = Date.now();
                     const displayTime = new Date(localTimestamp).toLocaleTimeString();
@@ -33,7 +34,7 @@ export const SystemMetricsViews = () => {
                 return updated.slice(-20);
             });
         }
-    }, [metrics]);
+    }, [systemMetrics]);
 
     const groupedMetrics = historicalData.reduce<Record<string, MetricData[]>>((acc, data) => {
         if (!acc[data.metricName]) {
@@ -50,7 +51,7 @@ export const SystemMetricsViews = () => {
     return (
         <>
             {/* Current Metrics Cards */}
-            {metrics.map((metric) => (
+            {systemMetrics.map((metric) => (
                 <div key={metric.metricName} className="col-span-4">
                     <Card
                         title={formatMetric(metric.metricName)}
