@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class WebSocketService {
 
     private final DroolsRuleService droolsRuleService;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private static final String[] SERVICES = {"auth-service", "inventory-service"};
 
     public WebSocketService(DroolsRuleService droolsRuleService, SimpMessagingTemplate simpMessagingTemplate) {
         this.droolsRuleService = droolsRuleService;
@@ -30,4 +32,14 @@ public class WebSocketService {
         simpMessagingTemplate.convertAndSend("/topic/alerts", new AlertNotification(alert, serviceName, time));
     }
 
+    @Scheduled(fixedRate = 5000)
+    public void checkMetricsAndSendNotifications() {
+        for (String service : SERVICES) {
+            try {
+                List<MetricResponseDto> metrics = droolsRuleService.getAllMetrics(service);
+            } catch (Exception e) {
+                System.err.println("Error checking metrics for " + service + ": " + e.getMessage());
+            }
+        }
+    }
 }

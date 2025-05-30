@@ -5,7 +5,7 @@ import { Notification } from './Notification.tsx';
 import { notificationService } from '../../services/NotificationService.ts';
 
 const STORAGE_KEY = 'metric_notifications';
-const MAX_NOTIFICATIONS = 50;
+const MAX_NOTIFICATIONS = 5;
 
 export const NotificationsTable = () => {
     const [notifications, setNotifications] = useState(() => {

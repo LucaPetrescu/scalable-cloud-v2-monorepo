@@ -21,7 +21,9 @@ import com.masterthesis.alertingsystem.redis.utils.ServiceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -204,11 +206,8 @@ public class DroolsRuleService {
 
         String alertReason = "Metric exceeded for " + serviceName;
 
-        Alert dummyAlert = new Alert("dummy", "dummy", 0);
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        AlertMessage alertMessage = new AlertMessage(dummyAlert, "time");
-
-        redisMessagePublisher.publish(alertMessage, "auth-service-alerts-topic");
 
         if(thresholdExceeded) {
             if(serviceName.equals("auth-service")){
@@ -216,23 +215,28 @@ public class DroolsRuleService {
 
                     Alert alert = new Alert(alertReason, metricName, metricValue);
 
+                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
+
                     redisAlertCacheService.cacheAlert(cacheKey, alert, 7);
                     redisMessagePublisher.publish(alertMessage, "auth-service-alerts-topic");
-//                    redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, alert), "auth-service-alerts-topic");
                 } else {
                     Alert alert = redisAlertCacheService.getCachedAlert(alertReason);
-//                    redisMessagePublisher.publish(new Message(ServiceType.AUTH_SERVICE, alert), "auth-service-alerts-topic");
+                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
+                    redisMessagePublisher.publish(alertMessage, "auth-service-alerts-topic");
                 }
             } else if(serviceName.equals("inventory-service")) {
                 if(!redisAlertCacheService.isAlertCached(cacheKey)){
 
                     Alert alert = new Alert(alertReason, metricName, metricValue);
 
+                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
+
                     redisAlertCacheService.cacheAlert(cacheKey, new Alert(alertReason, metricName, metricValue), 7);
-//                    redisMessagePublisher.publish(new Message(ServiceType.INVENTORY_SERVICE, alert), "inventory-service-alerts-topic");
+                    redisMessagePublisher.publish(alertMessage, "inventory-service-alerts-topic");
                 } else {
                     Alert alert = redisAlertCacheService.getCachedAlert(alertReason);
-//                    redisMessagePublisher.publish(new Message(ServiceType.INVENTORY_SERVICE, alert));
+                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
+                    redisMessagePublisher.publish(alertMessage, "inventory-service-alerts-topic");
                 }
             }
         }
