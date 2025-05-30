@@ -46,4 +46,34 @@ export class HttpMetricsService {
       'http_request_duration_seconds',
     );
   }
+
+  async sendHttpMetricsToCollector() {
+    const httpMetricsCount = await this.getHttpRequestCount();
+
+    const httpMetricsDuration = await this.getHttpRequestDuration();
+
+    try {
+      await axios.post(
+        'http://localhost:8080/inventory/network-metrics/http-request-count',
+        httpMetricsCount,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+
+      await axios.post(
+        'http://localhost:8080/inventory/network-metrics/http-request-duration',
+        httpMetricsDuration,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+    } catch (error) {
+      console.error('Error sending metrics', error);
+    }
+  }
 }

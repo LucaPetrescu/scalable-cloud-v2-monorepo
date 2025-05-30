@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, Inject } from '@nestjs/common';
 import * as client from 'prom-client';
 import * as mongoose from 'mongoose';
@@ -43,6 +44,17 @@ export class MongoDBMetricsService {
       help: 'MongoDB memory usage in bytes',
       registers: [this.registry],
     });
+
+    this.initMiddleware();
+
+    setInterval(() => {
+      this.collectConnectionPoolStats();
+      this.collectMemoryUsage();
+    }, 5000);
+
+    setInterval(() => {
+      this.sendMongoDBMetricsToCollector();
+    }, 10000);
   }
 
   private async collectConnectionPoolStats() {
@@ -63,7 +75,7 @@ export class MongoDBMetricsService {
     }
   }
 
-  private iniMiddleware() {
+  private initMiddleware() {
     mongoose.plugin((schema) => {
       schema.pre('find', () => {
         this['start'] = process.hrtime();
@@ -119,5 +131,67 @@ export class MongoDBMetricsService {
     return await this.registry.getSingleMetricAsString(
       'mongo_memory_usage_bytes',
     );
+  }
+
+  private async sendMongoDBMetricsToCollector() {
+    const connectionPoolSize = await this.getConnectionPoolSize();
+    const activeConnections = await this.getActiveConnections();
+    const availableConnections = await this.getAvailableConnections();
+    const queryTime = await this.getQueryTime();
+    const memoryUsage = await this.getMemoryUsage();
+
+    try {
+      axios.post(
+        'http://localhost:8080/inventory/mongodb-metrics/connection-pool-size',
+        connectionPoolSize,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+
+      axios.post(
+        'http://localhost:8080/inventory/mongodb-metrics/active-connections',
+        activeConnections,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+
+      axios.post(
+        'http://localhost:8080/inventory/mongodb-metrics/available-connections',
+        availableConnections,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+
+      axios.post(
+        'http://localhost:8080/inventory/mongodb-metrics/query-time',
+        queryTime,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+
+      axios.post(
+        'http://localhost:8080/inventory/mongodb-metrics/memory-usage',
+        memoryUsage,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+    } catch (e) {
+      console.error(e);
+    }
   }
 }

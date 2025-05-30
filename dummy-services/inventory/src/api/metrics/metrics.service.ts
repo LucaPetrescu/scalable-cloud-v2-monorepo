@@ -20,7 +20,7 @@ export class MetricsService implements OnModuleInit {
     });
 
     this.memoryUsageGauge = new client.Gauge({
-      name: 'ram_usage_percent',
+      name: 'memory_usage_percent',
       help: 'RAM usage percentage',
       registers: [this.registry],
     });
@@ -28,6 +28,7 @@ export class MetricsService implements OnModuleInit {
 
   onModuleInit() {
     this.startMonitoring();
+    this.sendSystemMetricsToCollector();
   }
 
   private startMonitoring() {
@@ -38,6 +39,38 @@ export class MetricsService implements OnModuleInit {
       this.cpuUsageGauge.set(cpuUsage.cpuUsage);
       this.memoryUsageGauge.set(memoryUsage.memoryUsage);
     }, 5000);
+  }
+
+  private async sendSystemMetricsToCollector() {
+    setInterval(async () => {
+      const cpuMetrics = await this.getCpuMetrics();
+
+      const ramMetrics = await this.getRamMetrics();
+
+      try {
+        await axios.post(
+          'http://localhost:8080/inventory/system-metrics/cpu-metrics',
+          cpuMetrics,
+          {
+            headers: {
+              'Content-Type': 'text/plain',
+            },
+          },
+        );
+
+        await axios.post(
+          'http://localhost:8080/inventory/system-metrics/ram-metrics',
+          ramMetrics,
+          {
+            headers: {
+              'Content-Type': 'text/plain',
+            },
+          },
+        );
+      } catch (error) {
+        console.error('Error sending metrics', error);
+      }
+    }, 10000);
   }
 
   private getCpuUsage(): any {
@@ -54,5 +87,13 @@ export class MetricsService implements OnModuleInit {
 
     console.log(`memoryUsage: ${memoryUsage}`);
     return { memoryUsage: memoryUsage };
+  }
+
+  private async getCpuMetrics(): Promise<string> {
+    return await this.registry.getSingleMetricAsString('cpu_usage_percent');
+  }
+
+  private async getRamMetrics(): Promise<string> {
+    return await this.registry.getSingleMetricAsString('memory_usage_percent');
   }
 }
