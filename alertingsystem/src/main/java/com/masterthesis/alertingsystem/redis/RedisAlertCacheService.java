@@ -34,4 +34,19 @@ public class RedisAlertCacheService {
         return redisTemplate.hasKey(key);
     }
 
+    public List<Map<String, Object>> getAllCachedData() {
+        Set<String> keys = redisTemplate.keys("*");
+        List<Map<String, Object>> result = new ArrayList<>();
+        if (keys != null) {
+            for (String key : keys) {
+                Object value = redisTemplate.opsForValue().get(key);
+                Map<String, Object> entry = new HashMap<>();
+                entry.put("key", key);
+                entry.put("value", value);
+                result.add(entry);
+            }
+        }
+        return result;
+    }
+
 }
