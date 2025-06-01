@@ -10,17 +10,19 @@ export const useNetworkMetrics = (service: string | undefined) => {
                 .filter((metric: any) =>
                     ['"http_requests_total"', 'http_request_duration_seconds'].includes(metric.metricName),
                 )
+                .filter((metric: any) => metric.serviceName === service)
                 .map((metric: any) => ({
                     ...metric,
                     metricName: metric.metricName.replace(/"/g, ''),
                 }));
+
             setMetrics(systemMetrics);
         };
 
-        metricsSSE.subscribe('network', handleMetricsData);
+        metricsSSE.subscribe(`network-${service}`, handleMetricsData);
 
         return () => {
-            metricsSSE.unsubscribe('network');
+            metricsSSE.unsubscribe();
         };
     }, []);
 

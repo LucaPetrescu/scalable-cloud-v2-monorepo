@@ -38,15 +38,24 @@ public class ServerSentEventsController {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
                     ArrayList<MetricResponseDto> metricResponseDtoList = droolsRuleService.getAllMetrics("auth-service");
+                    ArrayList<MetricResponseDto> metricResponseDtoListForAuthService = new ArrayList<>();
+
+                    for(MetricResponseDto metricResponseDto : metricResponseDtoList) {
+                        if(metricResponseDto.getServiceName().equals("auth-service")){
+                            metricResponseDtoListForAuthService.add(metricResponseDto);
+                        }
+                    }
+
                     try {
                         sseEmitter.send(SseEmitter.event()
                             .name("auth-service-metrics")
-                            .data(metricResponseDtoList));
+                            .data(metricResponseDtoListForAuthService));
+                        System.out.println("Auth " + metricResponseDtoListForAuthService.toString());
                         
                         // Add a small delay to prevent overwhelming the connection
                         Thread.sleep(1000);
 
-                        System.out.println(Arrays.asList(metricResponseDtoList.toString()));
+
                     } catch (IOException e) {
                         sseEmitter.completeWithError(e);
                         break;
@@ -80,11 +89,64 @@ public class ServerSentEventsController {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
                     ArrayList<MetricResponseDto> metricResponseDtoList = droolsRuleService.getAllMetrics("inventory-service");
+                    ArrayList<MetricResponseDto> metricResponseDtoListForInventoryService = new ArrayList<>();
+
+                    for(MetricResponseDto metricResponseDto : metricResponseDtoList){
+                        if(metricResponseDto.getServiceName().equals("inventory-service")){
+                            metricResponseDtoListForInventoryService.add(metricResponseDto);
+                        }
+                    }
+
                     try {
                         sseEmitter.send(SseEmitter.event()
                             .name("inventory-service-metrics")
-                            .data(metricResponseDtoList));
-                        
+                            .data(metricResponseDtoListForInventoryService));
+                        System.out.println("Inventory " + metricResponseDtoListForInventoryService.toString());
+                        Thread.sleep(1000);
+                    } catch (IOException e) {
+                        sseEmitter.completeWithError(e);
+                        break;
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                sseEmitter.completeWithError(e);
+            }
+        });
+
+        sseEmitter.onCompletion(() -> {
+            // Clean up resources if needed
+        });
+
+        sseEmitter.onTimeout(() -> {
+            sseEmitter.complete();
+        });
+
+        return sseEmitter;
+    }
+
+    @GetMapping("/pushAllServiceMetrics")
+    public SseEmitter streamMetricsForAllServices() {
+        SseEmitter sseEmitter = new SseEmitter(30000L);
+
+        executorService.execute(() -> {
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    ArrayList<MetricResponseDto> authMetrics = droolsRuleService.getAllMetrics("auth-service");
+                    ArrayList<MetricResponseDto> inventoryMetrics = droolsRuleService.getAllMetrics("inventory-service");
+
+                    // Combine both lists into one
+                    ArrayList<MetricResponseDto> allMetrics = new ArrayList<>();
+                    allMetrics.addAll(authMetrics);
+                    allMetrics.addAll(inventoryMetrics);
+
+                    try {
+                        sseEmitter.send(SseEmitter.event()
+                            .name("all-service-metrics")
+                            .data(allMetrics));
+                        System.out.println("All metrics sent: " + allMetrics.toString());
                         Thread.sleep(1000);
                     } catch (IOException e) {
                         sseEmitter.completeWithError(e);

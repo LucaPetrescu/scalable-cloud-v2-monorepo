@@ -1,12 +1,11 @@
-import { authServiceMetricsUrl, inventoryServiceMetricsUrl } from '../utils/routes.ts';
+import { allServiceMetricsUrl } from '../utils/routes.ts';
 
 class MetricsSSEManager {
     private eventSource: EventSource | null = null;
     private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
     private listeners: Map<string, (data: any) => void> = new Map();
     private readonly RECONNECT_DELAY = 1000;
-    private readonly AUTH_SERVICE_URL = authServiceMetricsUrl;
-    private readonly INVENTORY_SERVICE_URL = inventoryServiceMetricsUrl;
+    private readonly ALL_SERVICE_URL = allServiceMetricsUrl;
 
     subscribe(id: string, callback: (data: any) => void) {
         this.listeners.set(id, callback);
@@ -17,17 +16,8 @@ class MetricsSSEManager {
         }
     }
 
-    unsubscribe(id: string) {
-        this.listeners.delete(id);
-
-        // Close connection if no more subscribers
-        if (this.listeners.size === 0) {
-            this.disconnect();
-        }
-    }
-
     private connect() {
-        console.log('Setting up shared SSE connection...');
+        console.log('Setting up combined SSE connection...');
         this.setupEventSource();
     }
 
@@ -42,42 +32,46 @@ class MetricsSSEManager {
         }
     }
 
-    private setupEventSource() {
-        if (this.eventSource) {
-            this.eventSource.close();
-        }
+    unsubscribe() {
+        this.listeners.clear();
+        this.disconnect();
+    }
 
-        this.eventSource = new EventSource(this.SSE_URL);
+    private setupEventSource() {
+        const url = this.ALL_SERVICE_URL;
+        console.log(`Creating combined service connection:`, url);
+
+        this.eventSource = new EventSource(url);
 
         this.eventSource.onopen = () => {
-            console.log('Shared SSE connection opened');
+            console.log(`Combined service connection opened`);
             if (this.reconnectTimeout) {
                 clearTimeout(this.reconnectTimeout);
                 this.reconnectTimeout = null;
             }
         };
 
-        this.eventSource.addEventListener('auth-service-metrics', (event) => {
+        this.eventSource.onerror = (error) => {
+            console.error('Combined service connection error:', error);
+            this.disconnect();
+            // Attempt to reconnect after delay
+            this.reconnectTimeout = setTimeout(() => {
+                console.log('Attempting to reconnect to combined service...');
+                this.setupEventSource();
+            }, this.RECONNECT_DELAY);
+        };
+
+        this.eventSource.addEventListener('all-service-metrics', (event) => {
             try {
                 const data = JSON.parse(event.data);
+                // data: [MetricResponseDto, ...]
+                console.log('Received all-service-metrics data:', data);
                 // Broadcast to all subscribers
                 this.listeners.forEach((callback) => callback(data));
             } catch (error) {
-                console.error('Error parsing metrics data:', error);
+                console.error('Error parsing all-service-metrics data:', error);
             }
         });
-
-        this.eventSource.onerror = (err) => {
-            console.error('Shared SSE error:', err);
-            this.eventSource?.close();
-
-            if (!this.reconnectTimeout && this.listeners.size > 0) {
-                this.reconnectTimeout = setTimeout(() => {
-                    console.log('Attempting to reconnect shared SSE...');
-                    this.setupEventSource();
-                }, this.RECONNECT_DELAY);
-            }
-        };
     }
 }
 

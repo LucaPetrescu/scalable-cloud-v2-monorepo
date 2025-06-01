@@ -45,6 +45,7 @@ public class DroolsRuleService {
 
         ArrayList<MetricResponseDto> queriedMetrics = new ArrayList<>();
 
+
         String serviceNameFilePath = "";
 
         if (serviceName.equals("auth-service")){
@@ -70,19 +71,36 @@ public class DroolsRuleService {
                 }
 
                 JsonNode metric = queryClient.query(metricType.getQueryName());
+
                 ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
 
                 if(!resultArrayNode.isEmpty()) {
-                    JsonNode metricResult = resultArrayNode.get(0);
+                    JsonNode metricResultForInventoryService = resultArrayNode.get(0);
 
-                    String metricName = metricResult.at("/metric/__name__").toString();
-                    String metricValue = metricResult.at("/value").get(1).toString().replace("\"", "");
-                    double metricValueDouble = Double.parseDouble(metricValue);
+                    String metricNameForInventoryService = metricResultForInventoryService.at("/metric/__name__").toString();
+                    String metricValueForInventoryService = metricResultForInventoryService.at("/value").get(1).toString().replace("\"", "");
+                    double metricValueDoubleForInventoryService = Double.parseDouble(metricValueForInventoryService);
 
-                    processMetricWithThreshold(metricName, metricValueDouble, serviceNameFilePath);
+                    if(serviceName.equals("inventory-service")){
+                        processMetricWithThreshold(metricNameForInventoryService, metricValueDoubleForInventoryService, serviceNameFilePath);
 
-                    MetricResponseDto metricsResponse = new MetricResponseDto(serviceName, metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
-                    queriedMetrics.add(metricsResponse);
+                        MetricResponseDto metricsResponseForInventoryService = new MetricResponseDto("inventory-service", metricNameForInventoryService, metricValueDoubleForInventoryService, metricType.getDisplayName(), metricType.getUnit());
+                        queriedMetrics.add(metricsResponseForInventoryService);
+
+                    }
+
+                    JsonNode metricResultForAuthService = resultArrayNode.get(1);
+
+                    String metricNameForAuthService = metricResultForAuthService.at("/metric/__name__").toString();
+                    String metricValueForAuthService = metricResultForAuthService.at("/value").get(1).toString().replace("\"", "");
+                    double metricValueDoubleForAuthService = Double.parseDouble(metricValueForAuthService);
+
+                    if(serviceName.equals("auth-service")){
+                        processMetricWithThreshold(metricNameForAuthService, metricValueDoubleForAuthService, serviceNameFilePath);
+
+                        MetricResponseDto metricsResponse = new MetricResponseDto("auth-service", metricNameForAuthService, metricValueDoubleForAuthService, metricType.getDisplayName(), metricType.getUnit());
+                        queriedMetrics.add(metricsResponse);
+                    }
                 } else {
                     throw new IllegalArgumentException("Metric data is non-existent or invalid");
                 }

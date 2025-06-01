@@ -16,6 +16,7 @@ export const useDatabaseMetrics = (service: string | undefined) => {
                         '"mongo_memory_usage_bytes"',
                     ].includes(metric.metricName),
                 )
+                .filter((metric: any) => metric.serviceName === service)
                 .map((metric: any) => ({
                     ...metric,
                     metricName: metric.metricName.replace(/"/g, ''),
@@ -23,10 +24,10 @@ export const useDatabaseMetrics = (service: string | undefined) => {
             setMetrics(systemMetrics);
         };
 
-        metricsSSE.subscribe('database', handleMetricsData);
+        metricsSSE.subscribe(`database-${service}`, handleMetricsData);
 
         return () => {
-            metricsSSE.unsubscribe('database');
+            metricsSSE.unsubscribe();
         };
     }, []);
 

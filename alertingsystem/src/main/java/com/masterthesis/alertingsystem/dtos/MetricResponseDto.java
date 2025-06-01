@@ -69,7 +69,8 @@ public class MetricResponseDto {
     @Override
     public String toString() {
         return "MetricResponseDto{" +
-                "metricName='" + metricName + '\'' +
+                ", serviceName='" + serviceName + '\'' +
+                ", metricName='" + metricName + '\'' +
                 ", metricValue=" + metricValue +
                 ", metricDisplayName='" + metricDisplayName + '\'' +
                 ", metricUnit='" + metricUnit + '\'' +

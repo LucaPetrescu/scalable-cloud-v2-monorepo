@@ -12,6 +12,9 @@ export const Sidebar = () => {
                 </Link>
                 <Search />
                 <RouteSelect />
+                <Link to="/cache-dashboard" className="block mt-4 text-blue-600 hover:underline">
+                    Redis Cache Dashboard
+                </Link>
             </div>
         </div>
     );

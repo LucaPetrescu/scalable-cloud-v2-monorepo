@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Metrics from './pages/Metrics.tsx';
 import WebSocketClient from './components/WebSocketClient.tsx';
 import { MetricsProvider } from './context/MetricsContext.tsx';
+import CacheDashboard from './pages/CacheDashboard.tsx';
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                                 </MetricsProvider>
                             }
                         />
+                        <Route path="/cache-dashboard" element={<CacheDashboard />} />
                     </Routes>
                 </div>
             </BrowserRouter>
