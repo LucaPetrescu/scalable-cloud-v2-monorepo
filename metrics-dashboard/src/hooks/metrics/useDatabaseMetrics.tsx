@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { metricsSSE } from '../../services/metricsSSE.ts';
 
-export const useDatabaseMetrics = () => {
+export const useDatabaseMetrics = (service: string | undefined) => {
     const [metrics, setMetrics] = useState([]);
 
     useEffect(() => {

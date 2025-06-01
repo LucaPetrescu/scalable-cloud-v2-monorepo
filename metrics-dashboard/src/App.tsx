@@ -8,19 +8,24 @@ import { MetricsProvider } from './context/MetricsContext.tsx';
 
 function App() {
     return (
-        <MetricsProvider children={undefined}>
-            <div className="app">
-                <WebSocketClient />
-                <BrowserRouter>
-                    <div className="text-stone-950 bg-stone-100">
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/metrics/:service/:metricType" element={<Metrics />} />
-                        </Routes>
-                    </div>
-                </BrowserRouter>
-            </div>
-        </MetricsProvider>
+        <div className="app">
+            <WebSocketClient />
+            <BrowserRouter>
+                <div className="text-stone-950 bg-stone-100">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/metrics/:service/:metricType"
+                            element={
+                                <MetricsProvider children={undefined}>
+                                    <Metrics />
+                                </MetricsProvider>
+                            }
+                        />
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </div>
     );
 }
 

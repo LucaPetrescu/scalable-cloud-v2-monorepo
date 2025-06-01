@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.1</version>
+		<version>3.2.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.masterthesis</groupId>
@@ -64,7 +64,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents.client5</groupId>
 			<artifactId>httpclient5</artifactId>
-			<version>5.2</version>
+			<version>5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -81,23 +81,18 @@
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents.client5</groupId>
-			<artifactId>httpclient5</artifactId>
-			<version>5.4</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.kie</groupId>
 			<artifactId>kie-ci</artifactId>
-			<version>9.44.0.Final</version>
+			<version>8.44.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-decisiontables</artifactId>
-			<version>9.44.0.Final</version>
+			<version>8.44.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
@@ -124,11 +119,6 @@
 				<artifactId>spring-boot-devtools</artifactId>
 				<optional>true</optional>
 			</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-			<version>3.3.2</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>

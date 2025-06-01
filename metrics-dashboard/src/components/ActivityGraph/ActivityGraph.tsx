@@ -19,7 +19,6 @@ interface ActivityGraphProps {
 export const ActivityGraph = ({ metrics, title, isPercentage }: ActivityGraphProps) => {
     const formatXAxis = (timestamp: number) => {
         const date = new Date(timestamp);
-        console.log('Hi');
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     };
 
@@ -37,7 +36,7 @@ export const ActivityGraph = ({ metrics, title, isPercentage }: ActivityGraphPro
                     </p>
                     {payload.map((entry: any, index: number) => (
                         <p key={index} className="text-sm" style={{ color: entry.color }}>
-                            {entry.name}: {entry.value.toFixed(2)}%
+                            {entry.name}: {isPercentage ? `${entry.value.toFixed(2)}%` : entry.value.toLocaleString()}
                         </p>
                     ))}
                 </div>

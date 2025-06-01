@@ -2,6 +2,7 @@ package com.masterthesis.alertingsystem.dtos;
 
 public class MetricResponseDto {
 
+    private String serviceName;
     private String metricName;
     private double metricValue;
     private String metricDisplayName;
@@ -9,11 +10,28 @@ public class MetricResponseDto {
 
     public MetricResponseDto() {}
 
-    public MetricResponseDto(String metricName, double metricValue, String metricDisplayName, String metricUnit) {
+    public MetricResponseDto(String serviceName, String metricName, double metricValue, String metricDisplayName, String metricUnit) {
+        this.serviceName = serviceName;
         this.metricName = metricName;
         this.metricValue = metricValue;
         this.metricDisplayName = metricDisplayName;
         this.metricUnit = metricUnit;
+    }
+
+    public String getMetricUnit() {
+        return metricUnit;
+    }
+
+    public void setMetricUnit(String metricUnit) {
+        this.metricUnit = metricUnit;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public String getMetricName() {

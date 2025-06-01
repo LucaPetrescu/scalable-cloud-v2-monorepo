@@ -60,10 +60,13 @@ public class DroolsRuleService {
                 double httpRequestDurationSecondsCountValueDouble = getDoubleValueOfMetric(metricType.getQueryName(), "http_request_duration_seconds_count");
                 double httpRequestDurationSecondsSumValueDouble = getDoubleValueOfMetric(metricType.getQueryName(), "http_request_duration_seconds_sum");
 
-                double httpRequestDurationSecondsDoubleValue = httpRequestDurationSecondsSumValueDouble / httpRequestDurationSecondsCountValueDouble;
+                double httpRequestDurationSecondsDoubleValue = 0.0;
+                if (httpRequestDurationSecondsCountValueDouble > 0) {
+                    httpRequestDurationSecondsDoubleValue = httpRequestDurationSecondsSumValueDouble / httpRequestDurationSecondsCountValueDouble;
+                }
 
-                if(!Double.isNaN(httpRequestDurationSecondsDoubleValue)){
-                    queriedMetrics.add(new MetricResponseDto("http_request_duration_seconds", httpRequestDurationSecondsDoubleValue, "HTTP Request Duration", "seconds"));
+                if(!Double.isNaN(httpRequestDurationSecondsDoubleValue) && httpRequestDurationSecondsCountValueDouble > 0){
+                    queriedMetrics.add(new MetricResponseDto(serviceName, "http_request_duration_seconds", httpRequestDurationSecondsDoubleValue, "HTTP Request Duration", "seconds"));
                 }
 
                 JsonNode metric = queryClient.query(metricType.getQueryName());
@@ -78,7 +81,7 @@ public class DroolsRuleService {
 
                     processMetricWithThreshold(metricName, metricValueDouble, serviceNameFilePath);
 
-                    MetricResponseDto metricsResponse = new MetricResponseDto(metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
+                    MetricResponseDto metricsResponse = new MetricResponseDto(serviceName, metricName, metricValueDouble, metricType.getDisplayName(), metricType.getUnit());
                     queriedMetrics.add(metricsResponse);
                 } else {
                     throw new IllegalArgumentException("Metric data is non-existent or invalid");
@@ -122,7 +125,7 @@ public class DroolsRuleService {
                         double avgDuration = sumValue / countValue;
                         processMetricWithThreshold("http_request_duration_seconds_avg", avgDuration, serviceName);
 
-                        metricResponseDto = new MetricResponseDto(
+                        metricResponseDto = new MetricResponseDto(serviceName,
                                 "http_request_duration_seconds",
                                 avgDuration,
                                 "HTTP Request Duration",
@@ -152,7 +155,7 @@ public class DroolsRuleService {
 
                     processMetricWithThreshold(metricName, metricValueDouble, serviceName);
 
-                    metricResponseDto = new MetricResponseDto(
+                    metricResponseDto = new MetricResponseDto(serviceName,
                             metricName,
                             metricValueDouble,
                             metricType.getDisplayName(),

@@ -1,9 +1,12 @@
+import { authServiceMetricsUrl, inventoryServiceMetricsUrl } from '../utils/routes.ts';
+
 class MetricsSSEManager {
     private eventSource: EventSource | null = null;
-    private reconnectTimeout: NodeJS.Timeout | null = null;
+    private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
     private listeners: Map<string, (data: any) => void> = new Map();
     private readonly RECONNECT_DELAY = 1000;
-    private readonly SSE_URL = 'http://localhost:8085/metrics/sse/pushAuthServiceMetrics';
+    private readonly AUTH_SERVICE_URL = authServiceMetricsUrl;
+    private readonly INVENTORY_SERVICE_URL = inventoryServiceMetricsUrl;
 
     subscribe(id: string, callback: (data: any) => void) {
         this.listeners.set(id, callback);
