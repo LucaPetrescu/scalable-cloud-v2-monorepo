@@ -33,7 +33,7 @@ export class AuthService {
     return user;
   }
 
-  async generateJwtToken(user: any): Promise<String> {
+  async generateJwtToken(user: any): Promise<string> {
     const payload = {
       email: user.email,
     };
@@ -42,7 +42,7 @@ export class AuthService {
     return accessToken;
   }
 
-  async getHashedPassword(plainTextPassword: any): Promise<String> {
+  async getHashedPassword(plainTextPassword: any): Promise<string> {
     const hashedPassword = await bcrypt.hash(plainTextPassword, 10);
     return hashedPassword;
   }
@@ -50,7 +50,7 @@ export class AuthService {
   async comparePasswords(
     plainTextPassword: string,
     hashedPassword: string,
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     return await bcrypt.compare(plainTextPassword, hashedPassword);
   }
 }

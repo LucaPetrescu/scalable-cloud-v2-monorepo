@@ -27,17 +27,18 @@ export class UserController {
   @Post('create')
   async create(@Request() req, @Res() res): Promise<any> {
     const newUser = req.body;
-    // const startTime = Date.now();
-    // const durationInSeconds = (Date.now() - startTime) / 1000;
-    // const { method, path: route } = req;
+
+    const startTime = Date.now();
+    const durationInSeconds = (Date.now() - startTime) / 1000;
+    const { method, path: route } = req;
 
     try {
-      // this.httpMetricsService.incrementRequestCounter(
-      //   method,
-      //   route,
-      //   200,
-      //   durationInSeconds,
-      // );
+      this.httpMetricsService.incrementRequestCounter(
+        method,
+        route,
+        200,
+        durationInSeconds,
+      );
       const query = { email: newUser.email };
       const isUser = await this.userService.findOne(query);
       if (isUser) {

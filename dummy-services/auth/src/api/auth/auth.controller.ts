@@ -44,7 +44,6 @@ export class AuthController {
   @Get('viewProfile')
   async getUser(@Request() req, @Res() res): Promise<any> {
     try {
-      console.log("Hello world")
       res
         .status(HttpStatus.ACCEPTED)
         .send({ message: 'User returned successfully', user: req.user });

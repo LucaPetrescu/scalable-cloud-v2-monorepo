@@ -120,11 +120,35 @@ export class ProductController {
         throw new HttpException('Product does not exist', HttpStatus.NOT_FOUND);
       }
 
-      let productInventory = product.quantity;
+      const productInventory = product.quantity;
 
       res.status(HttpStatus.OK).send({ quantity: productInventory });
 
       return { quantity: productInventory };
+    } catch (err) {
+      this.logger.error('Something went wrong. Please try again: ', err);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);
+    }
+  }
+
+  @Get('getAllProducts')
+  async getAllProducts(@Request() req, @Res() res): Promise<any> {
+    const startTime = Date.now();
+    const durationInSeconds = (Date.now() - startTime) / 1000;
+    const { method, path: route } = req;
+
+    try {
+      this.httpMetricsService.incrementRequestCounter(
+        method,
+        route,
+        200,
+        durationInSeconds,
+      );
+
+      const products = await this.productService.findAll();
+
+      res.status(HttpStatus.OK).send(products);
+      return products;
     } catch (err) {
       this.logger.error('Something went wrong. Please try again: ', err);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(err);

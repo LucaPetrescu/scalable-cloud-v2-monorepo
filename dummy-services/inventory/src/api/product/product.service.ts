@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -22,5 +24,9 @@ export class ProductService {
 
     const newProduct = new this.productModel(product);
     return newProduct.save();
+  }
+
+  async findAll(): Promise<any> {
+    return await this.productModel.find().exec();
   }
 }

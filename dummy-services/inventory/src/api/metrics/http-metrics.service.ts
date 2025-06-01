@@ -23,6 +23,10 @@ export class HttpMetricsService {
       labelNames: ['method', 'route', 'status_code'],
       registers: [this.registry],
     });
+
+    setInterval(() => {
+      this.sendHttpMetricsToCollector();
+    }, 10000);
   }
 
   incrementRequestCounter(
