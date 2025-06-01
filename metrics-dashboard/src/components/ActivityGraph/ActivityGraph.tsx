@@ -19,7 +19,7 @@ interface ActivityGraphProps {
 export const ActivityGraph = ({ metrics, title, isPercentage }: ActivityGraphProps) => {
     const formatXAxis = (timestamp: number) => {
         const date = new Date(timestamp);
-
+        console.log('Hi');
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     };
 
