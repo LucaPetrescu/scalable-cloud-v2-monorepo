@@ -231,6 +231,9 @@ public class DroolsRuleService {
 
 
         if(thresholdExceeded) {
+
+            System.out.println("YESSSS");
+
             if(serviceName.equals("auth-service")){
                 if(!redisAlertCacheService.isAlertCached(cacheKey)) {
 

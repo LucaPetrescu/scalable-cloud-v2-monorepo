@@ -29,6 +29,7 @@ export class MetricsService implements OnModuleInit {
   onModuleInit() {
     this.startMonitoring();
     this.sendSystemMetricsToCollector();
+    this.startSendingDummyHighMetrics();
   }
 
   private startMonitoring() {
@@ -94,5 +95,43 @@ export class MetricsService implements OnModuleInit {
 
   private async getRamMetrics(): Promise<string> {
     return await this.registry.getSingleMetricAsString('memory_usage_percent');
+  }
+
+  public async sendDummyHighMetrics() {
+    this.cpuUsageGauge.set(99.9);
+    this.memoryUsageGauge.set(99.9);
+
+    const cpuMetrics = await this.getCpuMetrics();
+    const ramMetrics = await this.getRamMetrics();
+
+    try {
+      await axios.post(
+        'http://localhost:8080/auth/system-metrics/cpu-metrics',
+        cpuMetrics,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+
+      await axios.post(
+        'http://localhost:8080/auth/system-metrics/ram-metrics',
+        ramMetrics,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
+        },
+      );
+    } catch (error) {
+      console.error('Error sending dummy high metrics', error);
+    }
+  }
+
+  private startSendingDummyHighMetrics() {
+    setInterval(() => {
+      this.sendDummyHighMetrics();
+    }, 60000);
   }
 }
