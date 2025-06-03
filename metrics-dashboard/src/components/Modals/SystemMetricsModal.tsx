@@ -21,13 +21,16 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
     const { changeThresholds } = useChangeThresholds();
 
     useEffect(() => {
+        console.log('allThresholds', allThresholds);
         const newThresholds: Thresholds = {};
-        for (const threshold of allThresholds) {
-            if (threshold.name === 'cpu_usage_percent') {
-                newThresholds.cpu = threshold.max;
-            }
-            if (threshold.name === 'ram_usage_percent') {
-                newThresholds.ram = threshold.max;
+        if (Array.isArray(allThresholds)) {
+            for (const threshold of allThresholds) {
+                if (threshold?.name === 'cpu_usage_percent') {
+                    newThresholds.cpu = threshold.max;
+                }
+                if (threshold?.name === 'ram_usage_percent') {
+                    newThresholds.ram = threshold.max;
+                }
             }
         }
         setThresholds(newThresholds);
@@ -50,12 +53,24 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
             ];
 
             // Emit notifications for each changed threshold
-            for (const threshold of allThresholds) {
-                if (threshold.name === 'cpu_usage_percent' && threshold.max !== thresholds.cpu) {
-                    notificationService.notifyMetricChange(service, 'CPU Usage', threshold.max, thresholds.cpu || 0);
-                }
-                if (threshold.name === 'ram_usage_percent' && threshold.max !== thresholds.ram) {
-                    notificationService.notifyMetricChange(service, 'Memory Usage', threshold.max, thresholds.ram || 0);
+            if (Array.isArray(allThresholds)) {
+                for (const threshold of allThresholds) {
+                    if (threshold?.name === 'cpu_usage_percent' && threshold.max !== thresholds.cpu) {
+                        notificationService.notifyMetricChange(
+                            service,
+                            'CPU Usage',
+                            threshold.max,
+                            thresholds.cpu || 0,
+                        );
+                    }
+                    if (threshold?.name === 'ram_usage_percent' && threshold.max !== thresholds.ram) {
+                        notificationService.notifyMetricChange(
+                            service,
+                            'Memory Usage',
+                            threshold.max,
+                            thresholds.ram || 0,
+                        );
+                    }
                 }
             }
 

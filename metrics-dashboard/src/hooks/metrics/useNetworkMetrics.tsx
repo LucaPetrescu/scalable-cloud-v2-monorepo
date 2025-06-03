@@ -5,6 +5,7 @@ export const useNetworkMetrics = (service: string | undefined) => {
     const [metrics, setMetrics] = useState([]);
 
     useEffect(() => {
+        const listenerId = `network-${service}`;
         const handleMetricsData = (data: any) => {
             const systemMetrics = data[1]
                 .filter((metric: any) =>
@@ -19,12 +20,12 @@ export const useNetworkMetrics = (service: string | undefined) => {
             setMetrics(systemMetrics);
         };
 
-        metricsSSE.subscribe(`network-${service}`, handleMetricsData);
+        metricsSSE.subscribe(listenerId, handleMetricsData);
 
         return () => {
-            metricsSSE.unsubscribe();
+            metricsSSE.unsubscribe(listenerId);
         };
-    }, []);
+    }, [service]);
 
     return metrics;
 };

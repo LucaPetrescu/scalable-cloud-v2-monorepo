@@ -5,7 +5,7 @@ thresholds:
   mongo_memory_usage_bytes:
     max: 3.0E8
   cpu_usage_percent:
-    max: 36.0
+    max: 37.0
   mongo_active_connections:
     max: 80.0
   mongo_query_time_seconds:

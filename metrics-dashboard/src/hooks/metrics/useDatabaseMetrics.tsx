@@ -5,6 +5,7 @@ export const useDatabaseMetrics = (service: string | undefined) => {
     const [metrics, setMetrics] = useState([]);
 
     useEffect(() => {
+        const listenerId = `database-${service}`;
         const handleMetricsData = (data: any) => {
             const systemMetrics = data[1]
                 .filter((metric: any) =>
@@ -24,12 +25,12 @@ export const useDatabaseMetrics = (service: string | undefined) => {
             setMetrics(systemMetrics);
         };
 
-        metricsSSE.subscribe(`database-${service}`, handleMetricsData);
+        metricsSSE.subscribe(listenerId, handleMetricsData);
 
         return () => {
-            metricsSSE.unsubscribe();
+            metricsSSE.unsubscribe(listenerId);
         };
-    }, []);
+    }, [service]);
 
     return metrics;
 };

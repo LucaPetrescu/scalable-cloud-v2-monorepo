@@ -9,14 +9,9 @@ import com.masterthesis.alertingsystem.exceptions.NothingToUpdateException;
 import com.masterthesis.alertingsystem.exceptions.ThresholdsLoadingException;
 import com.masterthesis.alertingsystem.query.MetricType;
 import com.masterthesis.alertingsystem.query.PrometheusQueryService;
-import com.masterthesis.alertingsystem.redis.Message;
-import com.masterthesis.alertingsystem.redis.RedisAlertCacheService;
-import com.masterthesis.alertingsystem.redis.RedisMessagePublisher;
 import com.masterthesis.alertingsystem.redis.utils.AlertMessage;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 import com.masterthesis.alertingsystem.rules.facts.Threshold;
-
-import com.masterthesis.alertingsystem.redis.utils.ServiceType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +29,6 @@ public class DroolsRuleService {
 
     @Autowired
     private DroolsRuleEngine droolsRuleEngine;
-
-    @Autowired
-    private RedisMessagePublisher redisMessagePublisher;
-
-    @Autowired
-    private RedisAlertCacheService redisAlertCacheService;
 
     public ArrayList<MetricResponseDto> getAllMetrics(String serviceName) {
 
@@ -234,35 +223,6 @@ public class DroolsRuleService {
 
             System.out.println("YESSSS");
 
-            if(serviceName.equals("auth-service")){
-                if(!redisAlertCacheService.isAlertCached(cacheKey)) {
-
-                    Alert alert = new Alert(alertReason, metricName, metricValue);
-
-                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
-
-                    redisAlertCacheService.cacheAlert(cacheKey, alert, 7);
-                    redisMessagePublisher.publish(alertMessage, "auth-service-alerts-topic");
-                } else {
-                    Alert alert = redisAlertCacheService.getCachedAlert(alertReason);
-                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
-                    redisMessagePublisher.publish(alertMessage, "auth-service-alerts-topic");
-                }
-            } else if(serviceName.equals("inventory-service")) {
-                if(!redisAlertCacheService.isAlertCached(cacheKey)){
-
-                    Alert alert = new Alert(alertReason, metricName, metricValue);
-
-                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
-
-                    redisAlertCacheService.cacheAlert(cacheKey, new Alert(alertReason, metricName, metricValue), 7);
-                    redisMessagePublisher.publish(alertMessage, "inventory-service-alerts-topic");
-                } else {
-                    Alert alert = redisAlertCacheService.getCachedAlert(alertReason);
-                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
-                    redisMessagePublisher.publish(alertMessage, "inventory-service-alerts-topic");
-                }
-            }
         }
 
     }

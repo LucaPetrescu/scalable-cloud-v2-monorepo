@@ -22,12 +22,14 @@ export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetrics
 
     useEffect(() => {
         const newThresholds: Thresholds = {};
-        for (const threshold of allThresholds) {
-            if (threshold.name === 'http_requests_total') {
-                newThresholds.httpRequestCount = threshold.max;
-            }
-            if (threshold.name === 'http_request_duration_seconds') {
-                newThresholds.httpRequestDuration = threshold.max;
+        if (Array.isArray(allThresholds)) {
+            for (const threshold of allThresholds) {
+                if (threshold?.name === 'http_requests_total') {
+                    newThresholds.httpRequestCount = threshold.max;
+                }
+                if (threshold?.name === 'http_request_duration_seconds') {
+                    newThresholds.httpRequestDuration = threshold.max;
+                }
             }
         }
         setThresholds(newThresholds);
@@ -50,25 +52,27 @@ export const NetworkMetricsModal = ({ service, isOpen, onClose }: NetworkMetrics
             ];
 
             // Emit notifications for each changed threshold
-            for (const threshold of allThresholds) {
-                if (threshold.name === 'http_requests_total' && threshold.max !== thresholds.httpRequestCount) {
-                    notificationService.notifyMetricChange(
-                        service,
-                        'HTTP Request Count',
-                        threshold.max,
-                        thresholds.httpRequestCount || 0,
-                    );
-                }
-                if (
-                    threshold.name === 'http_request_duration_seconds' &&
-                    threshold.max !== thresholds.httpRequestDuration
-                ) {
-                    notificationService.notifyMetricChange(
-                        service,
-                        'HTTP Request Duration',
-                        threshold.max,
-                        thresholds.httpRequestDuration || 0,
-                    );
+            if (Array.isArray(allThresholds)) {
+                for (const threshold of allThresholds) {
+                    if (threshold?.name === 'http_requests_total' && threshold.max !== thresholds.httpRequestCount) {
+                        notificationService.notifyMetricChange(
+                            service,
+                            'HTTP Request Count',
+                            threshold.max,
+                            thresholds.httpRequestCount || 0,
+                        );
+                    }
+                    if (
+                        threshold?.name === 'http_request_duration_seconds' &&
+                        threshold.max !== thresholds.httpRequestDuration
+                    ) {
+                        notificationService.notifyMetricChange(
+                            service,
+                            'HTTP Request Duration',
+                            threshold.max,
+                            thresholds.httpRequestDuration || 0,
+                        );
+                    }
                 }
             }
 
