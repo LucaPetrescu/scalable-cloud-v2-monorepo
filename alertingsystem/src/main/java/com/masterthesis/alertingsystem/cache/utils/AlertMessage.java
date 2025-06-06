@@ -1,4 +1,4 @@
-package com.masterthesis.alertingsystem.redis.utils;
+package com.masterthesis.alertingsystem.cache.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

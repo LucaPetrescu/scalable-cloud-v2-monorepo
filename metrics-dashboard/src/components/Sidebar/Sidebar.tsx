@@ -3,7 +3,7 @@ import { Logo } from '../Logo/Logo.tsx';
 import { Search } from '../Search/Search.tsx';
 import { RouteSelect } from '../RouteSelect/RouteSelect.tsx';
 import { Link } from 'react-router-dom';
-import { DiRedis } from 'react-icons/di';
+import { MdCached } from 'react-icons/md';
 
 export const Sidebar = () => {
     return (
@@ -16,12 +16,12 @@ export const Sidebar = () => {
                 <RouteSelect />
                 <Link
                     to="/cache-dashboard"
-                    className="flex items-center gap-1 mt-2 px-1.5 py-1 rounded-md bg-gradient-to-r from-red-500 to-red-700 text-white font-bold shadow border border-red-600 hover:from-red-600 hover:to-red-800 transition-colors duration-200 text-sm"
+                    className="flex items-center gap-1 mt-2 px-1.5 py-1 rounded-md bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold shadow border border-blue-600 hover:from-blue-600 hover:to-blue-800 transition-colors duration-200 text-sm w-32"
                 >
                     <span style={{ display: 'flex', alignItems: 'center' }}>
-                        <DiRedis size={16} color="#fff" />
+                        <MdCached />
                     </span>
-                    Redis Cache Dashboard
+                    Cache Dashboard
                 </Link>
             </div>
         </div>

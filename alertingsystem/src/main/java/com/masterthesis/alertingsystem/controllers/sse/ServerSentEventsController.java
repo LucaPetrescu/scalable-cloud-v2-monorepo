@@ -135,43 +135,34 @@ public class ServerSentEventsController {
         executorService.execute(() -> {
             try {
                 while (!Thread.currentThread().isInterrupted()) {
-                    System.out.println("Fetching metrics for all services...");
                     ArrayList<MetricResponseDto> authMetrics = droolsRuleService.getAllMetrics("auth-service");
-                    System.out.println("Auth metrics structure: " + authMetrics);
                     
                     ArrayList<MetricResponseDto> inventoryMetrics = droolsRuleService.getAllMetrics("inventory-service");
-                    System.out.println("Inventory metrics structure: " + inventoryMetrics);
 
                     ArrayList<MetricResponseDto> allMetrics = new ArrayList<>();
                     allMetrics.addAll(authMetrics);
                     allMetrics.addAll(inventoryMetrics);
-                    System.out.println("Combined metrics structure: " + allMetrics);
 
                     try {
-
                         ArrayList<ArrayList<MetricResponseDto>> wrappedMetrics = new ArrayList<>();
                         wrappedMetrics.add(new ArrayList<>());
                         wrappedMetrics.add(allMetrics);
-                        
-                        System.out.println("Sending wrapped metrics structure: " + wrappedMetrics);
+
                         sseEmitter.send(SseEmitter.event()
                             .name("all-service-metrics")
                             .data(wrappedMetrics));
-                        System.out.println("Metrics sent successfully");
+
                         Thread.sleep(1000);
                     } catch (IOException e) {
-                        System.err.println("Error sending metrics via SSE: " + e.getMessage());
                         e.printStackTrace();
                         sseEmitter.completeWithError(e);
                         break;
                     } catch (InterruptedException e) {
-                        System.err.println("SSE connection interrupted: " + e.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
                 }
             } catch (Exception e) {
-                System.err.println("Error in SSE metrics stream: " + e.getMessage());
                 e.printStackTrace();
                 sseEmitter.completeWithError(e);
             }

@@ -1,6 +1,6 @@
-package com.masterthesis.alertingsystem.redis;
+package com.masterthesis.alertingsystem.cache;
 
-import com.masterthesis.alertingsystem.redis.utils.ServiceType;
+import com.masterthesis.alertingsystem.cache.utils.ServiceType;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 
 public class Message {

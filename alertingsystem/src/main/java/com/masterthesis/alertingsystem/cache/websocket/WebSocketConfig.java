@@ -1,4 +1,4 @@
-package com.masterthesis.alertingsystem.redis.websocket;
+package com.masterthesis.alertingsystem.cache.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

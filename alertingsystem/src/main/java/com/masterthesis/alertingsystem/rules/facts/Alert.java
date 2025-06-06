@@ -2,9 +2,11 @@ package com.masterthesis.alertingsystem.rules.facts;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.io.Serializable;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
-public class Alert {
+public class Alert implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @JsonProperty("reason")
     private String reason;
@@ -14,6 +16,10 @@ public class Alert {
 
     @JsonProperty("metricValue")
     private double exceededValue;
+
+    // Default constructor required for serialization
+    public Alert() {
+    }
 
     public Alert(String reason, String affectedMetric, double exceededValue) {
         this.reason = reason;
@@ -43,5 +49,14 @@ public class Alert {
 
     public void setExceededValue(double exceededValue) {
         this.exceededValue = exceededValue;
+    }
+
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "reason='" + reason + '\'' +
+                ", affectedMetric='" + affectedMetric + '\'' +
+                ", exceededValue=" + exceededValue +
+                '}';
     }
 }

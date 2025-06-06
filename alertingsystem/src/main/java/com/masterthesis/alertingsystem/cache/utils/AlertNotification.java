@@ -1,4 +1,4 @@
-package com.masterthesis.alertingsystem.redis.utils;
+package com.masterthesis.alertingsystem.cache.utils;
 
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 

@@ -146,7 +146,6 @@ public class DroolsRuleEngine {
             kieSession.setGlobal("alerts", alerts);
 
             kieSession.fireAllRules();
-            System.out.println(alerts.toString());
             return !alerts.isEmpty();
 
         } catch (ThresholdsLoadingException e) {

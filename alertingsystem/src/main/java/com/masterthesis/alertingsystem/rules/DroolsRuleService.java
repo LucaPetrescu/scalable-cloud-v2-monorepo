@@ -2,6 +2,8 @@ package com.masterthesis.alertingsystem.rules;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.masterthesis.alertingsystem.cache.CacheService;
+import com.masterthesis.alertingsystem.cache.utils.AlertMessage;
 import com.masterthesis.alertingsystem.dtos.MetricResponseDto;
 import com.masterthesis.alertingsystem.dtos.NewRuleDto;
 import com.masterthesis.alertingsystem.dtos.RuleDto;
@@ -9,10 +11,11 @@ import com.masterthesis.alertingsystem.exceptions.NothingToUpdateException;
 import com.masterthesis.alertingsystem.exceptions.ThresholdsLoadingException;
 import com.masterthesis.alertingsystem.query.MetricType;
 import com.masterthesis.alertingsystem.query.PrometheusQueryService;
-import com.masterthesis.alertingsystem.redis.utils.AlertMessage;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 import com.masterthesis.alertingsystem.rules.facts.Threshold;
+import com.masterthesis.alertingsystem.messaging.RabbitMQPublisher;
 
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,12 @@ public class DroolsRuleService {
 
     @Autowired
     private DroolsRuleEngine droolsRuleEngine;
+
+    @Autowired
+    private CacheService cacheService;
+
+    @Autowired
+    private RabbitMQPublisher rabbitMQPublisher;
 
     public ArrayList<MetricResponseDto> getAllMetrics(String serviceName) {
 
@@ -210,21 +219,36 @@ public class DroolsRuleService {
     }
 
     public void processMetricWithThreshold(String metricName, double metricValue, String serviceName) {
+        System.out.println("Processing metric: " + metricName + " with value: " + metricValue + " for service: " + serviceName);
+        
         boolean thresholdExceeded = droolsRuleEngine.isMetricExceedingThreshold(metricName, metricValue, serviceName);
+        System.out.println("Threshold exceeded: " + thresholdExceeded);
 
         String cacheKey = serviceName + ":" + metricName + "-" + metricValue;
-
         String alertReason = "Metric exceeded for " + serviceName;
-
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
+        Alert testAlert = new Alert("Metric exceeded", "cpu_usage_percent", 90);
+
+        String testCacheKey = "auth-service";
+
+        cacheService.saveToCache(testCacheKey, testAlert);
+        rabbitMQPublisher.publishAlert(testAlert);
 
         if(thresholdExceeded) {
-
-            System.out.println("YESSSS");
-
+            try {
+                if(!cacheService.isAlertCached(cacheKey)) {
+                    Alert alert = new Alert(alertReason, metricName, metricValue);
+                    cacheService.saveToCache(cacheKey, alert);
+                    rabbitMQPublisher.publishAlert(alert);
+                } else {
+                    Alert alert = (Alert) cacheService.getFromCache(cacheKey);
+                }
+            } catch (Exception e) {
+                System.err.println("Error handling threshold alert: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
-
     }
 
     public List<RuleDto> getRulesForService(String serviceName) throws ThresholdsLoadingException {
