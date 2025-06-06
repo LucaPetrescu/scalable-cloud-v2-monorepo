@@ -50,8 +50,7 @@ public class ServerSentEventsController {
                         sseEmitter.send(SseEmitter.event()
                             .name("auth-service-metrics")
                             .data(metricResponseDtoListForAuthService));
-                        System.out.println("Auth " + metricResponseDtoListForAuthService.toString());
-                        
+
                         // Add a small delay to prevent overwhelming the connection
                         Thread.sleep(1000);
 
@@ -101,7 +100,6 @@ public class ServerSentEventsController {
                         sseEmitter.send(SseEmitter.event()
                             .name("inventory-service-metrics")
                             .data(metricResponseDtoListForInventoryService));
-                        System.out.println("Inventory " + metricResponseDtoListForInventoryService.toString());
                         Thread.sleep(1000);
                     } catch (IOException e) {
                         sseEmitter.completeWithError(e);
@@ -129,7 +127,6 @@ public class ServerSentEventsController {
 
     @GetMapping("/pushAllServiceMetrics")
     public SseEmitter streamMetricsForAllServices() {
-        System.out.println("Starting SSE connection for all services...");
         SseEmitter sseEmitter = new SseEmitter(30000L);
 
         executorService.execute(() -> {

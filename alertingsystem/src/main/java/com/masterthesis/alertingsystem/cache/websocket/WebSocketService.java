@@ -1,5 +1,6 @@
 package com.masterthesis.alertingsystem.cache.websocket;
 
+import com.masterthesis.alertingsystem.cache.utils.AlertMessage;
 import com.masterthesis.alertingsystem.dtos.MetricResponseDto;
 import com.masterthesis.alertingsystem.cache.utils.AlertNotification;
 import com.masterthesis.alertingsystem.rules.DroolsRuleService;
@@ -24,10 +25,9 @@ public class WebSocketService {
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
-    public void sendAlert(Alert alert, String serviceName) {
-        System.out.println("Sending alert via WebSocket: " + alert.getReason());
+    public void sendAlert(AlertMessage alertMessage, String serviceName) {
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        simpMessagingTemplate.convertAndSend("/topic/alerts", new AlertNotification(alert, serviceName, time));
+        simpMessagingTemplate.convertAndSend("/topic/alerts", new AlertNotification(alertMessage.getAlert(), serviceName, time));
     }
 
 //    @Scheduled(fixedRate = 5000)

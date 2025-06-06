@@ -128,23 +128,38 @@ public class DroolsRuleEngine {
 
     }
 
-    public boolean isMetricExceedingThreshold(String metricName, double value, String serviceRulesFilePath) {
+    public boolean isMetricExceedingThreshold(String metricName, double value, String serviceName) {
 
         KieSession kieSession = kieContainer.newKieSession();
 
         try {
+            String serviceRulesFilePath;
+            if ("auth-service".equals(serviceName)) {
+                serviceRulesFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/auth_rules.yml";
+            } else if ("inventory-service".equals(serviceName)) {
+                serviceRulesFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
+            } else {
+                System.err.println("❌ Unknown service: " + serviceName);
+                return false;
+            }
+
             List<Threshold> thresholds = getThresholdsFromYamlFile(serviceRulesFilePath);
 
             for (Threshold t : thresholds) {
                 kieSession.insert(t);
             }
 
-            Metric metric = new Metric(metricName, value);
+            if(metricName.replace("\"", "").equals("cpu_usage_percent") && value > 99) {
+                System.out.println("Service Name " + serviceName + " exceded by value");
+            }
+
+            Metric metric = new Metric(metricName.replace("\"", ""), value);
             kieSession.insert(metric);
 
             List<Alert> alerts = new ArrayList<>();
             kieSession.setGlobal("alerts", alerts);
-
+            kieSession.setGlobal("serviceName", serviceName);
+            
             kieSession.fireAllRules();
             return !alerts.isEmpty();
 

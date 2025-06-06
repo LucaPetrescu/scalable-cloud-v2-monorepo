@@ -8,6 +8,9 @@ import java.io.Serializable;
 public class Alert implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @JsonProperty("serviceName")
+    private String serviceName;
+
     @JsonProperty("reason")
     private String reason;
 
@@ -17,14 +20,20 @@ public class Alert implements Serializable {
     @JsonProperty("metricValue")
     private double exceededValue;
 
-    // Default constructor required for serialization
     public Alert() {
     }
 
-    public Alert(String reason, String affectedMetric, double exceededValue) {
+    public Alert(String serviceName, String reason, String affectedMetric, double exceededValue) {
+        this.serviceName = serviceName;
         this.reason = reason;
         this.affectedMetric = affectedMetric;
         this.exceededValue = exceededValue;
+    }
+
+    public String getServiceName() { return serviceName; }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public String getReason() {
@@ -54,7 +63,8 @@ public class Alert implements Serializable {
     @Override
     public String toString() {
         return "Alert{" +
-                "reason='" + reason + '\'' +
+                "serviceName='" + serviceName + '\'' +
+                ", reason='" + reason + '\'' +
                 ", affectedMetric='" + affectedMetric + '\'' +
                 ", exceededValue=" + exceededValue +
                 '}';

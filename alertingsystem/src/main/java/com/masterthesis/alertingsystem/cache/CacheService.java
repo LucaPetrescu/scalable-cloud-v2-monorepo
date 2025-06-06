@@ -5,6 +5,9 @@ import net.spy.memcached.MemcachedClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Service
 public class CacheService {
 
@@ -13,39 +16,67 @@ public class CacheService {
 
     private final int TTL = 259200;
 
+    private final Set<String> cacheKeys = ConcurrentHashMap.newKeySet();
+
     public void saveToCache(String key, Alert alert) {
-        System.out.println("[saveToCache] Saving alert to cache with key: " + key);
-        System.out.println("[saveToCache] Alert details: " + alert.toString());
-        try {
-            boolean success = memcachedClient.set(key, TTL, alert).getStatus().isSuccess();
-            System.out.println(success);
-        } catch (Exception e) {
-            System.err.println("Error saving to cache: " + e.getMessage());
-            e.printStackTrace();
-        }
+        memcachedClient.set(key, TTL, alert);
+        cacheKeys.add(key);
     }
 
     public Object getFromCache(String key) {
-        try {
-            Object alert = memcachedClient.get(key);
-            return  alert;
-        } catch (Exception e) {
-            System.err.println("Error retrieving from cache: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
+        return memcachedClient.get(key);
     }
 
     public boolean isAlertCached(String key) {
-        try {
-            Object value = memcachedClient.get(key);
-            boolean exists = value != null;
-            return exists;
-        } catch (Exception e) {
-            System.err.println("Error checking cache: " + e.getMessage());
-            e.printStackTrace();
+        Object value = memcachedClient.get(key);
+        if(value == null) {
             return false;
         }
+        return true;
+    }
+
+    public Map<String, Object> getAllCachedItems() {
+        Map<String, Object> allItems = new HashMap<>();
+        
+        for (String key : cacheKeys) {
+            Object cachedItem = memcachedClient.get(key);
+            if (cachedItem != null) {
+                allItems.put(key, cachedItem);
+            } else {
+                cacheKeys.remove(key);
+            }
+        }
+        
+        return allItems;
+    }
+
+    public List<Alert> getAllCachedAlerts() {
+        List<Alert> alerts = new ArrayList<>();
+        
+        for (String key : cacheKeys) {
+            Object cachedItem = memcachedClient.get(key);
+            if (cachedItem instanceof Alert) {
+                alerts.add((Alert) cachedItem);
+            } else if (cachedItem == null) {
+                cacheKeys.remove(key);
+            }
+        }
+        
+        return alerts;
+    }
+
+    public Set<String> getAllCacheKeys() {
+        cacheKeys.removeIf(key -> memcachedClient.get(key) == null);
+        return new HashSet<>(cacheKeys);
+    }
+
+    public void clearAllKeys() {
+        cacheKeys.clear();
+    }
+
+    public void removeFromCache(String key) {
+        memcachedClient.delete(key);
+        cacheKeys.remove(key);
     }
 
 }

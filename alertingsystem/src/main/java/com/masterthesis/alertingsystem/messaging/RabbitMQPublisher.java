@@ -1,5 +1,6 @@
 package com.masterthesis.alertingsystem.messaging;
 
+import com.masterthesis.alertingsystem.cache.utils.AlertMessage;
 import com.masterthesis.alertingsystem.rabbitmq.RabbitMQConfig;
 import com.masterthesis.alertingsystem.rules.facts.Alert;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -14,14 +15,13 @@ public class RabbitMQPublisher {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void publishAlert(Alert alert) {
+    public void publishAlert(AlertMessage alertMessage) {
         try {
             rabbitTemplate.convertAndSend(
                 RabbitMQConfig.ALERTS_EXCHANGE,
                 RabbitMQConfig.ALERTS_ROUTING_KEY,
-                alert
+                alertMessage
             );
-            System.out.println("Published alert to RabbitMQ: " + alert);
         } catch (Exception e) {
             System.err.println("Error publishing alert to RabbitMQ: " + e.getMessage());
             e.printStackTrace();

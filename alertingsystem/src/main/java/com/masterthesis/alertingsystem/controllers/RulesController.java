@@ -23,7 +23,6 @@ public class RulesController {
 
     @PostMapping("/changeRules")
     public ResponseEntity<List<NewRuleDto>> changeRules(@RequestParam(name="serviceName", required = true) String serviceName, @RequestBody List<NewRuleDto> newRulesDtoList) throws ThresholdsLoadingException, NothingToUpdateException {
-        System.out.println(newRulesDtoList.toString());
         List<NewRuleDto> response = droolsRuleService.changeMetricsRules(serviceName, newRulesDtoList);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

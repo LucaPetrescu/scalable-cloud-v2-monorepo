@@ -80,7 +80,8 @@ public class DroolsRuleService {
                     double metricValueDoubleForInventoryService = Double.parseDouble(metricValueForInventoryService);
 
                     if(serviceName.equals("inventory-service")){
-                        processMetricWithThreshold(metricNameForInventoryService, metricValueDoubleForInventoryService, serviceNameFilePath);
+
+                        processMetricWithThreshold(metricNameForInventoryService, metricValueDoubleForInventoryService, serviceName);
 
                         MetricResponseDto metricsResponseForInventoryService = new MetricResponseDto("inventory-service", metricNameForInventoryService, metricValueDoubleForInventoryService, metricType.getDisplayName(), metricType.getUnit());
                         queriedMetrics.add(metricsResponseForInventoryService);
@@ -94,7 +95,8 @@ public class DroolsRuleService {
                     double metricValueDoubleForAuthService = Double.parseDouble(metricValueForAuthService);
 
                     if(serviceName.equals("auth-service")){
-                        processMetricWithThreshold(metricNameForAuthService, metricValueDoubleForAuthService, serviceNameFilePath);
+                        // Fix: Use correct auth service metric name, not inventory service name!
+                        processMetricWithThreshold(metricNameForAuthService, metricValueDoubleForAuthService, serviceName);
 
                         MetricResponseDto metricsResponse = new MetricResponseDto("auth-service", metricNameForAuthService, metricValueDoubleForAuthService, metricType.getDisplayName(), metricType.getUnit());
                         queriedMetrics.add(metricsResponse);
@@ -124,7 +126,7 @@ public class DroolsRuleService {
         }
 
         try {
-            // Special case: compute average duration
+
             if ("http_request_duration_seconds".equals(metricQuery)) {
 
                 JsonNode sumMetric = queryClient.query("http_request_duration_seconds_sum");
@@ -156,7 +158,6 @@ public class DroolsRuleService {
                 }
 
             } else {
-                // Regular single-metric query
                 JsonNode metric = queryClient.query(metricQuery);
                 ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
 
@@ -219,28 +220,25 @@ public class DroolsRuleService {
     }
 
     public void processMetricWithThreshold(String metricName, double metricValue, String serviceName) {
-        System.out.println("Processing metric: " + metricName + " with value: " + metricValue + " for service: " + serviceName);
         
         boolean thresholdExceeded = droolsRuleEngine.isMetricExceedingThreshold(metricName, metricValue, serviceName);
-        System.out.println("Threshold exceeded: " + thresholdExceeded);
 
-        String cacheKey = serviceName + ":" + metricName + "-" + metricValue;
+        String cacheKey = serviceName + ":" + metricName.replace("\"", "") + "-" + metricValue;
         String alertReason = "Metric exceeded for " + serviceName;
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        Alert testAlert = new Alert("Metric exceeded", "cpu_usage_percent", 90);
-
-        String testCacheKey = "auth-service";
-
-        cacheService.saveToCache(testCacheKey, testAlert);
-        rabbitMQPublisher.publishAlert(testAlert);
-
         if(thresholdExceeded) {
+
             try {
                 if(!cacheService.isAlertCached(cacheKey)) {
-                    Alert alert = new Alert(alertReason, metricName, metricValue);
+                    System.out.println("Caching alert");
+                    Alert alert = new Alert(serviceName, alertReason, metricName.replace("\"", ""), metricValue);
                     cacheService.saveToCache(cacheKey, alert);
-                    rabbitMQPublisher.publishAlert(alert);
+
+                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
+                    rabbitMQPublisher.publishAlert(alertMessage);
+
+                    System.out.println("Cached " + cacheService.getFromCache(cacheKey));
                 } else {
                     Alert alert = (Alert) cacheService.getFromCache(cacheKey);
                 }
