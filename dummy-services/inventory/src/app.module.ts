@@ -5,10 +5,12 @@ import { DatabaseService } from './api/database/database.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from './api/product/product.module';
 import { MetricsModule } from './api/metrics/metrics.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/products'),
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     ProductModule,
     MetricsModule,
   ],

@@ -9,12 +9,14 @@ import { MetricsModule } from './api/metrics/metrics.module';
 import { PassportModule } from '@nestjs/passport';
 import { DatabaseService } from './api/database/database.service';
 import { HttpMetricsMiddleware } from './api/middlewares/http-metrics.middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MetricsModule,
     AuthModule,
-    MongooseModule.forRoot('mongodb://localhost:27017/users'),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     UserModule,
   ],
