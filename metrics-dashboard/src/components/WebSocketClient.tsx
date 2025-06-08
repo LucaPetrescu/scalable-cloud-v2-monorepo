@@ -12,40 +12,44 @@ const WebSocketClient: React.FC = () => {
 
     useEffect(() => {
         const connectWebSocket = () => {
-            const wsUrl = process.env.REACT_APP_WS_URL || 'http://localhost:8085/ws';
+            console.log('Attempting to connect to WebSocket...');
+            const wsUrl = 'http://localhost:8085/ws';
             const socket = new SockJS(wsUrl);
             const stompClient = new Client({
                 webSocketFactory: () => socket,
                 onConnect: () => {
-                    console.log('Connected to WebSocket');
+                    console.log('Successfully connected to WebSocket');
                     setIsConnected(true);
                     setRetryCount(0);
 
+                    console.log('Subscribing to /topic/alerts...');
                     stompClient.subscribe('/topic/alerts', (message) => {
                         try {
                             const data = JSON.parse(message.body);
-                            console.log('Received alert:', data);
+                            console.log('Received WebSocket alert:', data);
 
-                            // Create a notification with CRITICAL type for dummy alerts
                             const notification = {
                                 alertType: AlertType.CRITICAL,
                                 service: data.serviceName || 'Unknown Service',
-                                message: data.alert?.reason || 'Dummy Alert',
+                                message: `${data.alert?.metricName || 'Unknown Metric'} threshold exceeded (${data.alert?.metricValue || 'Unknown Value'}) for ${data.serviceName || 'Unknown Service'}`,
                                 timestamp: Date.now(),
                             };
 
+                            console.log('Emitting notification:', notification);
                             notificationService.emit('notification', notification);
                         } catch (error) {
                             console.error('Error parsing WebSocket message:', error);
+                            console.error('Raw message:', message.body);
                         }
                     });
+                    console.log('Successfully subscribed to /topic/alerts');
                 },
                 onDisconnect: () => {
-                    console.log('Disconnected from WebSocket');
+                    console.log('WebSocket disconnected');
                     setIsConnected(false);
 
-                    // Attempt to reconnect if we haven't exceeded max retries
                     if (retryCount < MAX_RETRIES) {
+                        console.log(`Attempting to reconnect (${retryCount + 1}/${MAX_RETRIES})...`);
                         setTimeout(() => {
                             setRetryCount((prev) => prev + 1);
                             connectWebSocket();
@@ -56,21 +60,23 @@ const WebSocketClient: React.FC = () => {
                 },
                 onStompError: (frame) => {
                     console.error('STOMP error:', frame);
+                    console.error('STOMP error headers:', frame.headers);
+                    console.error('STOMP error body:', frame.body);
                     setIsConnected(false);
                 },
                 connectHeaders: {
                     // Add any authentication headers if needed
                 },
                 debug: (str) => {
-                    if (process.env.NODE_ENV === 'development') {
-                        console.log('STOMP Debug:', str);
-                    }
+                    console.log('STOMP Debug:', str);
                 },
             });
 
+            console.log('Activating STOMP client...');
             stompClient.activate();
 
             return () => {
+                console.log('Deactivating STOMP client...');
                 stompClient.deactivate();
             };
         };

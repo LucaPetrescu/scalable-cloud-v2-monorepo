@@ -7,6 +7,7 @@ export const useNetworkMetrics = (service: string | undefined) => {
     useEffect(() => {
         const listenerId = `network-${service}`;
         const handleMetricsData = (data: any) => {
+            console.log('Received network metrics data:', data);
             const systemMetrics = data[1]
                 .filter((metric: any) =>
                     ['"http_requests_total"', 'http_request_duration_seconds'].includes(metric.metricName),
@@ -16,7 +17,7 @@ export const useNetworkMetrics = (service: string | undefined) => {
                     ...metric,
                     metricName: metric.metricName.replace(/"/g, ''),
                 }));
-
+            console.log('Processed network metrics:', systemMetrics);
             setMetrics(systemMetrics);
         };
 

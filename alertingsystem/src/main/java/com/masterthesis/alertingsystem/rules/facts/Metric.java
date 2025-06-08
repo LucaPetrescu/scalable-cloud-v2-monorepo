@@ -25,4 +25,12 @@ public class Metric {
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Metric{" +
+                "name='" + name + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

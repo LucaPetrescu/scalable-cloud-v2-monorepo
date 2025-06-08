@@ -16,7 +16,7 @@ public class CacheService {
 
     private final int TTL = 259200;
 
-    private final Set<String> cacheKeys = ConcurrentHashMap.newKeySet();
+    private final Set<String> cacheKeys = new HashSet<>();
 
     public void saveToCache(String key, Alert alert) {
         memcachedClient.set(key, TTL, alert);
@@ -27,17 +27,11 @@ public class CacheService {
         return memcachedClient.get(key);
     }
 
-    public boolean isAlertCached(String key) {
-        Object value = memcachedClient.get(key);
-        if(value == null) {
-            return false;
-        }
-        return true;
-    }
-
     public Map<String, Object> getAllCachedItems() {
         Map<String, Object> allItems = new HashMap<>();
-        
+
+        System.out.println(cacheKeys);
+
         for (String key : cacheKeys) {
             Object cachedItem = memcachedClient.get(key);
             if (cachedItem != null) {
@@ -52,7 +46,7 @@ public class CacheService {
 
     public List<Alert> getAllCachedAlerts() {
         List<Alert> alerts = new ArrayList<>();
-        
+
         for (String key : cacheKeys) {
             Object cachedItem = memcachedClient.get(key);
             if (cachedItem instanceof Alert) {

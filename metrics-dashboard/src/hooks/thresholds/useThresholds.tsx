@@ -16,14 +16,12 @@ export const useThresholds = (serviceName: string | undefined) => {
                     params: { serviceName },
                 });
 
-                // Ensure we have valid data before setting it
                 if (response.data && Array.isArray(response.data) && response.data.length > 1) {
                     setThresholds(response.data || []);
                 } else {
                     console.warn('Invalid thresholds data received:', response.data);
                     setThresholds([]);
                 }
-                console.log('thresholds', thresholds);
             } catch (error) {
                 console.error('Error fetching thresholds:', error);
                 setThresholds([]);

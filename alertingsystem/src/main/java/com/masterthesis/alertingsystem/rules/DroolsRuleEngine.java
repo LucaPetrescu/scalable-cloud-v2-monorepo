@@ -149,11 +149,8 @@ public class DroolsRuleEngine {
                 kieSession.insert(t);
             }
 
-            if(metricName.replace("\"", "").equals("cpu_usage_percent") && value > 99) {
-                System.out.println("Service Name " + serviceName + " exceded by value");
-            }
-
             Metric metric = new Metric(metricName.replace("\"", ""), value);
+
             kieSession.insert(metric);
 
             List<Alert> alerts = new ArrayList<>();

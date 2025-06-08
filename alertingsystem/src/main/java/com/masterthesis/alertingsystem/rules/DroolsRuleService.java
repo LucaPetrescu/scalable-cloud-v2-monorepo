@@ -17,12 +17,14 @@ import com.masterthesis.alertingsystem.messaging.RabbitMQPublisher;
 
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class DroolsRuleService {
@@ -39,10 +41,83 @@ public class DroolsRuleService {
     @Autowired
     private RabbitMQPublisher rabbitMQPublisher;
 
+    private final Random random = new Random();
+    
+    // Store the latest dummy metrics
+    private MetricResponseDto latestAuthHttpMetrics = null;
+    private MetricResponseDto latestAuthDurationMetrics = null;
+    private MetricResponseDto latestInventoryHttpMetrics = null;
+    private MetricResponseDto latestInventoryDurationMetrics = null;
+    private long lastDummyMetricsUpdate = 0;
+
+    @Scheduled(fixedRate = 60000) // Runs every 3 seconds
+    public void generateDummyRequestDurationMetrics() {
+        try {
+            // Generate different random durations between 1.1 and 5 seconds for each service
+            double authDuration = 1.1 + (random.nextDouble() * 3.9); // Random between 1.1 and 5.0
+            double inventoryDuration = 1.1 + (random.nextDouble() * 3.9); // Different random between 1.1 and 5.0
+            
+            // Generate different request counts for each service
+            int authRequestCount = 5 + random.nextInt(6); // Random between 5 and 10
+            int inventoryRequestCount = 5 + random.nextInt(6); // Different random between 5 and 10
+            
+            // Calculate sums based on different durations and counts
+            double authSum = authDuration * authRequestCount;
+            double inventorySum = inventoryDuration * inventoryRequestCount;
+            
+            // Calculate average durations
+            double authAvgDuration = authSum / authRequestCount;
+            double inventoryAvgDuration = inventorySum / inventoryRequestCount;
+            
+            // Store the latest dummy metrics
+            latestAuthHttpMetrics = new MetricResponseDto(
+                "auth-service",
+                "\"http_requests_total\"",
+                authRequestCount,
+                "HTTP Requests Total",
+                "requests"
+            );
+            latestAuthDurationMetrics = new MetricResponseDto(
+                "auth-service",
+                "http_request_duration_seconds",
+                authAvgDuration,
+                "HTTP Request Duration",
+                "seconds"
+            );
+            latestInventoryHttpMetrics = new MetricResponseDto(
+                "inventory-service",
+                "\"http_requests_total\"",
+                inventoryRequestCount,
+                "HTTP Requests Total",
+                "requests"
+            );
+            latestInventoryDurationMetrics = new MetricResponseDto(
+                "inventory-service",
+                "http_request_duration_seconds",
+                inventoryAvgDuration,
+                "HTTP Request Duration",
+                "seconds"
+            );
+            
+            lastDummyMetricsUpdate = System.currentTimeMillis();
+            
+            // Process metrics with thresholds
+            processMetricWithThreshold("http_request_duration_seconds", authAvgDuration, "auth-service");
+            processMetricWithThreshold("http_request_duration_seconds", inventoryAvgDuration, "inventory-service");
+            processMetricWithThreshold("http_requests_total", authRequestCount, "auth-service");
+            processMetricWithThreshold("http_requests_total", inventoryRequestCount, "inventory-service");
+            
+            System.out.println("Generated dummy metrics - Auth: avg=" + authAvgDuration + 
+                             "s (sum=" + authSum + "s, count=" + authRequestCount + 
+                             "), Inventory: avg=" + inventoryAvgDuration + 
+                             "s (sum=" + inventorySum + "s, count=" + inventoryRequestCount + ")");
+        } catch (Exception e) {
+            System.err.println("❌ Failed to generate dummy metrics: " + e.getMessage());
+        }
+    }
+
     public ArrayList<MetricResponseDto> getAllMetrics(String serviceName) {
-
         ArrayList<MetricResponseDto> queriedMetrics = new ArrayList<>();
-
 
         String serviceNameFilePath = "";
 
@@ -53,52 +128,37 @@ public class DroolsRuleService {
         }
 
         for(MetricType metricType: MetricType.values()){
+            if (metricType == MetricType.HTTP_DURATION ||
+                metricType == MetricType.HTTP_REQUEST_DURATION_SECONDS_SUM || 
+                metricType == MetricType.HTTP_REQUEST_DURATION_SECONDS_COUNT ||
+                metricType == MetricType.HTTP_REQUESTS) {
+                continue;
+            }
 
             try{
-
-                double httpRequestDurationSecondsCountValueDouble = getDoubleValueOfMetric(metricType.getQueryName(), "http_request_duration_seconds_count");
-                double httpRequestDurationSecondsSumValueDouble = getDoubleValueOfMetric(metricType.getQueryName(), "http_request_duration_seconds_sum");
-
-                double httpRequestDurationSecondsDoubleValue = 0.0;
-                if (httpRequestDurationSecondsCountValueDouble > 0) {
-                    httpRequestDurationSecondsDoubleValue = httpRequestDurationSecondsSumValueDouble / httpRequestDurationSecondsCountValueDouble;
-                }
-
-                if(!Double.isNaN(httpRequestDurationSecondsDoubleValue) && httpRequestDurationSecondsCountValueDouble > 0){
-                    queriedMetrics.add(new MetricResponseDto(serviceName, "http_request_duration_seconds", httpRequestDurationSecondsDoubleValue, "HTTP Request Duration", "seconds"));
-                }
-
                 JsonNode metric = queryClient.query(metricType.getQueryName());
-
                 ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
 
                 if(!resultArrayNode.isEmpty()) {
                     JsonNode metricResultForInventoryService = resultArrayNode.get(0);
-
                     String metricNameForInventoryService = metricResultForInventoryService.at("/metric/__name__").toString();
                     String metricValueForInventoryService = metricResultForInventoryService.at("/value").get(1).toString().replace("\"", "");
                     double metricValueDoubleForInventoryService = Double.parseDouble(metricValueForInventoryService);
 
                     if(serviceName.equals("inventory-service")){
-
                         processMetricWithThreshold(metricNameForInventoryService, metricValueDoubleForInventoryService, serviceName);
-
-                        MetricResponseDto metricsResponseForInventoryService = new MetricResponseDto("inventory-service", metricNameForInventoryService, metricValueDoubleForInventoryService, metricType.getDisplayName(), metricType.getUnit());
+                        MetricResponseDto metricsResponseForInventoryService = new MetricResponseDto(serviceName, metricNameForInventoryService, metricValueDoubleForInventoryService, metricType.getDisplayName(), metricType.getUnit());
                         queriedMetrics.add(metricsResponseForInventoryService);
-
                     }
 
                     JsonNode metricResultForAuthService = resultArrayNode.get(1);
-
                     String metricNameForAuthService = metricResultForAuthService.at("/metric/__name__").toString();
                     String metricValueForAuthService = metricResultForAuthService.at("/value").get(1).toString().replace("\"", "");
                     double metricValueDoubleForAuthService = Double.parseDouble(metricValueForAuthService);
 
                     if(serviceName.equals("auth-service")){
-                        // Fix: Use correct auth service metric name, not inventory service name!
                         processMetricWithThreshold(metricNameForAuthService, metricValueDoubleForAuthService, serviceName);
-
-                        MetricResponseDto metricsResponse = new MetricResponseDto("auth-service", metricNameForAuthService, metricValueDoubleForAuthService, metricType.getDisplayName(), metricType.getUnit());
+                        MetricResponseDto metricsResponse = new MetricResponseDto(serviceName, metricNameForAuthService, metricValueDoubleForAuthService, metricType.getDisplayName(), metricType.getUnit());
                         queriedMetrics.add(metricsResponse);
                     }
                 } else {
@@ -109,8 +169,19 @@ public class DroolsRuleService {
             }
         }
 
-        return queriedMetrics;
+        // Add dummy HTTP metrics if they were updated in the last 60 seconds
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastDummyMetricsUpdate < 60000) {
+            if (serviceName.equals("auth-service") && latestAuthHttpMetrics != null && latestAuthDurationMetrics != null) {
+                queriedMetrics.add(latestAuthHttpMetrics);
+                queriedMetrics.add(latestAuthDurationMetrics);
+            } else if (serviceName.equals("inventory-service") && latestInventoryHttpMetrics != null && latestInventoryDurationMetrics != null) {
+                queriedMetrics.add(latestInventoryHttpMetrics);
+                queriedMetrics.add(latestInventoryDurationMetrics);
+            }
+        }
 
+        return queriedMetrics;
     }
 
     public MetricResponseDto getMetric(String serviceName, String metricQuery) {
@@ -228,19 +299,19 @@ public class DroolsRuleService {
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         if(thresholdExceeded) {
-
             try {
-                if(!cacheService.isAlertCached(cacheKey)) {
-                    System.out.println("Caching alert");
+                if(cacheService.getFromCache(cacheKey) == null) {
+
                     Alert alert = new Alert(serviceName, alertReason, metricName.replace("\"", ""), metricValue);
                     cacheService.saveToCache(cacheKey, alert);
 
                     AlertMessage alertMessage = new AlertMessage(alert, currentTime);
                     rabbitMQPublisher.publishAlert(alertMessage);
 
-                    System.out.println("Cached " + cacheService.getFromCache(cacheKey));
                 } else {
                     Alert alert = (Alert) cacheService.getFromCache(cacheKey);
+                    AlertMessage alertMessage = new AlertMessage(alert, currentTime);
+                    rabbitMQPublisher.publishAlert(alertMessage);
                 }
             } catch (Exception e) {
                 System.err.println("Error handling threshold alert: " + e.getMessage());
@@ -294,6 +365,55 @@ public class DroolsRuleService {
 
         return doubleValue;
 
+    }
+
+    public MetricResponseDto getRequestDurationMetrics(String serviceName) {
+        try {
+            JsonNode sumMetric = queryClient.query("http_request_duration_seconds_sum");
+            ArrayNode sumResult = (ArrayNode) sumMetric.at("/data/result");
+
+            JsonNode countMetric = queryClient.query("http_request_duration_seconds_count");
+            ArrayNode countResult = (ArrayNode) countMetric.at("/data/result");
+
+            if (!sumResult.isEmpty() && !countResult.isEmpty()) {
+                JsonNode serviceSumMetric = null;
+                JsonNode serviceCountMetric = null;
+                
+                for (JsonNode node : sumResult) {
+                    String service = node.at("/metric/service").asText();
+                    if (service.equals(serviceName)) {
+                        serviceSumMetric = node;
+                        break;
+                    }
+                }
+                
+                for (JsonNode node : countResult) {
+                    String service = node.at("/metric/service").asText();
+                    if (service.equals(serviceName)) {
+                        serviceCountMetric = node;
+                        break;
+                    }
+                }
+
+                if (serviceSumMetric != null && serviceCountMetric != null) {
+                    double sumValue = Double.parseDouble(serviceSumMetric.at("/value").get(1).asText());
+                    double countValue = Double.parseDouble(serviceCountMetric.at("/value").get(1).asText());
+                    double avgDuration = countValue > 0 ? sumValue / countValue : 0;
+
+                    return new MetricResponseDto(
+                        serviceName,
+                        "http_request_duration_seconds",
+                        avgDuration,
+                        "HTTP Request Duration Average",
+                        "seconds"
+                    );
+                }
+            }
+            throw new IllegalArgumentException("Could not find metrics for service: " + serviceName);
+        } catch (Exception e) {
+            System.err.println("❌ Request duration metrics retrieval failed: " + e.getMessage());
+            return null;
+        }
     }
 
 }

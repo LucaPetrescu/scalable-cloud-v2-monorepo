@@ -44,6 +44,9 @@ export const NetworkMetricsView = () => {
     }, {});
 
     const formatValue = (metric) => {
+        if (metric.metricName === 'http_request_duration_seconds') {
+            return `${metric.metricValue.toFixed(2)}s`;
+        }
         return `${metric.metricValue}`;
     };
 

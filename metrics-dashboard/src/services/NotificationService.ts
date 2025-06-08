@@ -26,10 +26,20 @@ class NotificationService extends EventEmitter {
         this.emit('notification', notification);
     }
 
+    public emit(event: string, notification: Notification) {
+        super.emit(event, notification);
+    }
+
+    public on(event: string, listener: (notification: Notification) => void) {
+        super.on(event, listener);
+    }
+
+    public off(event: string, listener: (notification: Notification) => void) {
+        super.off(event, listener);
+    }
+
     private determineAlertType(oldValue: number, newValue: number): AlertType {
-        const difference = Math.abs(newValue - oldValue);
-        if (difference > 50) return AlertType.CRITICAL;
-        if (difference > 20) return AlertType.WARNING;
+        // Always use INFO level for threshold changes
         return AlertType.INFO;
     }
 }

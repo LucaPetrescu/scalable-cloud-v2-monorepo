@@ -12,7 +12,7 @@ dialect "mvel"
 rule "Checking metric usage against threshold"
     when
        $threshold : Threshold()
-       $metric : Metric(name == $threshold.name, value > $threshold.max)
+       $metric : Metric(name == $threshold.name && value > $threshold.max)
     then
         Alert alert = new Alert(
             serviceName,

@@ -21,7 +21,6 @@ export const SystemMetricsModal = ({ service, isOpen, onClose }: SystemMetricsMo
     const { changeThresholds } = useChangeThresholds();
 
     useEffect(() => {
-        console.log('allThresholds', allThresholds);
         const newThresholds: Thresholds = {};
         if (Array.isArray(allThresholds)) {
             for (const threshold of allThresholds) {
