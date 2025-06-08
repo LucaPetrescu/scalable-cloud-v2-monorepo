@@ -140,26 +140,25 @@ public class DroolsRuleService {
                 ArrayNode resultArrayNode = (ArrayNode) metric.at("/data/result");
 
                 if(!resultArrayNode.isEmpty()) {
-                    JsonNode metricResultForInventoryService = resultArrayNode.get(0);
-                    String metricNameForInventoryService = metricResultForInventoryService.at("/metric/__name__").toString();
-                    String metricValueForInventoryService = metricResultForInventoryService.at("/value").get(1).toString().replace("\"", "");
-                    double metricValueDoubleForInventoryService = Double.parseDouble(metricValueForInventoryService);
+                    // Find the metric for the requested service
+                    for (JsonNode metricResult : resultArrayNode) {
+                        String metricServiceName = metricResult.at("/metric/service").asText();
+                        if (metricServiceName.equals(serviceName)) {
+                            String metricName = metricResult.at("/metric/__name__").toString();
+                            String metricValue = metricResult.at("/value").get(1).toString().replace("\"", "");
+                            double metricValueDouble = Double.parseDouble(metricValue);
 
-                    if(serviceName.equals("inventory-service")){
-                        processMetricWithThreshold(metricNameForInventoryService, metricValueDoubleForInventoryService, serviceName);
-                        MetricResponseDto metricsResponseForInventoryService = new MetricResponseDto(serviceName, metricNameForInventoryService, metricValueDoubleForInventoryService, metricType.getDisplayName(), metricType.getUnit());
-                        queriedMetrics.add(metricsResponseForInventoryService);
-                    }
-
-                    JsonNode metricResultForAuthService = resultArrayNode.get(1);
-                    String metricNameForAuthService = metricResultForAuthService.at("/metric/__name__").toString();
-                    String metricValueForAuthService = metricResultForAuthService.at("/value").get(1).toString().replace("\"", "");
-                    double metricValueDoubleForAuthService = Double.parseDouble(metricValueForAuthService);
-
-                    if(serviceName.equals("auth-service")){
-                        processMetricWithThreshold(metricNameForAuthService, metricValueDoubleForAuthService, serviceName);
-                        MetricResponseDto metricsResponse = new MetricResponseDto(serviceName, metricNameForAuthService, metricValueDoubleForAuthService, metricType.getDisplayName(), metricType.getUnit());
-                        queriedMetrics.add(metricsResponse);
+                            processMetricWithThreshold(metricName, metricValueDouble, serviceName);
+                            MetricResponseDto metricsResponse = new MetricResponseDto(
+                                serviceName,
+                                metricName,
+                                metricValueDouble,
+                                metricType.getDisplayName(),
+                                metricType.getUnit()
+                            );
+                            queriedMetrics.add(metricsResponse);
+                            break;
+                        }
                     }
                 } else {
                     throw new IllegalArgumentException("Metric data is non-existent or invalid");

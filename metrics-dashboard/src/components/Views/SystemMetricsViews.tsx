@@ -14,6 +14,7 @@ export const SystemMetricsViews = () => {
 
     useEffect(() => {
         if (systemMetrics.length > 0) {
+            console.log('System metrics received in view:', systemMetrics);
             const newData = systemMetrics
                 .map((metric) => {
                     const localTimestamp = Date.now();
@@ -28,9 +29,10 @@ export const SystemMetricsViews = () => {
                 })
                 .filter(Boolean);
 
+            console.log('New data points for graph:', newData);
             setHistoricalData((prev) => {
                 const updated = [...prev, ...newData];
-
+                console.log('Updated historical data:', updated);
                 return updated.slice(-20);
             });
         }
@@ -43,6 +45,8 @@ export const SystemMetricsViews = () => {
         acc[data.metricName].push(data);
         return acc;
     }, {});
+
+    console.log('Grouped metrics for graphs:', groupedMetrics);
 
     const formatValue = (metric) => {
         return `${metric.metricValue.toFixed(2)}%`;

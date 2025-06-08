@@ -7,6 +7,7 @@ export const useSystemMetrics = (service: string | undefined) => {
     useEffect(() => {
         const listenerId = `system-${service}`;
         const handleMetricsData = (data: any) => {
+            console.log('Raw metrics data received:', data);
             const systemMetrics = data[1]
                 .filter((metric: any) => {
                     return ['"cpu_usage_percent"', '"ram_usage_percent"'].includes(metric.metricName);
@@ -16,6 +17,7 @@ export const useSystemMetrics = (service: string | undefined) => {
                     ...metric,
                     metricName: metric.metricName.replace(/"/g, ''),
                 }));
+            console.log('Processed system metrics:', systemMetrics);
             setMetrics(systemMetrics);
         };
 

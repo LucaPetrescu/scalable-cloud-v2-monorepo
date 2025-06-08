@@ -7,6 +7,8 @@ export class HttpMetricsService {
   private readonly httpRequestCounter: client.Counter<string>;
   private readonly httpRequestDurationHistogram: client.Histogram<string>;
 
+  private metricsCollectorUrl: string = 'http://192.168.0.171:8080/auth';
+
   constructor(
     @Inject('PROM_REGISTRY') private readonly registry: client.Registry,
   ) {
@@ -58,7 +60,7 @@ export class HttpMetricsService {
 
     try {
       await axios.post(
-        'http://localhost:8080/auth/network-metrics/http-request-count',
+        `${this.metricsCollectorUrl}/network-metrics/http-request-count`,
         httpMetricsCount,
         {
           headers: {
@@ -68,7 +70,7 @@ export class HttpMetricsService {
       );
 
       await axios.post(
-        'http://localhost:8080/auth/network-metrics/http-request-duration',
+        `${this.metricsCollectorUrl}/network-metrics/http-request-duration`,
         httpMetricsDuration,
         {
           headers: {

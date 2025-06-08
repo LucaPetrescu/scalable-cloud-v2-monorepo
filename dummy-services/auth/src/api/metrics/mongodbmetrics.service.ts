@@ -12,6 +12,8 @@ export class MongoDBMetricsService {
   private readonly queryTimeGauge: client.Gauge<string>;
   private readonly memoryUsageGauge: client.Gauge<string>;
 
+  private metricsCollectorUrl: string = 'http://192.168.0.171:8080/auth';
+
   constructor(
     @Inject('PROM_REGISTRY') private readonly registry: client.Registry,
   ) {
@@ -142,7 +144,7 @@ export class MongoDBMetricsService {
 
     try {
       axios.post(
-        'http://localhost:8080/auth/mongodb-metrics/connection-pool-size',
+        `${this.metricsCollectorUrl}/mongodb-metrics/connection-pool-size`,
         connectionPoolSize,
         {
           headers: {
@@ -152,7 +154,7 @@ export class MongoDBMetricsService {
       );
 
       axios.post(
-        'http://localhost:8080/auth/mongodb-metrics/active-connections',
+        `${this.metricsCollectorUrl}/mongodb-metrics/active-connections`,
         activeConnections,
         {
           headers: {
@@ -162,7 +164,7 @@ export class MongoDBMetricsService {
       );
 
       axios.post(
-        'http://localhost:8080/auth/mongodb-metrics/available-connections',
+        `${this.metricsCollectorUrl}/mongodb-metrics/available-connections`,
         availableConnections,
         {
           headers: {
@@ -172,7 +174,7 @@ export class MongoDBMetricsService {
       );
 
       axios.post(
-        'http://localhost:8080/auth/mongodb-metrics/query-time',
+        `${this.metricsCollectorUrl}/mongodb-metrics/query-time`,
         queryTime,
         {
           headers: {
@@ -182,7 +184,7 @@ export class MongoDBMetricsService {
       );
 
       axios.post(
-        'http://localhost:8080/auth/mongodb-metrics/memory-usage',
+        `${this.metricsCollectorUrl}/mongodb-metrics/memory-usage`,
         memoryUsage,
         {
           headers: {

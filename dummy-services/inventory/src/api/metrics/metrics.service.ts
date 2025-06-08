@@ -7,6 +7,7 @@ import * as os from 'os';
 export class MetricsService implements OnModuleInit {
   private readonly cpuUsageGauge: client.Gauge<string>;
   private readonly memoryUsageGauge: client.Gauge<string>;
+  private metricsCollectorUrl: string = 'http://192.168.0.171:8080/inventory';
 
   constructor(
     @Inject('PROM_REGISTRY') private readonly registry: client.Registry,
@@ -49,7 +50,7 @@ export class MetricsService implements OnModuleInit {
 
       try {
         await axios.post(
-          'http://localhost:8080/inventory/system-metrics/cpu-metrics',
+          `${this.metricsCollectorUrl}/system-metrics/cpu-metrics`,
           cpuMetrics,
           {
             headers: {
@@ -59,7 +60,7 @@ export class MetricsService implements OnModuleInit {
         );
 
         await axios.post(
-          'http://localhost:8080/inventory/system-metrics/ram-metrics',
+          `${this.metricsCollectorUrl}/system-metrics/ram-metrics`,
           ramMetrics,
           {
             headers: {
