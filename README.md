@@ -23,7 +23,7 @@ Before using the project, make sure you have installed the following:
 
 Clone the repository. Make sure Docker Desktop is running. 
 
-**NOTE:** Make sure to have your own MONGO_DB URI in the `.env` file. You can setup a MongoDB Atlas Cluster [here](). After getting the connetion URI, add it to the `app.module.ts` and `database.service.ts` files of each service (`process.env.MONGODB_URI/users` for `auth` and `process.env.MONGODB_URI/products` for `inventory`).
+**NOTE:** Make sure to have your own MONGO_DB URI in the `.env` file. You can setup a MongoDB Atlas Cluster [here](https://www.mongodb.com/lp/cloud/atlas/try4-reg?utm_source=google&utm_campaign=search_gs_pl_evergreen_atlas_core-high-int_prosp-brand_gic-null_ww-tier3_ps-all_desktop_eng_lead&utm_term=mongodb%20atlas&utm_medium=cpc_paid_search&utm_ad=e&utm_ad_campaign_id=22031347575&adgroup=173739098593&cq_cmp=22031347575&gad_source=1&gad_campaignid=22031347575&gbraid=0AAAAADQ1400PXhRGPFNNGJF1WQ4-bkpqK&gclid=Cj0KCQjwjJrCBhCXARIsAI5x66W9qgVBF7RlXalKpvv3GyZJhjGoln6QOzyEv8eqwxkrSNrRi1IYIFkaAkPGEALw_wcB). After getting the connetion URI, add it to the `app.module.ts` and `database.service.ts` files of each service (`process.env.MONGODB_URI/users` for `auth` and `process.env.MONGODB_URI/products` for `inventory`).
 
 Run the `start_scv2.sh` script. It will take care of everything for you, so no need to worry. Access the app on `http://localhost:3002`.
 
