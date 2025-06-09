@@ -1,6 +1,6 @@
 # ScalableCloudV2
 
-This represents my master thesis for graduating the Advanced Software Services Master's programme ad POLITEHNICA University of Bucharest.
+This represents my master thesis for graduating the Advanced Software Services Master's programme at POLITEHNICA University of Bucharest.
 
 It comes as a solution for unifing microservices observability, monitoring and scaling. Current solutions such as Grafana, Prometheus, OpenTelemetry and New Relic are great tools for monitoring cloud appications, 
 but they do not offer a unified approach, as they serve different purposes and they need to be coupled with each other.
