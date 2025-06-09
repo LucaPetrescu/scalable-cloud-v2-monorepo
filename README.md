@@ -16,4 +16,15 @@ for observability and scaling.
 
 ### Setting up the project
 
-Before using the project, make sure you have installed the following: (Node.js)[], (Docker Desktop)[], [MongoDB Community](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/) 
+Before using the project, make sure you have installed the following: 
+* [Node.js](https://nodejs.org/en/download)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) 
+* [MongoDB Community](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/)
+
+Clone the repository. Make sure Docker Desktop is running. 
+
+**NOTE:** Make sure to have your own MONGO_DB URI in the `.env` file. You can setup a MongoDB Atlas Cluster [here](). After getting the connetion URI, add it to the `app.module.ts` and `database.service.ts` files of each service (`process.env.MONGODB_URI/users` for `auth` and `process.env.MONGODB_URI/products` for `inventory`).
+
+Run the `start_scv2.sh` script. It will take care of everything for you, so no need to worry. Access the app on `http://localhost:3002`.
+
+If you want to stop the app, run `stop_scv2.sh` script.
