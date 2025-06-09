@@ -122,9 +122,9 @@ public class DroolsRuleService {
         String serviceNameFilePath = "";
 
         if (serviceName.equals("auth-service")){
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/auth_rules.yml";
+            serviceNameFilePath = "config/auth_rules.yml";
         } else if(serviceName.equals("inventory-service")){
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
+            serviceNameFilePath = "config/inventory_rules.yml";
         }
 
         for(MetricType metricType: MetricType.values()){
@@ -190,9 +190,9 @@ public class DroolsRuleService {
         String serviceNameFilePath = "";
 
         if (serviceName.equals("auth-service")) {
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/auth_rules.yml";
+            serviceNameFilePath = "config/auth_rules.yml";
         } else if (serviceName.equals("inventory-service")) {
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
+            serviceNameFilePath = "config/inventory_rules.yml";
         }
 
         try {
@@ -270,9 +270,9 @@ public class DroolsRuleService {
         List<NewRuleDto> newRules = new ArrayList<>();
 
         if (serviceName.equals("auth-service")){
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/auth_rules.yml";
+            serviceNameFilePath = "config/auth_rules.yml";
         } else if(serviceName.equals("inventory-service")){
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
+            serviceNameFilePath = "config/inventory_rules.yml";
         }
 
         List<Threshold> updatedRules = droolsRuleEngine.changeRules(serviceNameFilePath, newRulesDtoList);
@@ -326,9 +326,9 @@ public class DroolsRuleService {
         String serviceNameFilePath = "";
 
         if (serviceName.equals("auth-service")){
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/auth_rules.yml";
+            serviceNameFilePath = "config/auth_rules.yml";
         } else if(serviceName.equals("inventory-service")){
-            serviceNameFilePath = "src/main/java/com/masterthesis/alertingsystem/rules/config/inventory_rules.yml";
+            serviceNameFilePath = "config/inventory_rules.yml";
         }
 
         List<Threshold> rulesForService = droolsRuleEngine.getRulesForService(serviceNameFilePath);
@@ -336,6 +336,8 @@ public class DroolsRuleService {
         for(Threshold threshold : rulesForService) {
             rulesDtosList.add(new RuleDto(threshold.getName(), threshold.getMax()));
         }
+
+        System.out.println("Thresholds for " + serviceName + rulesForService.toString());
 
         return rulesDtosList;
 
