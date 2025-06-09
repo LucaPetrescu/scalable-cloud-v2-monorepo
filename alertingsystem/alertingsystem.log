@@ -1,0 +1,447 @@
+2025-06-09 12:29:20 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 12:29:20 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 18707 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:29:20 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:29:20 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:29:20 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:29:20 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:29:21 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:29:21 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:29:21 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6287e312]]
+2025-06-09 12:29:21 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:29:21 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:29:21 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#34cb1310:0/SimpleConnection@18f1631c [delegate=amqp://user@127.0.0.1:5672/, localPort=56637]
+2025-06-09 12:29:21 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.512 seconds (process running for 1.825)
+2025-06-09 12:29:21 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:29:21 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:29:22 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:29:22 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@6287e312]]
+2025-06-09 12:29:22 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:29:22 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:29:22 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 12:31:55 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 12:31:55 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 19161 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:31:55 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:31:55 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:31:55 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:31:55 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:31:56 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:31:56 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:31:56 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7c290246]]
+2025-06-09 12:31:56 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:31:56 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:31:56 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#2b441609:0/SimpleConnection@6a495d88 [delegate=amqp://user@127.0.0.1:5672/, localPort=57008]
+2025-06-09 12:31:56 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.469 seconds (process running for 1.771)
+2025-06-09 12:31:56 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:31:56 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:31:56 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:31:56 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7c290246]]
+2025-06-09 12:31:56 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:31:56 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:31:57 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 12:36:20 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 12:36:20 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 20081 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:36:20 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:36:20 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:36:21 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:36:21 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:36:22 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:36:22 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:36:22 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7927209f]]
+2025-06-09 12:36:22 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:36:22 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:36:22 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#4d0d568f:0/SimpleConnection@3fbf66e7 [delegate=amqp://user@127.0.0.1:5672/, localPort=57585]
+2025-06-09 12:36:22 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.62 seconds (process running for 1.941)
+2025-06-09 12:36:22 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:36:22 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:36:22 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:36:22 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7927209f]]
+2025-06-09 12:36:22 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:36:22 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:36:23 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 12:39:16 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 12:39:16 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 23121 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:39:16 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:39:16 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:39:17 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:39:17 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:39:17 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:39:17 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:39:17 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@26c494d7]]
+2025-06-09 12:39:17 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:39:17 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:39:17 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#3ecbfba1:0/SimpleConnection@5a35efac [delegate=amqp://user@127.0.0.1:5672/, localPort=58113]
+2025-06-09 12:39:17 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.504 seconds (process running for 1.823)
+2025-06-09 12:39:17 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:39:17 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:39:18 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:39:18 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@26c494d7]]
+2025-06-09 12:39:18 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:39:18 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:39:19 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 12:44:35 [main] INFO  c.m.a.AlertingSystemApplication - Starting AlertingSystemApplication using Java 24.0.1 with PID 24112 (/Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem/target/classes started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:44:35 [main] DEBUG c.m.a.AlertingSystemApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:44:35 [main] INFO  c.m.a.AlertingSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:44:36 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8085 (http)
+2025-06-09 12:44:36 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-09 12:44:36 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-06-09 12:44:36 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-09 12:44:36 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 437 ms
+2025-06-09 12:44:36 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:44:36 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:44:37 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:44:39 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2025-06-09 12:44:39 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-09 12:44:39 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8085 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8085 or configure this application to listen on another port.
+
+2025-06-09 12:44:54 [main] INFO  c.m.a.AlertingSystemApplication - Starting AlertingSystemApplication using Java 24.0.1 with PID 24314 (/Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem/target/classes started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:44:54 [main] DEBUG c.m.a.AlertingSystemApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:44:54 [main] INFO  c.m.a.AlertingSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:44:54 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8085 (http)
+2025-06-09 12:44:54 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-09 12:44:54 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-06-09 12:44:54 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-09 12:44:54 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 410 ms
+2025-06-09 12:44:54 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:44:54 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:44:55 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:44:55 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8085 (http) with context path ''
+2025-06-09 12:44:55 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:44:55 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@709c6768]]
+2025-06-09 12:44:55 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:44:55 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:44:55 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#1cc42abe:0/SimpleConnection@5578ed7e [delegate=amqp://user@127.0.0.1:5672/, localPort=58832]
+2025-06-09 12:44:55 [main] INFO  c.m.a.AlertingSystemApplication - Started AlertingSystemApplication in 1.436 seconds (process running for 1.542)
+2025-06-09 12:44:55 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:44:55 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:44:57 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-09 12:44:57 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-09 12:44:57 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-09 12:45:55 [MessageBroker-2] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 3, active threads = 1, queued tasks = 1, completed tasks = 1]
+2025-06-09 12:47:14 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:47:14 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@709c6768]]
+2025-06-09 12:47:14 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:47:14 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:47:14 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 12:47:29 [main] INFO  c.m.a.AlertingSystemApplication - Starting AlertingSystemApplication using Java 24.0.1 with PID 26222 (/Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem/target/classes started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:47:29 [main] DEBUG c.m.a.AlertingSystemApplication - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:47:29 [main] INFO  c.m.a.AlertingSystemApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:47:29 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8085 (http)
+2025-06-09 12:47:29 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-09 12:47:29 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.19]
+2025-06-09 12:47:30 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-09 12:47:30 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 435 ms
+2025-06-09 12:47:30 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:47:30 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:47:30 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:47:30 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8085 (http) with context path ''
+2025-06-09 12:47:30 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:47:30 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@500beb9f]]
+2025-06-09 12:47:30 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:47:30 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:47:30 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#35630ee8:0/SimpleConnection@e09c7a2 [delegate=amqp://user@127.0.0.1:5672/, localPort=59168]
+2025-06-09 12:47:30 [http-nio-8085-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-09 12:47:30 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-09 12:47:30 [http-nio-8085-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-09 12:47:30 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:47:30 [main] INFO  c.m.a.AlertingSystemApplication - Started AlertingSystemApplication in 1.494 seconds (process running for 1.599)
+2025-06-09 12:47:30 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:47:43 [http-nio-8085-exec-10] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] threw exception
+java.io.IOException: Broken pipe
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:62)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:137)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:102)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:58)
+	at java.base/sun.nio.ch.SocketChannelImpl.implWrite(SocketChannelImpl.java:562)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:614)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:118)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1381)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:764)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:728)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:712)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:566)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:220)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1245)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:400)
+	at org.apache.coyote.Response.action(Response.java:208)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:301)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:267)
+	at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:120)
+	at java.base/java.io.FilterOutputStream.flush(FilterOutputStream.java:155)
+	at com.fasterxml.jackson.core.json.UTF8JsonGenerator.flush(UTF8JsonGenerator.java:1200)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1063)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.writeInternal(AbstractGenericHttpMessageConverter.java:123)
+	at org.springframework.http.converter.AbstractHttpMessageConverter.write(AbstractHttpMessageConverter.java:236)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.sendInternal(ResponseBodyEmitterReturnValueHandler.java:221)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.send(ResponseBodyEmitterReturnValueHandler.java:212)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.sendInternal(ResponseBodyEmitter.java:234)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.send(ResponseBodyEmitter.java:225)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:135)
+	at com.masterthesis.alertingsystem.controllers.sse.ServerSentEventsController.lambda$streamMetricsForAllServices$0(ServerSentEventsController.java:148)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-06-09 12:47:43 [http-nio-8085-exec-10] ERROR o.a.c.c.C.[Tomcat].[localhost] - Exception Processing [ErrorPage[errorCode=0, location=/error]]
+java.io.IOException: Broken pipe
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:62)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:137)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:102)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:58)
+	at java.base/sun.nio.ch.SocketChannelImpl.implWrite(SocketChannelImpl.java:562)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:614)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:118)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1381)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:764)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:728)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:712)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:566)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:220)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1245)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:400)
+	at org.apache.coyote.Response.action(Response.java:208)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:301)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:267)
+	at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:120)
+	at java.base/java.io.FilterOutputStream.flush(FilterOutputStream.java:155)
+	at com.fasterxml.jackson.core.json.UTF8JsonGenerator.flush(UTF8JsonGenerator.java:1200)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1063)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.writeInternal(AbstractGenericHttpMessageConverter.java:123)
+	at org.springframework.http.converter.AbstractHttpMessageConverter.write(AbstractHttpMessageConverter.java:236)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.sendInternal(ResponseBodyEmitterReturnValueHandler.java:221)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.send(ResponseBodyEmitterReturnValueHandler.java:212)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.sendInternal(ResponseBodyEmitter.java:234)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.send(ResponseBodyEmitter.java:225)
+	at org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(SseEmitter.java:135)
+	at com.masterthesis.alertingsystem.controllers.sse.ServerSentEventsController.lambda$streamMetricsForAllServices$0(ServerSentEventsController.java:148)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-06-09 12:48:30 [MessageBroker-5] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[2 current WS(2)-HttpStream(0)-HttpPoll(0), 2 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(1)-CONNECTED(1)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 6, active threads = 0, queued tasks = 0, completed tasks = 6], outboundChannel[pool size = 7, active threads = 0, queued tasks = 0, completed tasks = 7], sockJsScheduler[pool size = 14, active threads = 1, queued tasks = 4, completed tasks = 13]
+2025-06-09 12:48:36 [http-nio-8085-exec-6] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalStateException: Invocation failure
+Controller [com.masterthesis.alertingsystem.controllers.RulesController]
+Method [public org.springframework.http.ResponseEntity<java.util.List<com.masterthesis.alertingsystem.dtos.NewRuleDto>> com.masterthesis.alertingsystem.controllers.RulesController.changeRules(java.lang.String,java.util.List<com.masterthesis.alertingsystem.dtos.NewRuleDto>) throws com.masterthesis.alertingsystem.exceptions.ThresholdsLoadingException,com.masterthesis.alertingsystem.exceptions.NothingToUpdateException] with argument values:
+ [0] [type=java.lang.String] [value=auth-service],
+[1] [type=java.util.ArrayList] [value=[com.masterthesis.alertingsystem.dtos.NewRuleDto@4f10b274, com.masterthesis.alertingsystem.dtos.NewRuleDto@5ff3e50f]] ] with root cause
+com.masterthesis.alertingsystem.exceptions.NothingToUpdateException: Nothing new to update
+	at com.masterthesis.alertingsystem.rules.DroolsRuleService.changeMetricsRules(DroolsRuleService.java:281)
+	at com.masterthesis.alertingsystem.controllers.RulesController.changeRules(RulesController.java:26)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:259)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:192)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:920)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:830)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:109)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1447)
+2025-06-09 12:49:55 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:49:55 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@500beb9f]]
+2025-06-09 12:49:55 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:49:55 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:49:55 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 12:50:58 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 12:50:58 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 27772 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:50:58 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:50:58 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:50:58 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:50:58 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:50:59 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:50:59 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:50:59 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7927209f]]
+2025-06-09 12:50:59 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:50:59 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:50:59 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#4d0d568f:0/SimpleConnection@3fbf66e7 [delegate=amqp://user@127.0.0.1:5672/, localPort=59680]
+2025-06-09 12:50:59 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.462 seconds (process running for 1.785)
+2025-06-09 12:50:59 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:50:59 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:50:59 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:50:59 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7927209f]]
+2025-06-09 12:50:59 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:50:59 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:51:00 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 12:58:57 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 12:58:57 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 29385 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 12:58:57 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 12:58:57 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 12:58:57 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 12:58:57 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 12:58:58 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 12:58:58 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 12:58:58 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3b45a3e6]]
+2025-06-09 12:58:58 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 12:58:58 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 12:58:58 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#3ecbfba1:0/SimpleConnection@5687ba39 [delegate=amqp://user@127.0.0.1:5672/, localPort=60757]
+2025-06-09 12:58:58 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.481 seconds (process running for 1.786)
+2025-06-09 12:58:58 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 12:58:58 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 12:58:59 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 12:58:59 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3b45a3e6]]
+2025-06-09 12:58:59 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 12:58:59 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 12:58:59 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 13:05:16 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 13:05:16 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 6005 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 13:05:16 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 13:05:16 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 13:05:16 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 13:05:16 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 13:05:17 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 13:05:17 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 13:05:17 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@e00c94e]]
+2025-06-09 13:05:17 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 13:05:17 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 13:05:17 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#da4c5cb:0/SimpleConnection@38447073 [delegate=amqp://user@127.0.0.1:5672/, localPort=49502]
+2025-06-09 13:05:17 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.589 seconds (process running for 1.907)
+2025-06-09 13:05:17 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 13:05:17 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 13:05:18 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 13:05:18 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@e00c94e]]
+2025-06-09 13:05:18 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 13:05:18 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 13:05:18 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
+2025-06-09 13:14:00 [main] WARN  o.s.b.t.j.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer - 
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/Users/lucapetrescu/.m2/repository/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+	jar:file:/Users/lucapetrescu/.m2/repository/org/json/json/20151123/json-20151123.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2025-06-09 13:14:00 [main] INFO  c.m.a.AlertingSystemApplicationTests - Starting AlertingSystemApplicationTests using Java 24.0.1 with PID 6956 (started by lucapetrescu in /Users/lucapetrescu/Desktop/scalable-cloud-v2-monorepo/alertingsystem)
+2025-06-09 13:14:00 [main] DEBUG c.m.a.AlertingSystemApplicationTests - Running with Spring Boot v3.2.3, Spring v6.1.4
+2025-06-09 13:14:00 [main] INFO  c.m.a.AlertingSystemApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2025-06-09 13:14:01 [main] ERROR i.n.r.d.DnsServerAddressStreamProviders - Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+2025-06-09 13:14:01 [main] WARN  o.k.m.i.embedder.MavenSettings - Environment variable M2_HOME is not set
+2025-06-09 13:14:01 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-09 13:14:01 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-09 13:14:01 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7927209f]]
+2025-06-09 13:14:01 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-09 13:14:01 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Attempting to connect to: [localhost:5672]
+2025-06-09 13:14:01 [main] INFO  o.s.a.r.c.CachingConnectionFactory - Created new connection: rabbitConnectionFactory#4d0d568f:0/SimpleConnection@3fbf66e7 [delegate=amqp://user@127.0.0.1:5672/, localPort=50647]
+2025-06-09 13:14:01 [main] INFO  c.m.a.AlertingSystemApplicationTests - Started AlertingSystemApplicationTests in 1.472 seconds (process running for 1.766)
+2025-06-09 13:14:01 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - Start creation of KieBase: defaultKieBase
+2025-06-09 13:14:01 [MessageBroker-1] INFO  o.d.c.k.b.impl.KieContainerImpl - End creation of KieBase: defaultKieBase
+2025-06-09 13:14:02 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-09 13:14:02 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7927209f]]
+2025-06-09 13:14:02 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-09 13:14:02 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Waiting for workers to finish.
+2025-06-09 13:14:03 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  o.s.a.r.l.SimpleMessageListenerContainer - Successfully waited for workers to finish.
