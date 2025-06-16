@@ -4,6 +4,66 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 cd "$SCRIPT_DIR"
 
+echo "Checking if Docker Daemon is running..."
+
+if docker ps &>/dev/null; then
+    echo "✅ Docker daemon is running"
+else
+    echo "ℹ️ Docker daemon is not running. Starting Docker Desktop..."
+    open -a Docker
+    
+    # Wait for Docker daemon to be ready
+    echo "Waiting for Docker daemon to start..."
+    DOCKER_READY=false
+    for i in {1..30}; do
+        if docker ps &>/dev/null; then
+            DOCKER_READY=true
+            echo "✅ Docker daemon is ready"
+            break
+        fi
+        echo "🔄 Waiting for Docker daemon... Attempt $i/30"
+        sleep 2
+    done
+    
+    if [ "$DOCKER_READY" = false ]; then
+        echo "❌ Docker daemon failed to start properly"
+        exit 1
+    fi
+    
+    # Additional wait to ensure Docker is fully initialized
+    echo "Waiting additional 5 seconds for Docker to fully initialize..."
+    sleep 5
+fi
+
+# Function to clean up existing resources
+cleanup_resources() {
+    echo "🧹 Cleaning up existing resources..."
+    
+    # Stop and remove all running containers
+    echo "Stopping and removing running containers..."
+    docker ps -q | xargs -r docker stop
+    docker ps -aq | xargs -r docker rm
+    
+    # Remove dangling images
+    echo "Removing dangling images..."
+    docker image prune -f
+    
+    # Kill any running Java processes for our applications
+    echo "Stopping running Java applications..."
+    pkill -f "metricscollector.jar" || true
+    pkill -f "alertingsystem.jar" || true
+    
+    # Remove nohup.out files
+    echo "Cleaning up log files..."
+    rm -f "$SCRIPT_DIR/metricscollector/target/nohup.out"
+    rm -f "$SCRIPT_DIR/alertingsystem/target/nohup.out"
+    
+    echo "✅ Cleanup completed"
+}
+
+# Call cleanup before starting services
+cleanup_resources
+
 # Function to check if containers are running
 check_containers_running() {
     local containers=("$@")
@@ -79,19 +139,28 @@ check_backend_ready() {
     return 1
 }
 
-echo "Checking if Docker Daemon is running..."
-
-if docker ps &>/dev/null; then
-    echo "✅ Docker daemon is running"
-else
-    echo "❌ Docker daemon is not running. Please start Docker Desktop first."
-    exit 1
-fi
-
 # Start Metrics Collector containers
 echo "Starting Metrics Collector containers..."
 cd "$SCRIPT_DIR/metricscollector/src/main/java/com/masterthesis/metricscollector"
 docker-compose up --build -d
+
+# Wait for Kafka to be ready
+echo "Waiting for Kafka to be ready..."
+KAFKA_READY=false
+for i in {1..30}; do
+    if docker exec metricscollector-kafka-1 kafka-topics.sh --bootstrap-server localhost:9092 --list > /dev/null 2>&1; then
+        KAFKA_READY=true
+        echo "✅ Kafka is ready"
+        break
+    fi
+    echo "🔄 Waiting for Kafka to be ready... Attempt $i/30"
+    sleep 2
+done
+
+if [ "$KAFKA_READY" = false ]; then
+    echo "❌ Kafka failed to start properly"
+    exit 1
+fi
 
 METRICS_COLLECTOR_CONTAINERS=("metricscollector-kafka-1" "metricscollector-zookeeper-1" "prometheus")
 if ! wait_for_containers "${METRICS_COLLECTOR_CONTAINERS[@]}"; then

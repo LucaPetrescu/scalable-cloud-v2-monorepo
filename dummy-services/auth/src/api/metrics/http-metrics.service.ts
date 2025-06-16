@@ -7,7 +7,9 @@ export class HttpMetricsService {
   private readonly httpRequestCounter: client.Counter<string>;
   private readonly httpRequestDurationHistogram: client.Histogram<string>;
 
-  private metricsCollectorUrl: string = 'http://192.168.0.171:8080/auth';
+  private metricsCollectorUrl: string =
+    process.env.METRICS_COLLECTOR_URL ||
+    'http://host.docker.internal:8080/auth';
 
   constructor(
     @Inject('PROM_REGISTRY') private readonly registry: client.Registry,
